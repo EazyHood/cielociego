@@ -29,14 +29,16 @@ from __future__ import annotations
 
 import os
 import threading
+from collections.abc import Iterable, Sequence
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
-from typing import Any, Iterable, Sequence
+from typing import Any
 
 import numpy as np
 import requests
 
 from .predios import Predio
+from .red import sesion as _sesion_con_reintentos
 
 PC_STAC = "https://planetarycomputer.microsoft.com/api/stac/v1"
 PC_TOKEN = "https://planetarycomputer.microsoft.com/api/sas/v1/token"
@@ -93,7 +95,7 @@ def busca_rtc(
     predio: Predio, desde: str, hasta: str, *, sesion: requests.Session | None = None
 ) -> list[dict[str, Any]]:
     """Items Sentinel-1 RTC que tocan el predio, paginando hasta el final."""
-    ses = sesion or requests.Session()
+    ses = sesion or _sesion_con_reintentos()
     payload: dict[str, Any] = {
         "collections": [COLECCION],
         "bbox": list(predio.bbox),
@@ -104,7 +106,7 @@ def busca_rtc(
     while True:
         doc = ses.post(f"{PC_STAC}/search", json=payload, timeout=120).json()
         items.extend(doc.get("features", []))
-        sig = next((l for l in doc.get("links", []) if l.get("rel") == "next"), None)
+        sig = next((e for e in doc.get("links", []) if e.get("rel") == "next"), None)
         if not sig or not sig.get("body"):
             break
         payload = sig["body"]
@@ -143,7 +145,7 @@ class Credencial:
             ahora = datetime.now(timezone.utc)
             if self._token and self._caduca and ahora < self._caduca - self.MARGEN:
                 return self._token
-            ses = sesion or requests.Session()
+            ses = sesion or _sesion_con_reintentos()
             r = ses.get(f"{PC_TOKEN}/{self.coleccion}", timeout=60)
             r.raise_for_status()
             doc = r.json()
@@ -193,7 +195,7 @@ def mide_retro(
                     with rasterio.open(href) as src:
                         ventana, dentro = _mascara_predio(src, predio.geometria)
                         valores[pol] = src.read(1, window=ventana)[dentro]
-    except Exception as exc:  # noqa: BLE001 - se declara, no se traga
+    except Exception as exc:
         base.error = f"{type(exc).__name__}: {exc}"[:180]
         return base
 
@@ -203,6 +205,41 @@ def mide_retro(
     if not np.isfinite(base.vv_db) or not np.isfinite(base.vh_db):
         base.error = "sin pixeles validos (borde del RTC o sombra de radar)"
     return base
+
+
+def elige_orbita(items: Iterable[dict[str, Any]]) -> int | None:
+    """Orbita relativa con mas escenas sobre ESTE predio.
+
+    POR QUE NO SE PUEDE FIJAR EN EL CODIGO
+    --------------------------------------
+    Las orbitas relativas dependen de DONDE esta el predio. La 77 cubre la
+    Zona Bananera del Magdalena, pero en Uraba -- la principal zona bananera
+    de Colombia -- no pasa: alli son la 142 y la 48. Una constante fija en el
+    codigo dejaba la serie de radar VACIA en cualquier sitio distinto de
+    aquellos dos predios, y ademas en silencio.
+
+    Se elige la mas poblada porque da la serie mas densa. El empate se rompe
+    por el numero de orbita mas bajo, para que dos ejecuciones sobre los
+    mismos datos den siempre lo mismo.
+    """
+    cuenta: dict[int, int] = {}
+    for it in items:
+        orb = it.get("properties", {}).get("sat:relative_orbit")
+        if orb is not None:
+            cuenta[int(orb)] = cuenta.get(int(orb), 0) + 1
+    if not cuenta:
+        return None
+    return min(cuenta, key=lambda o: (-cuenta[o], o))
+
+
+def reparto_orbitas(items: Iterable[dict[str, Any]]) -> dict[int, int]:
+    """Cuantas escenas aporta cada orbita. Para poder declararlo en el informe."""
+    cuenta: dict[int, int] = {}
+    for it in items:
+        orb = it.get("properties", {}).get("sat:relative_orbit")
+        if orb is not None:
+            cuenta[int(orb)] = cuenta.get(int(orb), 0) + 1
+    return dict(sorted(cuenta.items(), key=lambda kv: (-kv[1], kv[0])))
 
 
 def por_orbita(retros: Iterable[Retro]) -> dict[int, list[Retro]]:

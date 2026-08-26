@@ -8,10 +8,11 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Sequence
+from typing import Any
 
 from .predios import Predio
 from .scl import Vista, mide_vista

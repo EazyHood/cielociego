@@ -1,0 +1,42 @@
+name: pruebas
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pruebas:
+    # Las pruebas NO tocan la red a proposito: se simula el HTTP y se fabrican
+    # rasters con valores conocidos. Por eso pueden correr en cualquier maquina
+    # sin credenciales y sin depender de que un servicio publico este en pie.
+    runs-on: ${{ matrix.so }}
+    strategy:
+      fail-fast: false
+      matrix:
+        so: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Instalar
+        run: pip install -e ".[dev]"
+
+      - name: Pruebas con cobertura
+        run: pytest tests/ -q --cov=cielociego --cov-report=term-missing --cov-fail-under=75
+
+      - name: Tipos
+        run: mypy src/cielociego --ignore-missing-imports
+
+      - name: Estilo
+        run: ruff check src/ tests/
+
+      - name: La CLI arranca
+        run: python -m cielociego --help

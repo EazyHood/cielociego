@@ -15,17 +15,17 @@ import argparse
 import json
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
-
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .barrido import _barra, barre
 from .catalogo import S1_GRD, S2_L2A, busca, por_ano
 from .dedup import deduplica
 from .predios import Predio, carga_predio
 from .radar import a_pasadas, cruza
-from .sar import busca_rtc, mide_retro, por_orbita
+from .red import sesion as _sesion
+from .sar import busca_rtc, elige_orbita, mide_retro, reparto_orbitas
 
 RAIZ = Path(__file__).resolve().parents[2]
 DATOS = RAIZ / "datos"
@@ -33,7 +33,7 @@ SALIDAS = RAIZ / "salidas"
 DESDE_POR_DEFECTO = "2019-01-01"
 UMBRAL_UTIL = 0.10
 # Una sola orbita relativa: mezclarlas inventa saltos que no son del cultivo.
-ORBITA_SERIE = 77
+# CUAL sea se elige por predio -- las orbitas dependen de donde este.
 
 
 def _log(msg: str = "") -> None:
@@ -83,13 +83,15 @@ def paso_scl(clave: str, predio: Predio, tomas: list[dict], hilos: int) -> dict:
     t0 = time.time()
     r = barre(predio, tomas, hilos=hilos, avisa=_barra)
     r.guarda(SALIDAS / f"{clave}_scl.json")
-    _log(f"  SCL        {len(r.vistas)} medidas, {len(r.fallidas)} fallidas, {time.time() - t0:.0f}s")
+    _log(f"  SCL        {len(r.vistas)} medidas, {len(r.fallidas)} fallidas, "
+         f"{time.time() - t0:.0f}s")
     for v in r.fallidas:
         _log(f"    ! {v.fecha}  {v.error}")
 
     utiles = [v for v in r.vistas if v.ciego_estricto <= UMBRAL_UTIL]
     pct = 100 * len(utiles) / len(r.vistas) if r.vistas else 0
-    _log(f"  utiles     {len(utiles)} de {len(r.vistas)} ({pct:.0f} %) con <= {UMBRAL_UTIL:.0%} del predio tapado")
+    _log(f"  utiles     {len(utiles)} de {len(r.vistas)} ({pct:.0f} %) "
+         f"con <= {UMBRAL_UTIL:.0%} del predio tapado")
     return json.loads((SALIDAS / f"{clave}_scl.json").read_text(encoding="utf-8"))
 
 
@@ -130,30 +132,39 @@ def paso_radar(clave: str, predio: Predio, scl: dict, desde: str, hasta: str) ->
         encoding="utf-8",
     )
     _log(f"  radar      {len(pasadas)} pasadas de Sentinel-1")
-    _log(f"  ciego      {ciegos} de {dias} dias ({100 * ciegos / dias:.0f} %) sin observacion optica util")
+    _log(f"  ciego      {ciegos} de {dias} dias ({100 * ciegos / dias:.0f} %) "
+         f"sin observacion optica util")
     if peor:
-        _log(f"  peor hueco {peor.dias} dias ({peor.inicio} -> {peor.fin}) con {peor.pasadas_radar} pasadas de radar")
+        _log(f"  peor hueco {peor.dias} dias ({peor.inicio} -> {peor.fin}) "
+             f"con {peor.pasadas_radar} pasadas de radar")
     if largos:
         _log(f"  huecos >= 15 d: {len(cubiertos)}/{len(largos)} tienen radar dentro "
              f"({100 * len(cubiertos) / len(largos):.0f} %)")
 
 
-def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int) -> None:
+def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int,
+             orbita_pedida: int | None = None) -> None:
     """Extrae la serie de retrodispersion sobre el predio, en UNA orbita.
 
-    Se limita a `ORBITA_SERIE` a proposito: la retrodispersion depende del
-    angulo de incidencia, asi que mezclar orbitas produce escalones que no
-    vienen del suelo. Cuesta observaciones y compra comparabilidad.
-    """
-    import requests
+    Se limita a UNA orbita a proposito: la retrodispersion depende del angulo
+    de incidencia, asi que mezclar orbitas produce escalones que no vienen del
+    suelo. Cuesta observaciones y compra comparabilidad.
 
-    ses = requests.Session()
-    items = [
-        x for x in busca_rtc(predio, desde, hasta, sesion=ses)
-        if x["properties"].get("sat:relative_orbit") == ORBITA_SERIE
-    ]
+    CUAL orbita se elige por predio, no se fija en el codigo: las orbitas
+    relativas dependen de la posicion. Ver `sar.elige_orbita`.
+    """
+    ses = _sesion()
+    todos = busca_rtc(predio, desde, hasta, sesion=ses)
+    if not todos:
+        _log("  radar S1  sin escenas RTC sobre el predio")
+        return
+
+    reparto = reparto_orbitas(todos)
+    orbita = orbita_pedida or elige_orbita(todos)
+    items = [x for x in todos if x["properties"].get("sat:relative_orbit") == orbita]
+    _log(f"  orbitas    {reparto}  ->  se usa la {orbita} ({len(items)} escenas)")
     if not items:
-        _log(f"  radar S1  sin escenas RTC en la orbita {ORBITA_SERIE}")
+        _log(f"  radar S1  la orbita {orbita} no cubre este predio")
         return
 
     t0 = time.time()
@@ -169,7 +180,7 @@ def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int) -> 
     mal = [m for m in medidas if m.error]
     (SALIDAS / f"{clave}_sar.json").write_text(
         json.dumps(
-            {"predio": predio.nombre, "orbita": ORBITA_SERIE,
+            {"predio": predio.nombre, "orbita": orbita, "reparto_orbitas": reparto,
              "medidas": [m.dict() for m in ok], "errores": [m.dict() for m in mal]},
             ensure_ascii=False, indent=1,
         ),
@@ -185,7 +196,8 @@ def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int) -> 
         f = np.array([date.fromisoformat(m.fecha).toordinal() for m in ok], dtype=float)
         vv = np.array([m.vv_db for m in ok])
         pendiente = float(np.polyfit(f, vv, 1)[0] * 365)
-        _log(f"  VV medio  {vv.mean():.2f} dB (sd {vv.std():.2f}) | tendencia {pendiente:+.3f} dB/ano")
+        _log(f"  VV medio  {vv.mean():.2f} dB (sd {vv.std():.2f}) | "
+             f"tendencia {pendiente:+.3f} dB/ano")
 
         # Control: la tendencia DENTRO de un solo satelite. Si desaparece ahi,
         # era un cambio de calibracion disfrazado de cambio en el suelo.
@@ -204,7 +216,7 @@ def cmd_medir(args) -> int:
         scl = paso_scl(clave, predio, tomas, args.hilos)
         paso_radar(clave, predio, scl, args.desde, args.hasta)
         if not args.sin_radar:
-            paso_sar(clave, predio, args.desde, args.hasta, args.hilos)
+            paso_sar(clave, predio, args.desde, args.hasta, args.hilos, args.orbita)
     _log(f"\nlisto. Resultados en {SALIDAS}")
     return 0
 
@@ -229,21 +241,25 @@ def cmd_pruebas(_args) -> int:
 def construye_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="cielociego",
-        description="Cuanto tiempo el satelite optico NO puede ver un predio, y si el radar lo cubre.",
+        description="Cuanto tiempo el satelite optico NO puede ver un predio, "
+                    "y si el radar cubre el hueco.",
     )
     sub = p.add_subparsers(dest="orden", required=True)
 
     def comunes(sp):
         sp.add_argument("--predio", action="append", metavar="RUTA.geojson",
-                        help="predio a medir (repetible). Por defecto, todos los de datos/")
+                        help="predio a medir (repetible); por defecto, los de datos/")
         sp.add_argument("--desde", default=DESDE_POR_DEFECTO, metavar="AAAA-MM-DD")
         sp.add_argument("--hasta", default=date.today().isoformat(), metavar="AAAA-MM-DD")
         return sp
 
     m = comunes(sub.add_parser("medir", help="medicion completa: catalogo, SCL y radar"))
-    m.add_argument("--hilos", type=int, default=12, help="lecturas simultaneas (por defecto 12)")
+    m.add_argument("--hilos", type=int, default=12,
+                   help="lecturas simultaneas (por defecto 12)")
     m.add_argument("--sin-radar", action="store_true",
                    help="salta la serie de retrodispersion (el paso mas lento)")
+    m.add_argument("--orbita", type=int, default=None, metavar="N",
+                   help="fuerza una orbita relativa; por defecto se elige la mas poblada")
     m.set_defaults(func=cmd_medir)
 
     comunes(sub.add_parser("catalogo", help="solo el catalogo optico, deduplicado")).set_defaults(

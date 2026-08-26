@@ -9,8 +9,6 @@ from __future__ import annotations
 
 from datetime import date
 
-import pytest
-
 from cielociego.radar import (
     Hueco,
     Pasada,
@@ -21,7 +19,7 @@ from cielociego.radar import (
 )
 
 D = date
-ENE = lambda d: date(2023, 1, d)  # noqa: E731
+ENE = lambda d: date(2023, 1, d)
 
 
 def item_s1(idr, fecha, orbita="ascending"):

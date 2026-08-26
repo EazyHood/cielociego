@@ -24,9 +24,10 @@ por eso las pasadas por ano se CUENTAN en vez de asumir "cada 6 dias".
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
-from typing import Any, Iterable, Sequence
+from typing import Any
 
 # S1A_IW_GRDH_1SDV_20231222T230735_20231222T230800_051774_0640E8
 _ID = re.compile(

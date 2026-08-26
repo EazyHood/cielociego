@@ -182,6 +182,6 @@ def test_no_se_silencian_otros_avisos(raster, recwarn):
 
     with _w.catch_warnings(record=True) as capturados:
         _w.simplefilter("always")
-        _w.warn("aviso de prueba que SI debe verse", UserWarning)
+        _w.warn("aviso de prueba que SI debe verse", UserWarning, stacklevel=2)
         _lee_scl(raster(np.full((6, 6), scl.VEGETACION)), geom_utm(6, 6))
     assert any("SI debe verse" in str(c.message) for c in capturados)

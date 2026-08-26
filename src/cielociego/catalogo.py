@@ -16,10 +16,13 @@ es peor que uno que falla: el que falla se ve.
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Any, Iterable
+from typing import Any
 
 import requests
+
+from .red import sesion as _sesion_con_reintentos
 
 STAC = "https://earth-search.aws.element84.com/v1/search"
 S2_L2A = "sentinel-2-l2a"
@@ -57,7 +60,7 @@ def busca(
     Fechas en ISO (`2020-01-01`). Lanza BarridoIncompleto si el conteo no
     cuadra con lo declarado por el servidor.
     """
-    ses = sesion or requests.Session()
+    ses = sesion or _sesion_con_reintentos()
     payload: dict[str, Any] = {
         "collections": [coleccion],
         "bbox": list(bbox),
@@ -78,7 +81,7 @@ def busca(
             declarados = (doc.get("context") or {}).get("matched")
         items.extend(doc.get("features", []))
 
-        sig = next((l for l in doc.get("links", []) if l.get("rel") == "next"), None)
+        sig = next((e for e in doc.get("links", []) if e.get("rel") == "next"), None)
         if not sig or not sig.get("body"):
             break
         if paginas >= tope_paginas:

@@ -3,6 +3,8 @@ import json, sys
 from collections import Counter
 from datetime import date
 sys.path.insert(0, "src")
+import os
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 from cielociego import graficas
 

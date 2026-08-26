@@ -1,6 +1,10 @@
 {
  "predio": "Predio estudio",
  "orbita": 77,
+ "reparto_orbitas": {
+  "77": 249,
+  "69": 248
+ },
  "medidas": [
   {
    "fecha": "2019-02-16",

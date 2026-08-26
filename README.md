@@ -41,6 +41,9 @@ parar, retomar y comprobar cualquier cifra a mano.
 | 4 | Cruza esos tramos con las **pasadas de Sentinel-1** | `radar` |
 | 5 | Extrae la **serie de retrodispersión** sobre el polígono, una sola órbita | `sar` |
 
+La red va por una sesión con reintentos (`red`), porque en una herramienta de
+medida un corte transitorio que se traga en silencio se convierte en un dato.
+
 ## Los cinco resultados
 
 ### 1. El archivo servía la misma toma dos veces, y con nubes distintas
@@ -176,9 +179,17 @@ llega hasta donde llega el dato.
 python -m cielociego medir                              # todo
 python -m cielociego medir --predio datos/mi_finca.geojson
 python -m cielociego medir --desde 2022-01-01 --hilos 8
-python -m cielociego medir --sin-radar                   # salta la serie (lo mas lento)
+python -m cielociego medir --sin-radar                  # salta la serie (lo mas lento)
+python -m cielociego medir --orbita 142                 # fuerza una orbita concreta
 python -m cielociego catalogo                           # solo el catalogo
-python -m cielociego pruebas                            # 67 pruebas
+python -m cielociego pruebas                            # 144 pruebas
+```
+
+La **órbita de la serie de radar se elige sola** según cuál cubra mejor tu predio,
+y el reparto se imprime para que puedas comprobarlo:
+
+```
+orbitas    {77: 341, 142: 265, 69: 248}  ->  se usa la 77 (341 escenas)
 ```
 
 Un predio es un GeoJSON con **un solo** *feature* de tipo `Polygon` en EPSG:4326.
@@ -197,17 +208,27 @@ exactamente el error que este proyecto existe para evitar.
 pip install -e ".[dev]"
 ```
 
-Necesita Python 3.10+, `rasterio`, `shapely`, `pyproj`, `numpy`, `requests` y
-`matplotlib`.
+Python 3.10+. Las dependencias llevan **cota por arriba** (`<3`, `<2`…) a
+propósito: una herramienta que dice «esto se reproduce» no puede depender de que
+la próxima versión mayor de rasterio o numpy no rompa nada. El límite convierte
+una rotura silenciosa en un fallo de instalación, que se ve.
 
 ## Pruebas
 
-67 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
+144 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
 rásters con valores conocidos.
 
 ```bash
-python -m pytest tests/ -q
+python -m pytest tests/ -q --cov=cielociego     # 144 pruebas, 91 % de cobertura
+mypy src/cielociego                              # limpio en 12 modulos
+ruff check src/ tests/                           # limpio
 ```
+
+Corren en **CI sobre Linux y Windows, en Python 3.10 y 3.12**, con el listón de
+cobertura puesto en 75 % para que no pueda bajar sin que alguien se entere. La
+medición contra los servicios públicos va en un flujo aparte, semanal: si falla,
+no es que el código esté roto — es que cambió el catálogo, y eso también hay que
+saberlo.
 
 Lo que vigilan, más allá de que el código no reviente:
 
@@ -231,6 +252,14 @@ Lo que vigilan, más allá de que el código no reviente:
   La prueba comprueba que 1.000 ficheros con 16 hilos piden **un** token.
 - **No mezclar órbitas**: dos pasadas del mismo día desde geometrías distintas dan
   valores distintos del mismo cultivo sin que haya cambiado nada.
+- **La órbita no puede estar fija en el código**: la primera versión tenía escrita
+  la 77, que cubre la Zona Bananera del Magdalena. En **Urabá** — la principal zona
+  bananera de Colombia — esa órbita no pasa: son la 142 y la 48. La serie de radar
+  salía **vacía y en silencio** en cualquier sitio que no fuera estos dos predios.
+  Ahora se elige la más poblada de cada predio y se declara el reparto.
+- **Un fallo de red no puede volverse un dato**: si una lectura se cae, la escena
+  queda registrada como **fallo**, nunca como despejada, y se reintenta lo que es
+  reintentable (429 y 5xx, con espera creciente y respetando `Retry-After`).
 
 ## Datos
 

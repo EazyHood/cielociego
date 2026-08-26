@@ -6,8 +6,6 @@ pruebas son las que lo destapan.
 """
 from __future__ import annotations
 
-import pytest
-
 from cielociego.dedup import Toma, deduplica, identidad
 
 

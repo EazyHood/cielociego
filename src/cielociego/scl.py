@@ -32,7 +32,7 @@ from __future__ import annotations
 
 import os
 import warnings
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from typing import Any
 
 import numpy as np
@@ -43,13 +43,13 @@ os.environ.setdefault("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".tif")
 os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "3")
 os.environ.setdefault("GDAL_HTTP_RETRY_DELAY", "1")
 
-import rasterio  # noqa: E402
-from rasterio.errors import NotGeoreferencedWarning  # noqa: E402
-from rasterio.features import geometry_mask  # noqa: E402
-from rasterio.warp import transform_geom  # noqa: E402
-from rasterio.windows import from_bounds  # noqa: E402
-from shapely.geometry import mapping, shape  # noqa: E402
-from shapely.geometry.base import BaseGeometry  # noqa: E402
+import rasterio
+from rasterio.errors import NotGeoreferencedWarning
+from rasterio.features import geometry_mask
+from rasterio.warp import transform_geom
+from rasterio.windows import from_bounds
+from shapely.geometry import mapping, shape
+from shapely.geometry.base import BaseGeometry
 
 SIN_DATO, SATURADO, SOMBRA_OROG, SOMBRA_NUBE = 0, 1, 2, 3
 VEGETACION, SIN_VEGETACION, AGUA, SIN_CLASIF = 4, 5, 6, 7
@@ -146,7 +146,7 @@ def mide_vista(
     vacio = Vista(fecha, id_toma, 0, float("nan"), float("nan"), cc_tesela, {})
     try:
         datos, dentro = _lee_scl(href_scl, geom_4326)
-    except Exception as exc:  # noqa: BLE001 - se reporta, no se traga
+    except Exception as exc:
         vacio.error = f"{type(exc).__name__}: {exc}"[:200]
         return vacio
 
@@ -161,8 +161,11 @@ def mide_vista(
         return vacio
 
     clases, cuentas = np.unique(val, return_counts=True)
-    hist = {NOMBRES.get(int(c), f"clase_{int(c)}"): int(k) for c, k in zip(clases, cuentas)}
-    ciego_e = float(sum(k for c, k in zip(clases, cuentas) if int(c) in CIEGO_ESTRICTO)) / n
-    ciego_a = float(sum(k for c, k in zip(clases, cuentas) if int(c) in CIEGO_AMPLIO)) / n
+    # strict=True a proposito: si clases y cuentas no cuadraran, zip() truncaria
+    # en silencio y el histograma saldria incompleto sin que nadie lo notara.
+    pares = list(zip(clases, cuentas, strict=True))
+    hist = {NOMBRES.get(int(c), f"clase_{int(c)}"): int(k) for c, k in pares}
+    ciego_e = float(sum(k for c, k in pares if int(c) in CIEGO_ESTRICTO)) / n
+    ciego_a = float(sum(k for c, k in pares if int(c) in CIEGO_AMPLIO)) / n
 
     return Vista(fecha, id_toma, n, ciego_e, ciego_a, cc_tesela, hist)

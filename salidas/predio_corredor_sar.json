@@ -1,6 +1,11 @@
 {
  "predio": "Predio de estudio - corredor bananero",
  "orbita": 77,
+ "reparto_orbitas": {
+  "77": 341,
+  "142": 265,
+  "69": 248
+ },
  "medidas": [
   {
    "fecha": "2019-01-05",

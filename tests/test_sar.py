@@ -68,7 +68,7 @@ def test_agrupa_por_orbita_y_ordena_por_fecha():
 
 def test_la_orbita_mas_poblada_va_primera():
     g = por_orbita([r("2023-01-01", 77)] + [r(f"2023-01-0{d}", 142) for d in range(1, 5)])
-    assert list(g)[0] == 142
+    assert next(iter(g)) == 142
 
 
 def test_las_medidas_con_error_no_entran_en_los_grupos():
@@ -164,3 +164,54 @@ def test_el_token_es_seguro_entre_hilos():
     with ThreadPoolExecutor(16) as ex:
         list(ex.map(lambda i: cred.firma(f"https://x/c/{i}.tiff", ses), range(400)))
     assert ses.veces == 1, f"con 16 hilos se pidieron {ses.veces} tokens; debe ser 1"
+
+
+# --- eleccion de orbita: el defecto que dejaba la serie vacia fuera de casa --
+def item_orb(orb, fecha="2023-01-01T00:00:00Z"):
+    return {"properties": {"sat:relative_orbit": orb, "datetime": fecha}}
+
+
+def test_elige_la_orbita_con_mas_escenas():
+    from cielociego.sar import elige_orbita
+
+    items = [item_orb(77)] * 5 + [item_orb(142)] * 3 + [item_orb(69)] * 9
+    assert elige_orbita(items) == 69
+
+
+def test_el_empate_se_rompe_igual_siempre():
+    """Dos ejecuciones sobre los mismos datos deben elegir lo mismo."""
+    from cielociego.sar import elige_orbita
+
+    a = [item_orb(142)] * 4 + [item_orb(48)] * 4
+    b = [item_orb(48)] * 4 + [item_orb(142)] * 4
+    assert elige_orbita(a) == elige_orbita(b) == 48
+
+
+def test_sin_escenas_no_elige_nada():
+    from cielociego.sar import elige_orbita
+
+    assert elige_orbita([]) is None
+    assert elige_orbita([{"properties": {}}]) is None
+
+
+def test_uraba_no_tiene_la_orbita_que_estaba_fija_en_el_codigo():
+    """El defecto real, con los numeros medidos el 2026-08-26.
+
+    En Uraba -- la principal zona bananera de Colombia -- pasan la 142 y la 48,
+    NO la 77 que estaba escrita en el codigo. Con la constante fija, la serie
+    de radar salia vacia alli, y ademas en silencio.
+    """
+    from cielociego.sar import elige_orbita, reparto_orbitas
+
+    uraba = [item_orb(142)] * 30 + [item_orb(48)] * 28
+    reparto = reparto_orbitas(uraba)
+    assert 77 not in reparto, "si la 77 apareciera, el caso de prueba ya no vale"
+    assert elige_orbita(uraba) == 142
+    assert reparto == {142: 30, 48: 28}
+
+
+def test_el_reparto_va_ordenado_de_mas_a_menos():
+    from cielociego.sar import reparto_orbitas
+
+    items = [item_orb(77)] * 2 + [item_orb(142)] * 9 + [item_orb(69)] * 5
+    assert list(reparto_orbitas(items)) == [142, 69, 77]

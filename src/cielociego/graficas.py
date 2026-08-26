@@ -5,9 +5,10 @@ import io
 from datetime import date
 
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-import numpy as np  # noqa: E402
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Centinelas: matplotlib fija el color del texto en el SVG, asi que en tema
 # oscuro saldria negro sobre negro. Se pintan con estos hex imposibles y
@@ -97,7 +98,8 @@ def calendario(fechas_utiles, huecos, pasadas_radar, desde: date, hasta: date) -
     anos = [date(a, 1, 1) for a in range(desde.year, hasta.year + 1)]
     ax.set_xticks([a.toordinal() - d0 for a in anos])
     ax.set_xticklabels([a.year for a in anos])
-    ax.text(0, 1.38, "arriba: naranja = ciego · verde = observación óptica útil     abajo: azul = pasada de radar",
+    ax.text(0, 1.38,
+            "arriba: naranja = ciego · verde = observación útil     abajo: azul = radar",
             fontsize=8.5, color=GRIS)
     return _svg(fig)
 
@@ -115,7 +117,7 @@ def huecos_por_duracion(huecos) -> str:
     x = np.arange(len(tramos))
     ax.bar(x, con, color=RADAR, label="con pasada de radar dentro", zorder=3)
     ax.bar(x, sin, bottom=con, color=CIEGO, alpha=0.55, label="sin ninguna observación", zorder=3)
-    for i, (c, s) in enumerate(zip(con, sin)):
+    for i, (c, s) in enumerate(zip(con, sin, strict=True)):
         if c + s:
             ax.text(i, c + s + 1.5, str(c + s), ha="center", fontsize=8.5, color=TINTA)
     ax.set_xticks(x)

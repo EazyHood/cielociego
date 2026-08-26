@@ -10,6 +10,8 @@ from datetime import date
 import numpy as np
 
 sys.path.insert(0, "src")
+import os
+os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 R = json.load(open("salidas/resumen.json", encoding="utf-8"))
 F, C = R["predio_fundacion"], R["predio_corredor"]

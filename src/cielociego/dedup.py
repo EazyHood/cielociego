@@ -31,8 +31,9 @@ elige la linea mas alta.
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any
 
 # S2B_MSIL2A_20200104T152639_N0500_R025_T18PXS(.SAFE)
 _URI = re.compile(
