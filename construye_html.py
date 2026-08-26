@@ -5,6 +5,9 @@ es que alguien la escribio a mano, y eso es justo lo que este proyecto no hace.
 """
 import json
 import sys
+from datetime import date
+
+import numpy as np
 
 sys.path.insert(0, "src")
 
@@ -14,6 +17,26 @@ G = {k: open(f"salidas/grafica_{k}.svg", encoding="utf-8").read()
      for k in ("dist", "cal_f", "cal_c", "dur", "anual")}
 HUE_F = json.load(open("salidas/predio_fundacion_radar.json", encoding="utf-8"))["huecos"]
 HUE_C = json.load(open("salidas/predio_corredor_radar.json", encoding="utf-8"))["huecos"]
+SAR_C = json.load(open("salidas/predio_corredor_sar.json", encoding="utf-8"))
+SAR_F = json.load(open("salidas/predio_fundacion_sar.json", encoding="utf-8"))
+for _k in ("sar_c", "sar_f", "ctrl"):
+    G[_k] = open(f"salidas/grafica_{_k}.svg", encoding="utf-8").read()
+
+
+def _tendencia(medidas, solo=None):
+    m = sorted(medidas, key=lambda x: x["fecha"])
+    if solo:
+        m = [x for x in m if x["plataforma"].lower() == solo]
+    f = np.array([date.fromisoformat(x["fecha"]).toordinal() for x in m], dtype=float)
+    v = np.array([x["vv_db"] for x in m])
+    return float(np.polyfit(f, v, 1)[0] * 365), len(m)
+
+
+TEND_TODAS, N_TODAS = _tendencia(SAR_C["medidas"])
+TEND_S1A, N_S1A = _tendencia(SAR_C["medidas"], "sentinel-1a")
+TEND_FUND, N_FUND = _tendencia(SAR_F["medidas"], "sentinel-1a")
+_vv = np.array([x["vv_db"] for x in sorted(SAR_C["medidas"], key=lambda y: y["fecha"])])
+SUBIDA = float(_vv[-20:].mean() - _vv[:20].mean())
 
 TOT_LARGOS = F["largos"] + C["largos"]
 TOT_CUB = F["largos_cub"] + C["largos_cub"]
@@ -165,7 +188,8 @@ HTML = f"""<title>Nueve de cada diez días</title>
   <div><span class="cifra">{n(DIAS)}</span><span class="pie">días de serie continua analizados</span></div>
   <div><span class="cifra">{n(1412)}</span><span class="pie">pasadas de radar Sentinel-1 catalogadas</span></div>
   <div><span class="cifra">1</span><span class="pie">toma perdida por fallo de archivo, declarada</span></div>
-  <div><span class="cifra">48</span><span class="pie">pruebas automáticas en verde</span></div>
+  <div><span class="cifra">{n(len(SAR_C["medidas"]) + len(SAR_F["medidas"]))}</span><span class="pie">medidas de retrodispersión de radar sobre el polígono</span></div>
+  <div><span class="cifra">67</span><span class="pie">pruebas automáticas en verde</span></div>
 </section>
 
 <div class="pila g7">
@@ -294,16 +318,72 @@ HTML = f"""<title>Nueve de cada diez días</title>
   </div>
 </article>
 
+
+<article class="paso">
+  <div class="num">5</div>
+  <div class="cuerpo">
+    <h2>Y no solo estaba: traía señal</h2>
+    <div class="pila g2 medida">
+      <p>Que exista una pasada no significa que sirva. Así que se extrajo la serie completa de
+      retrodispersión sobre el polígono — <b>{n(len(SAR_C["medidas"]) + len(SAR_F["medidas"]))}
+      medidas</b>, todas de la misma órbita, porque mezclar geometrías inventa saltos que no son
+      del cultivo.</p>
+      <p>En el corredor bananero la serie no es ruido: <b>sube {n(SUBIDA, 1)} dB en siete años</b>,
+      de forma sostenida y con una autocorrelación entre pasadas consecutivas de 0,96.</p>
+    </div>
+    <figure>
+      <div class="lienzo">{G["sar_c"]}</div>
+      <figcaption>Corredor bananero, órbita 77, {n(N_TODAS)} pasadas. Cada punto es la media del
+      predio en γ⁰ VV. Las franjas naranjas son los tramos de 15 días o más en que el óptico no vio
+      nada.</figcaption>
+    </figure>
+    <div class="aviso pila g2">
+      <h3>Antes de creérselo: ¿y si fuera el satélite y no el suelo?</h3>
+      <p class="suave">La subida arranca justo cuando se retiró Sentinel-1B, así que podía ser un
+      cambio de calibración disfrazado de cambio agronómico. El control es medir la tendencia
+      <b>dentro de un solo satélite</b>: si es artefacto, ahí desaparece.</p>
+    </div>
+    <figure>
+      <div class="lienzo">{G["ctrl"]}</div>
+      <figcaption>No desaparece: dentro de Sentinel-1A sola la subida es de
+      {n(TEND_S1A, 3)} dB/año, incluso mayor que mezclando plataformas. Y el predio vecino, con los
+      mismos satélites, la misma órbita y el mismo procesado, sale plano.</figcaption>
+    </figure>
+    <div class="balance">
+      <div class="err"><span class="cifra">{n(TEND_S1A, 2)}</span>
+        <span class="rotulo">dB/año en el corredor, <b>medido dentro de Sentinel-1A sola</b>
+        (n={N_S1A})</span></div>
+      <div class="ok"><span class="cifra">{n(TEND_FUND, 3)}</span>
+        <span class="rotulo">dB/año en Fundación, <b>mismo satélite y misma órbita</b> (n={N_FUND})</span></div>
+    </div>
+    <figure>
+      <div class="lienzo">{G["sar_f"]}</div>
+      <figcaption>Fundación, órbita 77. La misma medida sobre el predio vecino: sin tendencia. Es el
+      control que descarta que la subida del corredor sea del instrumento.</figcaption>
+    </figure>
+    <p class="nota medida">Algo cambió en esas 284 hectáreas entre 2021 y 2022 y siguió cambiando
+    después. <b>Qué fue, este trabajo no lo sabe</b> — hace falta ir al campo o cruzar con registros
+    de siembra. Lo que sí queda medido es que el radar lo registró de principio a fin, y que en el
+    tramo del cambio el óptico llegó a estar <b>55 días seguidos</b> sin una imagen aprovechable.</p>
+  </div>
+</article>
 </div>
 
 <section class="pila g3">
   <h2>Lo que esto <em>no</em> demuestra</h2>
   <div class="pila g2 medida">
     <p>El radar mide retrodispersión: rugosidad, geometría, humedad. El óptico mide reflectancia:
-    pigmento, clorofila. <b>Un NDVI no se sustituye por un VV/VH.</b> Lo medido aquí es que existe
-    una observación en esas fechas, no que diga lo mismo.</p>
-    <p>Tampoco es un resultado agronómico. No se ha demostrado que de esas pasadas salga una decisión
-    de finca; eso es el trabajo siguiente, y esta medición es exactamente lo que lo justifica.</p>
+    pigmento, clorofila. <b>Un NDVI no se sustituye por un VV/VH.</b> Que la serie de radar tenga
+    estructura y detecte un cambio no significa que responda las mismas preguntas.</p>
+    <p><b>El radar tampoco gana siempre en número.</b> Con Sentinel-1B retirado, entre 2022 y 2024 la
+    órbita 77 dio unas 28 pasadas al año sobre el corredor: menos que las imágenes ópticas
+    aprovechables de esos mismos años. La ventaja está en el catálogo completo — <b>890 pasadas de
+    radar en tres órbitas frente a 264 ópticas útiles</b> — no en una sola órbita. Aquí se usa una
+    sola porque es lo correcto para una serie comparable, y eso cuesta observaciones.</p>
+    <p><b>Y no se sabe qué pasó en el suelo.</b> Que 284 hectáreas suban {n(SUBIDA, 1)} dB en siete
+    años es un hecho medido y controlado contra el instrumento; atribuirlo a una siembra, a un riego
+    o a un cambio de cultivo exigiría ir al campo o cruzar con registros. Este trabajo llega hasta
+    donde llega el dato.</p>
   </div>
   <div class="pila g2 medida">
     <p class="nota"><b>Dos decisiones que mueven los números, y por eso se declaran.</b> Cuenta como
@@ -322,7 +402,7 @@ HTML = f"""<title>Nueve de cada diez días</title>
   sobre AWS. Sin cuenta, sin clave y sin coste. La medición completa se reproduce de principio a fin
   y tarda unos tres minutos.</p>
   <p class="mono" style="font-size:.79rem">cielociego v0.1.0 · medido el 26 de agosto de 2026 ·
-  48 pruebas en verde · código y datos intermedios incluidos en el repositorio</p>
+  67 pruebas en verde · código y datos intermedios incluidos en el repositorio</p>
 </footer>
 
 </div>

@@ -5,7 +5,9 @@
 Medido sobre dos predios reales del Magdalena (Colombia), 2019–2026:
 **el 89 % y el 91 % de los días no hubo una sola observación óptica aprovechable.**
 El radar, que atraviesa la nube, tuvo pasada dentro de **los 66 huecos largos, sin
-una sola excepción**.
+una sola excepción** — y su serie no es ruido: detectó en uno de los predios una
+subida sostenida de **3,5 dB en siete años** que sobrevive al control de
+instrumento.
 
 Datos abiertos, sin cuenta, sin clave y sin coste. La medición completa se
 reproduce en unos 90 segundos.
@@ -26,7 +28,7 @@ teledetección agrícola.
 Todo el mundo lo sabe de forma vaga. Este proyecto lo pone en número, sobre un
 predio concreto, con el método declarado y las pruebas dentro.
 
-## Qué hace, en cuatro pasos
+## Qué hace, en cinco pasos
 
 Cada paso escribe su JSON en `salidas/` y el siguiente lo lee de ahí. Se puede
 parar, retomar y comprobar cualquier cifra a mano.
@@ -37,8 +39,9 @@ parar, retomar y comprobar cualquier cifra a mano.
 | 2 | Lee la banda SCL **recortada al polígono** y calcula la fracción ciega | `scl` + `barrido` |
 | 3 | Calcula los **tramos sin observación útil** | `radar` |
 | 4 | Cruza esos tramos con las **pasadas de Sentinel-1** | `radar` |
+| 5 | Extrae la **serie de retrodispersión** sobre el polígono, una sola órbita | `sar` |
 
-## Los cuatro resultados
+## Los cinco resultados
 
 ### 1. El archivo servía la misma toma dos veces, y con nubes distintas
 
@@ -107,15 +110,54 @@ Los huecos cortos, de cuatro días, a veces no llevan radar dentro y da igual: l
 siguiente imagen óptica llega enseguida. **Donde el problema duele, el radar
 siempre estaba.** El hueco no era de datos. Era de método.
 
+### 5. Y el radar no solo estaba: traía señal
+
+Que exista una pasada no significa que sirva. Se extrajo la serie completa de
+retrodispersión sobre el polígono — **590 medidas**, todas de la misma órbita
+relativa, porque mezclar geometrías inventa saltos que no vienen del cultivo.
+
+En el corredor bananero la serie **sube 3,5 dB en siete años**, de forma
+sostenida, con autocorrelación de 0,96 entre pasadas consecutivas.
+
+La subida arranca justo cuando se retiró Sentinel-1B, así que podía ser un cambio
+de calibración disfrazado de cambio agronómico. **El control es medir la tendencia
+dentro de un solo satélite:**
+
+```
+                                        tendencia de gamma0 VV
+CORREDOR   todas las plataformas .............. +0,643 dB/ano
+           solo Sentinel-1A (n=215) ........... +0,688 dB/ano   <- no desaparece
+           solo Sentinel-1B (n=79) ............ +0,150 dB/ano
+FUNDACION  solo Sentinel-1A (n=123) ........... -0,022 dB/ano   <- el vecino, plano
+```
+
+No desaparece: dentro de S1A sola la subida es incluso mayor. Y el predio vecino,
+con los mismos satélites, la misma órbita y el mismo procesado, sale plano. En el
+mismo año S1A y S1B difieren entre 0,04 y 0,50 dB, así que no hay sesgo de
+plataforma que explique 3,5.
+
+Algo cambió en esas 284 hectáreas entre 2021 y 2022 y siguió cambiando. **Qué fue,
+este trabajo no lo sabe.** Lo que queda medido es que el radar lo registró de
+principio a fin, y que en el tramo del cambio el óptico llegó a estar **55 días
+seguidos** sin una imagen aprovechable.
+
 ## Lo que esto *no* demuestra
 
 El radar mide retrodispersión: rugosidad, geometría, humedad. El óptico mide
-reflectancia: pigmento, clorofila. **Un NDVI no se sustituye por un VV/VH.** Lo
-medido aquí es que existe una observación en esas fechas, no que diga lo mismo.
+reflectancia: pigmento, clorofila. **Un NDVI no se sustituye por un VV/VH.** Que la
+serie tenga estructura y detecte un cambio no significa que responda las mismas
+preguntas.
 
-Tampoco es un resultado agronómico: no se ha demostrado que de esas pasadas salga
-una decisión de finca. Ese es el trabajo siguiente, y esta medición es lo que lo
-justifica.
+**El radar tampoco gana siempre en número.** Con Sentinel-1B retirado, entre 2022 y
+2024 la órbita 77 dio unas 28 pasadas al año sobre el corredor: menos que las
+imágenes ópticas aprovechables de esos mismos años. La ventaja está en el catálogo
+completo — **890 pasadas de radar en tres órbitas frente a 264 ópticas útiles** —
+no en una sola órbita. Aquí se usa una sola porque es lo correcto para una serie
+comparable, y eso cuesta observaciones.
+
+**Y no se sabe qué pasó en el suelo.** Atribuir la subida a una siembra, a un riego
+o a un cambio de cultivo exigiría ir al campo o cruzar con registros. Este trabajo
+llega hasta donde llega el dato.
 
 ## Decisiones que mueven los números, declaradas
 
@@ -134,8 +176,9 @@ justifica.
 python -m cielociego medir                              # todo
 python -m cielociego medir --predio datos/mi_finca.geojson
 python -m cielociego medir --desde 2022-01-01 --hilos 8
+python -m cielociego medir --sin-radar                   # salta la serie (lo mas lento)
 python -m cielociego catalogo                           # solo el catalogo
-python -m cielociego pruebas                            # 50 pruebas
+python -m cielociego pruebas                            # 67 pruebas
 ```
 
 Un predio es un GeoJSON con **un solo** *feature* de tipo `Polygon` en EPSG:4326.
@@ -159,7 +202,7 @@ Necesita Python 3.10+, `rasterio`, `shapely`, `pyproj`, `numpy`, `requests` y
 
 ## Pruebas
 
-50 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
+67 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
 rásters con valores conocidos.
 
 ```bash
@@ -179,12 +222,27 @@ Lo que vigilan, más allá de que el código no reviente:
   valores idénticos, histograma incluido.
 - **Tema de las gráficas**: que ningún color de texto quede fijo, o el informe se
   vuelve ilegible en tema oscuro y nadie lo nota hasta publicarlo.
+- **Promediar potencia, no decibelios**: el dB es logarítmico, así que promediarlo
+  da la media geométrica y sesga a la baja. Con dos píxeles de −20 dB y 0 dB el
+  sesgo es de **7,03 dB**. La prueba lleva el número contado a mano.
+- **Una firma, no mil**: la primera versión pedía una firma por cada banda de cada
+  escena — 1.180 llamadas — y el servidor devolvía **429**, dejando 536 medidas
+  fuera *como si el radar no tuviera dato*. El token es de contenedor: se pide uno.
+  La prueba comprueba que 1.000 ficheros con 16 hilos piden **un** token.
+- **No mezclar órbitas**: dos pasadas del mismo día desde geometrías distintas dan
+  valores distintos del mismo cultivo sin que haya cambiado nada.
 
 ## Datos
 
-Copernicus Sentinel-2 L2A y Sentinel-1 GRD, vía el catálogo STAC público de
-[Element84](https://earth-search.aws.element84.com/v1) sobre AWS. Los COG se leen
-**por ventana**: nunca se descarga una escena entera.
+- **Óptico y catálogo de radar**: Sentinel-2 L2A y Sentinel-1 GRD vía el catálogo
+  STAC público de [Element84](https://earth-search.aws.element84.com/v1) sobre AWS.
+- **Serie de retrodispersión**: Sentinel-1 **RTC** (corregido por terreno, ya
+  geocodificado, en gamma0) del
+  [Planetary Computer](https://planetarycomputer.microsoft.com), con firma anónima.
+  No se usa el GRD crudo: viene en geometría de radar, no se puede recortar por
+  lat/lon, y en AWS vive en un bucket de pago por peticionario.
+
+Los COG se leen **por ventana**: nunca se descarga una escena entera.
 
 ## Licencia
 

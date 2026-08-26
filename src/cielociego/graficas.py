@@ -140,3 +140,62 @@ def pasadas_anuales(s2_por_ano, s1_por_ano) -> str:
     ax.set_ylabel("pasadas al año", color=TINTA, fontsize=9.5)
     ax.legend(frameon=False, fontsize=9, labelcolor=TINTA)
     return _svg(fig)
+
+
+def serie_radar(medidas, huecos, desde: date, hasta: date, *, titulo_y="γ⁰ VV (dB)") -> str:
+    """Serie de retrodispersion con los tramos ciegos del optico sombreados.
+
+    Un solo grupo de orbita: mezclarlos crearia saltos que no son del cultivo.
+    """
+    fig, ax = _base((9, 3.4))
+    d0 = desde.toordinal()
+
+    for h in huecos:
+        if h["dias"] >= 15:
+            ax.axvspan(
+                date.fromisoformat(h["inicio"]).toordinal() - d0,
+                date.fromisoformat(h["fin"]).toordinal() - d0,
+                color=CIEGO, alpha=0.16, linewidth=0, zorder=1,
+            )
+    xs = [date.fromisoformat(m["fecha"]).toordinal() - d0 for m in medidas]
+    ys = [m["vv_db"] for m in medidas]
+    ax.plot(xs, ys, color=RADAR, linewidth=1.0, alpha=0.55, zorder=3)
+    ax.plot(xs, ys, linestyle="none", marker="o", markersize=2.3,
+            color=RADAR, markeredgewidth=0, zorder=4)
+
+    if len(xs) > 2:
+        b = np.polyfit(xs, ys, 1)
+        ax.plot(xs, np.polyval(b, xs), color=CIEGO, linewidth=1.9,
+                zorder=5, label=f"tendencia {b[0] * 365:+.2f} dB/año")
+        ax.legend(frameon=False, fontsize=9, labelcolor=TINTA, loc="upper left")
+
+    ax.set_xlim(0, hasta.toordinal() - d0)
+    anos = [date(a, 1, 1) for a in range(desde.year, hasta.year + 1)]
+    ax.set_xticks([a.toordinal() - d0 for a in anos])
+    ax.set_xticklabels([a.year for a in anos])
+    ax.set_ylabel(titulo_y, color=TINTA, fontsize=9.5)
+    ax.text(0.5, 1.04, "las franjas naranjas son los tramos de 15+ días sin óptico",
+            transform=ax.transAxes, ha="center", fontsize=8.5, color=GRIS)
+    return _svg(fig)
+
+
+def control_plataforma(por_plataforma) -> str:
+    """La tendencia medida DENTRO de cada satelite: el control del artefacto."""
+    fig, ax = _base((9, 2.9))
+    nombres = list(por_plataforma)
+    valores = [por_plataforma[k] for k in nombres]
+    colores = [CIEGO if abs(v) > 0.3 else GRIS for v in valores]
+    y = np.arange(len(nombres))
+    ax.barh(y, valores, color=colores, height=0.6, zorder=3)
+    ax.axvline(0, color=TINTA, linewidth=1.0, zorder=4)
+    ax.set_yticks(y)
+    ax.set_yticklabels(nombres, fontsize=9)
+    ax.set_xlabel("tendencia de γ⁰ VV (dB por año)", color=TINTA, fontsize=9.5)
+    ax.grid(axis="x", color=GRIS, alpha=0.18, linewidth=0.7)
+    ax.grid(axis="y", visible=False)
+    for i, v in enumerate(valores):
+        ax.text(v + (0.03 if v >= 0 else -0.03), i, f"{v:+.3f}",
+                va="center", ha="left" if v >= 0 else "right",
+                fontsize=8.5, color=TINTA)
+    ax.set_xlim(min(min(valores) * 1.45, -0.25), max(max(valores) * 1.45, 0.25))
+    return _svg(fig)

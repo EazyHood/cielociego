@@ -3,7 +3,7 @@
     python -m cielociego medir                  # todo: catalogo, SCL, radar, informe
     python -m cielociego medir --predio datos/mi_finca.geojson
     python -m cielociego catalogo               # solo el catalogo, deduplicado
-    python -m cielociego pruebas                # el control: 48 pruebas
+    python -m cielociego pruebas                # el control: 67 pruebas
 
 No hay estado escondido: cada paso escribe su JSON en `salidas/` y el
 siguiente lo lee de ahi. Se puede parar y retomar en cualquier punto, y
@@ -18,17 +18,22 @@ import time
 from datetime import date
 from pathlib import Path
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from .barrido import _barra, barre
 from .catalogo import S1_GRD, S2_L2A, busca, por_ano
 from .dedup import deduplica
 from .predios import Predio, carga_predio
 from .radar import a_pasadas, cruza
+from .sar import busca_rtc, mide_retro, por_orbita
 
 RAIZ = Path(__file__).resolve().parents[2]
 DATOS = RAIZ / "datos"
 SALIDAS = RAIZ / "salidas"
 DESDE_POR_DEFECTO = "2019-01-01"
 UMBRAL_UTIL = 0.10
+# Una sola orbita relativa: mezclarlas inventa saltos que no son del cultivo.
+ORBITA_SERIE = 77
 
 
 def _log(msg: str = "") -> None:
@@ -133,12 +138,73 @@ def paso_radar(clave: str, predio: Predio, scl: dict, desde: str, hasta: str) ->
              f"({100 * len(cubiertos) / len(largos):.0f} %)")
 
 
+def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int) -> None:
+    """Extrae la serie de retrodispersion sobre el predio, en UNA orbita.
+
+    Se limita a `ORBITA_SERIE` a proposito: la retrodispersion depende del
+    angulo de incidencia, asi que mezclar orbitas produce escalones que no
+    vienen del suelo. Cuesta observaciones y compra comparabilidad.
+    """
+    import requests
+
+    ses = requests.Session()
+    items = [
+        x for x in busca_rtc(predio, desde, hasta, sesion=ses)
+        if x["properties"].get("sat:relative_orbit") == ORBITA_SERIE
+    ]
+    if not items:
+        _log(f"  radar S1  sin escenas RTC en la orbita {ORBITA_SERIE}")
+        return
+
+    t0 = time.time()
+    medidas: list = []
+    with ThreadPoolExecutor(max_workers=hilos) as pool:
+        futuros = [pool.submit(mide_retro, it, predio, sesion=ses) for it in items]
+        for n_, fut in enumerate(as_completed(futuros), 1):
+            medidas.append(fut.result())
+            if n_ % 25 == 0 or n_ == len(futuros):
+                _barra(n_, len(futuros))
+
+    ok = sorted([m for m in medidas if m.error is None], key=lambda m: m.fecha)
+    mal = [m for m in medidas if m.error]
+    (SALIDAS / f"{clave}_sar.json").write_text(
+        json.dumps(
+            {"predio": predio.nombre, "orbita": ORBITA_SERIE,
+             "medidas": [m.dict() for m in ok], "errores": [m.dict() for m in mal]},
+            ensure_ascii=False, indent=1,
+        ),
+        encoding="utf-8",
+    )
+    _log(f"  radar S1  {len(ok)} medidas de gamma0, {len(mal)} fallidas, {time.time() - t0:.0f}s")
+    for m in mal[:3]:
+        _log(f"    ! {m.fecha}  {m.error}")
+
+    if len(ok) > 2:
+        import numpy as np
+
+        f = np.array([date.fromisoformat(m.fecha).toordinal() for m in ok], dtype=float)
+        vv = np.array([m.vv_db for m in ok])
+        pendiente = float(np.polyfit(f, vv, 1)[0] * 365)
+        _log(f"  VV medio  {vv.mean():.2f} dB (sd {vv.std():.2f}) | tendencia {pendiente:+.3f} dB/ano")
+
+        # Control: la tendencia DENTRO de un solo satelite. Si desaparece ahi,
+        # era un cambio de calibracion disfrazado de cambio en el suelo.
+        solo = [m for m in ok if m.plataforma.lower() == "sentinel-1a"]
+        if len(solo) > 20:
+            fa = np.array([date.fromisoformat(m.fecha).toordinal() for m in solo], dtype=float)
+            va = np.array([m.vv_db for m in solo])
+            _log(f"  control   solo Sentinel-1A (n={len(solo)}): "
+                 f"{float(np.polyfit(fa, va, 1)[0] * 365):+.3f} dB/ano")
+
+
 def cmd_medir(args) -> int:
     for clave, predio in _predios(args.predio):
         _log(f"\n=== {predio.nombre}  ({predio.area_ha} ha)")
         tomas = paso_catalogo(clave, predio, args.desde, args.hasta)
         scl = paso_scl(clave, predio, tomas, args.hilos)
         paso_radar(clave, predio, scl, args.desde, args.hasta)
+        if not args.sin_radar:
+            paso_sar(clave, predio, args.desde, args.hasta, args.hilos)
     _log(f"\nlisto. Resultados en {SALIDAS}")
     return 0
 
@@ -176,6 +242,8 @@ def construye_parser() -> argparse.ArgumentParser:
 
     m = comunes(sub.add_parser("medir", help="medicion completa: catalogo, SCL y radar"))
     m.add_argument("--hilos", type=int, default=12, help="lecturas simultaneas (por defecto 12)")
+    m.add_argument("--sin-radar", action="store_true",
+                   help="salta la serie de retrodispersion (el paso mas lento)")
     m.set_defaults(func=cmd_medir)
 
     comunes(sub.add_parser("catalogo", help="solo el catalogo optico, deduplicado")).set_defaults(
