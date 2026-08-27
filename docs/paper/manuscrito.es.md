@@ -274,34 +274,33 @@ es uniforme, se concentra en las adquisiciones antiguas, que son las que han pas
 reprocesados. Una serie temporal larga hereda mucha más duplicación que una corta, y es justo la
 serie larga la que se usa para fenología y tendencias.
 
-Desglosada por año de adquisición sobre el predio del Magdalena, la duplicación no es una constante
-sino un escalón:
+Desglosada por año de adquisición **sobre la cohorte completa** —68.297 ítems distintos de las
+323 parcelas de 23 países, consultados entre 2019 y 2026—, la duplicación no es una constante sino
+un escalón:
 
 | Año | Ítems | Adquisiciones únicas | Copias | % copias |
 |---:|---:|---:|---:|---:|
-| 2019 | 130 | 72 | 58 | 44,6 % |
-| 2020 | 143 | 72 | 71 | 49,7 % |
-| 2021 | 158 | 73 | 85 | **53,8 %** |
-| 2022 | 73 | 72 | 1 | 1,4 % |
-| 2023 | 74 | 72 | 2 | 2,7 % |
-| 2024 | 74 | 74 | 0 | 0,0 % |
-| 2025 | 102 | 102 | 0 | 0,0 % |
-| 2026 | 68 | 66 | 2 | 2,9 % |
-| **Total** | **822** | **603** | **219** | **26,6 %** |
+| 2019 | 10.862 | 6.043 | 4.819 | 44,4 % |
+| 2020 | 12.205 | 6.042 | 6.163 | 50,5 % |
+| 2021 | 12.825 | 6.117 | 6.708 | **52,3 %** |
+| 2022 | 6.166 | 6.046 | 120 | 1,9 % |
+| 2023 | 6.178 | 6.087 | 91 | 1,5 % |
+| 2024 | 6.351 | 6.300 | 51 | 0,8 % |
+| 2025 | 8.176 | 8.082 | 94 | 1,1 % |
+| 2026 | 5.534 | 5.453 | 81 | 1,5 % |
+| **Total** | **68.297** | | **18.127** | **26,5 %** |
 
-En 2021 **más de la mitad de lo que devuelve el catálogo son copias de una adquisición que ya
-estaba**. Desde 2022 prácticamente desaparecen. Eso explica por qué la cohorte, medida sobre
-2023-2024, da un 0,9 %: las dos cifras no se contradicen, describen el mismo escalón desde los dos
-lados.
+**En 2021 más de la mitad de lo que devuelve el catálogo son copias de una adquisición ya
+presente.** Desde 2022 prácticamente desaparecen. El escalón medido sobre una sola tesela del
+Caribe colombiano —44,6 %, 49,7 % y 53,8 % en los tres primeros años, 26,6 % en total— se reproduce
+casi punto por punto sobre 23 países, de modo que no es una peculiaridad regional sino una
+propiedad del archivo. Eso explica también por qué la ventana 2023-2024 de la cohorte da un 0,9 %:
+las dos cifras describen el mismo escalón desde los dos lados.
 
-La consecuencia práctica es la que importa: quien construye una serie que llega antes de 2022
+La consecuencia práctica es la que importa: quien construye una serie que llegue antes de 2022
 —que es lo que se hace para fenología, tendencias o líneas base— hereda un catálogo donde hasta la
 mitad de los ítems son copias con nubosidad declarada distinta, y deduplicar por fecha no las junta.
-Quien trabaja solo con los dos últimos años no ve el problema y no tiene motivo para sospecharlo.
-
-**Sobre la caducidad del hallazgo.** La ESA anunció el borrado de productos de líneas base
-antiguas. Medido hoy, las copias **siguen presentes** en el catálogo público: el 26,6 % es un dato
-del 27 de agosto de 2026, no un dato histórico. Se fecha y se versiona la consulta.
+Quien trabaja solo con los últimos años no ve el problema y no tiene motivo para sospecharlo.
 
 ### 4.2 La matriz, agrupada
 
@@ -376,13 +375,39 @@ probabilidades 0,686 sobre las 3.265 filas). Es una consecuencia geométrica esp
 superficie ofrece más oportunidad de encontrarse una nube— y conviene enunciarla porque es el
 modelo nulo contra el que hay que leer cualquier efecto de tamaño en este tipo de análisis.
 
-### 4.4 Sensibilidad a los umbrales
+### 4.4 Sensibilidad a los umbrales, corregida por azar
 
-La asimetría no es un artefacto del par de umbrales elegido (Tabla 4). Se conserva en toda la
-rejilla y solo se invierte cuando el filtro se afloja hasta el 50 %, que equivale a no filtrar. El
-patrón relevante es el contrario del que cabría esperar: cuanto más estricto es el filtro, peor es
-el sesgo. Al 5 % de nubosidad declarada la asimetría alcanza 99,7 y la exhaustividad baja a 0,340.
-El usuario que exige imágenes limpias es el peor servido.
+La asimetría no es un artefacto del par de umbrales elegido: se conserva en toda la rejilla
+(Tabla 4). Pero afirmar sin más que **cuanto más estricto es el filtro peor es el sesgo** sería
+tramposo, porque parte de ese movimiento es aritmética forzosa: bajar el umbral retiene menos
+adquisiciones, las utilizables incluidas, de modo que la exhaustividad tiene que caer y la razón
+tiene que moverse. La afirmación solo vale contra lo que haría un filtro que no supiera nada.
+
+Se compara por tanto cada punto de operación con un **filtro aleatorio que retenga el mismo número
+de adquisiciones**. Si se conservan *k* de *N* y *P* son utilizables, el azar produce por sí solo
+una omisión esperada de *P*(1 − *k*/*N*) y una comisión esperada de (*N* − *P*)(*k*/*N*). El
+cociente entre la asimetría observada y esa esperanza es la parte que no es aritmética.
+
+| Umbral | Conserva | Omisión | Comisión | Exhaustividad | Por azar | Asimetría | Por azar | Cociente |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2 % | 289 | 770 | 2 | 0,272 | 0,089 | 385,0 | 4,9 | **78,1** |
+| 5 % | 366 | 698 | 7 | 0,340 | 0,112 | 99,7 | 3,8 | 26,3 |
+| 10 % | 487 | 582 | 12 | 0,449 | 0,149 | 48,5 | 2,7 | 17,8 |
+| 20 % | 647 | 469 | 59 | 0,556 | 0,198 | 7,9 | 1,9 | 4,1 |
+| 30 % | 797 | 355 | 95 | 0,664 | 0,244 | 3,7 | 1,5 | 2,5 |
+| 50 % | 1.098 | 202 | 243 | 0,809 | 0,336 | 0,8 | 0,9 | 0,9 |
+| 90 % | 2.049 | 13 | 1.005 | 0,988 | 0,628 | 0,0 | 0,3 | 0,1 |
+
+**El cociente crece de forma monótona al endurecer el filtro**, de 0,1 con umbral del 90 % a **78,1
+con umbral del 2 %**. La afirmación sobrevive a la corrección y además se hace más fuerte: con un
+umbral del 2 %, el filtro por metadato de tesela desequilibra sus errores **setenta y ocho veces
+más** que un filtro aleatorio que conservara el mismo número de escenas. El usuario que exige
+imágenes limpias no solo obtiene menos observaciones: obtiene una selección desproporcionadamente
+peor de lo que explicaría el propio umbral (Figura 1).
+
+Merece nota el otro extremo. A partir del 50 % el cociente baja de la unidad, es decir que ahí el
+filtro se comporta **peor que el azar**. No es una paradoja: en ese régimen conserva casi todo, de
+modo que su capacidad de discriminar ya no interviene.
 
 ### 4.5 ¿Sirve algún otro campo del catálogo?
 

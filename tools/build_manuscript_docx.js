@@ -85,13 +85,13 @@ body.push(new Paragraph({
   alignment: AlignmentType.LEFT,
   spacing: { after: 200 },
   children: [new TextRun({
-    text: "Un filtro que descarta días buenos: sesgo del metadato de nubosidad de Sentinel-2 a escala de predio",
+    text: "El metadato de nubosidad de Sentinel-2 como filtro de consulta: pérdida de observaciones utilizables a escala de parcela",
     bold: true, size: 32 })],
 }));
 body.push(new Paragraph({
   spacing: { after: 320 },
   children: [new TextRun({
-    text: "A filter that discards good days: bias of the Sentinel-2 tile cloud metadata at field scale",
+    text: "Sentinel-2 scene-level cloud-cover metadata as a query filter: loss of usable observations at field scale",
     bold: true, italics: true, size: 26 })],
 }));
 body.push(note("Manuscrito anonimizado para revisión doble ciega, según la lista de comprobación de la revista. Los datos de autoría y filiación se cargan en el formulario de envío, no en este fichero. Los pasajes entre corchetes están pendientes de redacción y no forman parte del texto final."));
@@ -100,16 +100,16 @@ body.push(note("Manuscrito anonimizado para revisión doble ciega, según la lis
 body.push(h1("Resumen"));
 body.push(p("Los catálogos públicos de Sentinel-2 publican por cada producto un único valor de nubosidad, eo:cloud_cover, calculado sobre la tesela completa de 110 × 110 km. Ese valor es el criterio con el que la mayoría de los portales y bibliotecas de acceso deciden qué imágenes se descargan. Cuando la unidad de decisión no es la tesela sino una parcela agrícola, cinco o seis órdenes de magnitud más pequeña, ese filtro deja de ser conservador y pasa a ser sesgado: descarta observaciones útiles mucho más a menudo de lo que retiene observaciones inservibles."));
 body.push(p("Este trabajo cuantifica ese sesgo sobre una cohorte de 323 parcelas agrícolas reales de 23 países, obtenidas de un conjunto público de límites parcelarios, y sobre 3.265 pares de parcela y adquisición evaluados, de 5.143 medidos, entre 2023 y 2024. Para cada par se compara el valor declarado por la tesela con la fracción de la parcela que la banda de clasificación de escena marca como inservible. Con el filtro de referencia, la exhaustividad es de 0,449: el filtro conserva menos de la mitad de las observaciones utilizables sobre la parcela. Las filas no son independientes, de modo que el intervalo se obtiene por bootstrap de conglomerados: [0,417, 0,482] agrupando por parcela y [0,367, 0,526] agrupando por fecha. La razón entre el error de omisión y el de comisión es de cerca de 50 a 1, con intervalo [28, 114], y empeora al endurecer el filtro. El usuario más cuidadoso es el peor servido."));
-body.push(p("Como resultado secundario se documenta y cuantifica un artefacto del propio archivo: la misma adquisición se sirve reprocesada bajo varias líneas base, cada copia declara una nubosidad distinta —hasta 52,10 puntos porcentuales de diferencia— y el instante de sensado difiere entre copias, de modo que deduplicar por fecha falla en silencio. La duplicación no es uniforme: alcanza el 53,8 % de los ítems en 2021 y cae por debajo del 3 % desde 2022."));
-body.push(p("No se encuentra una dependencia resuelta del tamaño de la parcela: con errores agrupados la razón de momios por factor diez de superficie es 0,690 con intervalo [0,480, 0,993], que roza la unidad, y desaparece al restringir el ajuste a parcelas de cuatro hectáreas o más (0,789; [0,388, 1,605]). La señal aparente se concentra donde la referencia es menos fiable y no puede separarse de ese artefacto. Ninguna recombinación de los porcentajes que el propio catálogo entrega corrige el problema: la mejor alternativa gratuita alcanza un área bajo la curva de 0,941 frente a 0,939 de la referencia. La recomendación es usar el metadato solo como criba grosera y resolver cada superviviente con la fracción recortada al polígono, que cuesta 40 ms por adquisición."));
-body.push(rich([{ t: "Palabras clave: ", b: true }, { t: "Sentinel-2; nubosidad; metadatos; escala espacial; agricultura de precisión; calidad de datos; trópico." }]));
+body.push(p("Como resultado secundario se documenta y cuantifica un artefacto del propio archivo: la misma adquisición se sirve reprocesada bajo varias líneas base, cada copia declara una nubosidad distinta —hasta 52,10 puntos porcentuales de diferencia— y el instante de sensado difiere entre copias, de modo que deduplicar por fecha falla en silencio. La duplicación no es uniforme: alcanza el 52,3 % de los ítems en 2021, sobre 68.297 ítems de 23 países, y cae por debajo del 2 % desde 2022."));
+body.push(p("No se encuentra una dependencia resuelta del tamaño de la parcela: con errores agrupados la razón de momios por factor diez de superficie es 0,690 con intervalo [0,480, 0,993], que roza la unidad, y desaparece al restringir el ajuste a parcelas de cuatro hectáreas o más (0,789; [0,388, 1,605]). La señal aparente se concentra donde la referencia es menos fiable y no puede separarse de ese artefacto. Ninguna recombinación de los porcentajes que el propio catálogo entrega corrige el problema: la mejor alternativa gratuita alcanza un área bajo la curva de 0,941 frente a 0,939 de la referencia. La recomendación es usar el metadato solo como criba grosera y resolver cada superviviente con la fracción recortada al polígono, cuyo coste es de unos 480 ms de latencia por lectura y 40 ms por adquisición con doce hilos."));
+body.push(rich([{ t: "Palabras clave: ", b: true }, { t: "Sentinel-2; nubosidad; metadatos de catálogo; cambio de soporte; escala espacial; agricultura de precisión; calidad de datos." }]));
 
 body.push(h1("Abstract"));
 body.push(p("Public Sentinel-2 catalogues publish a single cloud value per product, eo:cloud_cover, computed over the full 110 × 110 km tile. That value is the criterion most access portals and client libraries use to decide which images are downloaded. When the decision unit is not the tile but an agricultural parcel, five to six orders of magnitude smaller, the filter stops being conservative and becomes biased: it discards usable observations far more often than it retains unusable ones.", { italics: true }));
 body.push(p("This work quantifies that bias over a cohort of 323 real agricultural parcels from 23 countries, drawn from a public field-boundary dataset, and over 3,265 evaluated parcel-acquisition pairs, out of 5,143 measured, between 2023 and 2024. For each pair, the value declared by the tile is compared with the fraction of the parcel flagged as unusable by the scene classification band. Under the reference filter, recall is 0.449: the filter keeps fewer than half of the usable acquisitions over the parcel. Rows are not independent, so intervals come from a cluster bootstrap: [0.417, 0.482] by parcel and [0.367, 0.526] by date. The ratio of omission to commission error is close to 50 to 1, with interval [28, 114], and it worsens as the filter is tightened. The most careful user is the worst served.", { italics: true }));
-body.push(p("As a secondary result, an artefact of the archive itself is documented and quantified: the same acquisition is served reprocessed under several baselines, each copy declaring a different cloud cover —up to 52.10 percentage points apart— and with differing sensing timestamps, so that deduplicating by date fails silently. Duplication is not uniform: it reaches 53.8 % of items in 2021 and falls below 3 % from 2022 onwards.", { italics: true }));
-body.push(p("No resolved dependence on parcel size is found: with clustered errors the odds ratio per tenfold area is 0.690 with interval [0.480, 0.993], grazing unity, and it vanishes when the fit is restricted to parcels of four hectares or more (0.789; [0.388, 1.605]). The apparent signal sits where the reference is least reliable and cannot be separated from that artefact. No recombination of the percentages the catalogue already returns fixes the problem: the best free alternative reaches an area under the curve of 0.941 against 0.939 for the baseline. The recommendation is to use the metadata only as a coarse sieve and settle each survivor with the polygon-clipped fraction, at 40 ms per acquisition.", { italics: true }));
-body.push(rich([{ t: "Keywords: ", b: true, i: true }, { t: "Sentinel-2; cloud cover; metadata; spatial scale; precision agriculture; data quality; tropics.", i: true }]));
+body.push(p("As a secondary result, an artefact of the archive itself is documented and quantified: the same acquisition is served reprocessed under several baselines, each copy declaring a different cloud cover —up to 52.10 percentage points apart— and with differing sensing timestamps, so that deduplicating by date fails silently. Duplication is not uniform: it reaches 52.3 % of items in 2021, across 68,297 items from 23 countries, and falls below 2 % from 2022 onwards.", { italics: true }));
+body.push(p("No resolved dependence on parcel size is found: with clustered errors the odds ratio per tenfold area is 0.690 with interval [0.480, 0.993], grazing unity, and it vanishes when the fit is restricted to parcels of four hectares or more (0.789; [0.388, 1.605]). The apparent signal sits where the reference is least reliable and cannot be separated from that artefact. No recombination of the percentages the catalogue already returns fixes the problem: the best free alternative reaches an area under the curve of 0.941 against 0.939 for the baseline. The recommendation is to use the metadata only as a coarse sieve and settle each survivor with the polygon-clipped fraction, at about 480 ms of latency per read and 40 ms per acquisition with twelve threads.", { italics: true }));
+body.push(rich([{ t: "Keywords: ", b: true, i: true }, { t: "Sentinel-2; cloud cover; catalogue metadata; change of support; spatial scale; precision agriculture; data quality.", i: true }]));
 
 // ---------------------------------------------------------------- 1
 body.push(h1("1. Introducción"));
@@ -161,8 +161,11 @@ body.push(p("Los errores estándar no pueden calcularse suponiendo independencia
 body.push(p("Y no sobrevive al control que hay que hacerle. Existe un mecanismo que produciría el mismo signo sin ningún desajuste de soporte: la fracción de referencia se estima sobre un número finito de píxeles y luego se binariza en U, de modo que su varianza de muestreo crece al encoger la parcela. Repitiendo el ajuste solo sobre parcelas de cien píxeles o más (cuatro hectáreas), quedan 1.101 filas de 82 parcelas y el término de superficie da 0,789 con intervalo [0,388, 1,605] y p = 0,51: deja de excluir la unidad."));
 body.push(p("La lectura honesta es que esta cohorte no permite afirmar que el sesgo dependa del tamaño de la parcela. La señal aparente se concentra en las parcelas más pequeñas, que son justamente aquellas en las que la referencia es menos fiable, y con estos datos no puede separarse del artefacto de medición. El control tiene menos potencia (82 parcelas frente a 206), de modo que tampoco se afirma lo contrario: se afirma que no está resuelto."));
 body.push(p("Lo que sí queda establecido, y no depende de esta cuestión, es que a igualdad de nubosidad declarada una parcela mayor es menos probable que esté enteramente despejada (razón de momios 0,686 sobre las 3.265 filas). Es una consecuencia geométrica esperable, y conviene enunciarla porque es el modelo nulo contra el que debe leerse cualquier efecto de tamaño en este tipo de análisis."));
-body.push(h2("4.4. Sensibilidad a los umbrales"));
-body.push(p("La asimetría no es un artefacto del par de umbrales elegido (Tabla 4). Se conserva en toda la rejilla y solo se invierte cuando el filtro se afloja hasta el 50 %, que equivale a no filtrar. El patrón relevante es el contrario del que cabría esperar: cuanto más estricto es el filtro, peor es el sesgo. Al 5 % de nubosidad declarada la asimetría alcanza 99,7 y la exhaustividad baja a 0,340. El usuario que exige imágenes limpias es el peor servido."));
+body.push(h2("4.4. Sensibilidad a los umbrales, corregida por azar"));
+body.push(p("La asimetria no es un artefacto del par de umbrales elegido: se conserva en toda la rejilla (Tabla 4). Pero afirmar sin mas que cuanto mas estricto es el filtro peor es el sesgo seria tramposo, porque parte de ese movimiento es aritmetica forzosa: bajar el umbral retiene menos adquisiciones, las utilizables incluidas, de modo que la exhaustividad tiene que caer y la razon tiene que moverse. La afirmacion solo vale contra lo que haria un filtro que no supiera nada."));
+body.push(p("Se compara por tanto cada punto de operacion con un filtro aleatorio que retenga el mismo numero de adquisiciones. Si se conservan k de N y P son utilizables, el azar produce por si solo una omision esperada de P(1 - k/N) y una comision esperada de (N - P)(k/N). El cociente entre la asimetria observada y esa esperanza es la parte que no es aritmetica (Tabla 4, Figura 1)."));
+body.push(p("El cociente crece de forma monotona al endurecer el filtro, de 0,1 con umbral del 90 % a 78,1 con umbral del 2 %. La afirmacion sobrevive a la correccion y se hace mas fuerte: con un umbral del 2 %, el filtro por metadato de tesela desequilibra sus errores setenta y ocho veces mas que un filtro aleatorio que conservara el mismo numero de escenas. El usuario que exige imagenes limpias no solo obtiene menos observaciones, sino una seleccion desproporcionadamente peor de lo que explicaria el propio umbral."));
+body.push(p("Merece nota el otro extremo. A partir del 50 % el cociente baja de la unidad, es decir que ahi el filtro se comporta peor que el azar. No es una paradoja: en ese regimen conserva casi todo, de modo que su capacidad de discriminar ya no interviene."));
 body.push(h2("4.5. ¿Sirve mejor algún otro campo del catálogo?"));
 body.push(p("Antes de recomendar una lectura conviene descartar lo que no cuesta nada. La respuesta del catálogo trae, además de la nubosidad de escena, una docena de porcentajes por tesela. Se evalúan como puntuaciones alternativas, en las que un valor menor significa más limpio, sobre las 3.265 filas legibles: la nube de alta probabilidad; la nube opaca, entendida como alta más media probabilidad más cirro fino; esa misma suma con sombra de nube, ausencia de dato y píxeles saturados o defectuosos, que es el análogo exacto de la definición empleada sobre la parcela pero calculado sobre la tesela; y la variante sin ausencia de dato."));
 body.push(p("Cada candidata se compara de dos maneras. Con el área bajo la curva ROC, que es independiente del umbral y evita la discusión sobre si los umbrales se eligieron a conveniencia. Y con la exhaustividad a presupuesto igualado de falsos positivos: como los umbrales no son comparables entre puntuaciones de unidades distintas, cada una se sitúa en el umbral que admite el mismo número de adquisiciones inservibles que la de referencia, doce, y se comparan por cuántas útiles recuperan (Tabla 7)."));
@@ -278,41 +281,40 @@ body.push(table(
   [1700, 1100, 1700, 2226, 1150, 1150],
 ));
 
-body.push(caption("Tabla 4. Sensibilidad a los dos umbrales. T es el filtro sobre la nubosidad declarada por la tesela; U, el límite de superficie inservible bajo el que la parcela se considera utilizable."));
+body.push(caption("Tabla 4. Sensibilidad al umbral del filtro, con correccion por azar. La columna «azar» es lo que produciria un filtro aleatorio que conservase el mismo numero de adquisiciones; el cociente es la razon entre la asimetria observada y esa esperanza. n = 3.265 filas evaluables, 1.057 utilizables."));
 body.push(table(
-  ["T", "U", "FN", "FP", "Exhaustividad", "Asimetría"],
+  ["Umbral", "Conserva", "Omision", "Comision", "Exhaust.", "Azar", "Asimetria", "Azar", "Cociente"],
   [
-    ["5 %", "5 %", "678", "11", "0,344", "61,6"],
-    ["5 %", "10 %", "698", "7", "0,340", "99,7"],
-    ["10 %", "5 %", "562", "16", "0,456", "35,1"],
-    ["10 %", "10 %", "582", "12", "0,449", "48,5"],
-    ["20 %", "10 %", "469", "59", "0,556", "7,9"],
-    ["30 %", "10 %", "355", "95", "0,664", "3,7"],
-    ["50 %", "10 %", "202", "243", "0,809", "0,8"],
+    ["2 %", "289", "770", "2", "0,272", "0,089", "385,0", "4,9", "78,1"],
+    ["5 %", "366", "698", "7", "0,340", "0,112", "99,7", "3,8", "26,3"],
+    ["10 %", "487", "582", "12", "0,449", "0,149", "48,5", "2,7", "17,8"],
+    ["20 %", "647", "469", "59", "0,556", "0,198", "7,9", "1,9", "4,1"],
+    ["30 %", "797", "355", "95", "0,664", "0,244", "3,7", "1,5", "2,5"],
+    ["50 %", "1.098", "202", "243", "0,809", "0,336", "0,8", "0,9", "0,9"],
+    ["90 %", "2.049", "13", "1.005", "0,988", "0,628", "0,0", "0,3", "0,1"],
   ],
-  [1200, 1200, 1350, 1350, 2000, 1926],
-  { boldRows: [3] },
+  [900, 1050, 1000, 1050, 950, 850, 1100, 850, 1276],
+  { boldRows: [2] },
 ));
 
-body.push(caption("Tabla 5. Duplicación por año de adquisición sobre un predio del Caribe colombiano, archivo completo consultado el 27 de agosto de 2026."));
+body.push(caption("Tabla 5. Duplicacion por reprocesado segun el ano de adquisicion, sobre los 68.297 items distintos que devuelve el catalogo para las 323 parcelas de la cohorte entre 2019 y 2026. Consulta del 27 de agosto de 2026."));
 body.push(table(
-  ["Año", "Ítems", "Adquisiciones únicas", "Copias", "% copias"],
+  ["Ano", "Items", "Adquisiciones unicas", "Copias", "% copias"],
   [
-    ["2019", "130", "72", "58", "44,6"],
-    ["2020", "143", "72", "71", "49,7"],
-    ["2021", "158", "73", "85", "53,8"],
-    ["2022", "73", "72", "1", "1,4"],
-    ["2023", "74", "72", "2", "2,7"],
-    ["2024", "74", "74", "0", "0,0"],
-    ["2025", "102", "102", "0", "0,0"],
-    ["2026", "68", "66", "2", "2,9"],
-    ["Total", "822", "603", "219", "26,6"],
+    ["2019", "10.862", "6.043", "4.819", "44,4"],
+    ["2020", "12.205", "6.042", "6.163", "50,5"],
+    ["2021", "12.825", "6.117", "6.708", "52,3"],
+    ["2022", "6.166", "6.046", "120", "1,9"],
+    ["2023", "6.178", "6.087", "91", "1,5"],
+    ["2024", "6.351", "6.300", "51", "0,8"],
+    ["2025", "8.176", "8.082", "94", "1,1"],
+    ["2026", "5.534", "5.453", "81", "1,5"],
+    ["Total", "68.297", "", "18.127", "26,5"],
   ],
-  [1400, 1600, 2426, 1800, 1800],
+  [1300, 1700, 2426, 1800, 1800],
   { boldRows: [8] },
 ));
 
-// ---------------------------------------------------------------- figuras
 body.push(caption("Tabla 6. Regresión logística sobre las 2.778 adquisiciones que el filtro descarta, procedentes de 206 parcelas. Respuesta: la parcela estaba despejada, es decir, la adquisición era un falso negativo. Predictores centrados. Se reportan los errores estándar ingenuos y los agrupados por parcela mediante estimador sándwich con corrección de muestra pequeña."));
 body.push(table(
   ["Término", "Coef.", "e.e. ingenuo", "e.e. agrupado", "z", "p", "IC 95 % robusto"],
@@ -342,7 +344,7 @@ body.push(table(
 body.push(p("La última fila es la referencia contra la que se define la utilidad, de modo que su desempeño es perfecto por construcción; figura para poner su coste al lado de los demás, no su puntuación.", { after: 240 }));
 
 body.push(h1("Pies de figura"));
-body.push(p("Figura 1. Fracción de las adquisiciones realmente utilizables sobre la parcela que el filtro por metadato de tesela conserva, por tramo de superficie, con intervalo de confianza del 95 % de Wilson. El punto del tramo de 100-500 ha corresponde a una sola parcela en trópico húmedo y su descenso se explica por el régimen de nubosidad, no por la superficie. Umbrales: tesela ≤ 10 %, parcela utilizable con ≤ 10 % inservible."));
+body.push(p("Figura 1. Comportamiento del filtro por metadato de tesela a lo largo del rango de umbrales, sobre 3.265 pares parcela-adquisicion. (a) Fraccion de las observaciones utilizables sobre la parcela que el filtro conserva, frente a la que conservaria un filtro aleatorio que retuviese el mismo numero de adquisiciones. (b) Numero de adquisiciones descartadas siendo utilizables (error de omision) y conservadas siendo inservibles (error de comision). Eje de umbral en escala logaritmica."));
 body.push(note("[La figura se envía aparte en TIF o JPG a 300 ppi, como piden las normas de la revista. El fichero fuente es outputs/fig_recall_vs_size.svg.]"));
 
 const doc = new Document({
