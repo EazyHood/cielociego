@@ -167,7 +167,7 @@ def test_radar_cuts_the_tail_without_moving_the_median():
     from cielociego.radar import cadence
 
     base = date(2023, 1, 1)
-    optical = [base + timedelta(days=d) for d in list(range(0, 40, 5)) + [130, 135]]
+    optical = [base + timedelta(days=d) for d in [*range(0, 40, 5), 130, 135]]
     radar = [base + timedelta(days=d) for d in range(0, 140, 12)]
     c = cadence(optical, radar)
     assert c.worst_optical > 80, "the outage must be there to start with"

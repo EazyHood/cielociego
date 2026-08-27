@@ -126,6 +126,37 @@ def spread(items: list, n: int) -> list:
     return [items[int(i * step)] for i in range(n)]
 
 
+SIZE_BINS = (0.2, 0.5, 1.0, 2.0, 5.0, 20.0, MAX_HA)
+
+
+def fill_bins(found: list[dict], per_country: int) -> list[dict]:
+    """Pick `per_country` parcels spread over size bins, not over the list.
+
+    Takes an equal quota from each bin and hands the leftovers to the bins that
+    still have candidates, largest first -- the large end is the scarce one, and
+    it is also the end where the paper needs contrast.
+    """
+    bins: list[list[dict]] = [[] for _ in SIZE_BINS[:-1]]
+    for parcel in sorted(found, key=lambda x: x["area_ha"]):
+        for i in range(len(SIZE_BINS) - 1):
+            if SIZE_BINS[i] <= parcel["area_ha"] < SIZE_BINS[i + 1]:
+                bins[i].append(parcel)
+                break
+
+    quota = max(1, per_country // len(bins))
+    chosen: list[dict] = []
+    for group in bins:
+        chosen.extend(spread(group, quota))
+    if len(chosen) < per_country:
+        for group in reversed(bins):
+            spare = [p for p in group if p not in chosen]
+            take = min(len(spare), per_country - len(chosen))
+            chosen.extend(spread(spare, take))
+            if len(chosen) >= per_country:
+                break
+    return sorted(chosen, key=lambda x: x["area_ha"])
+
+
 def parcels_from_mask(key: str) -> list[dict]:
     """Polygonise one instance mask into parcels, dropping the cut ones."""
     with rasterio.open("/vsicurl/" + BUCKET + key.split("/", 1)[1]) as src:
@@ -170,10 +201,13 @@ def build(chips_per_country: int, per_country: int, out: Path) -> dict:
         if not found:
             print(f"  {country:<14} no usable parcel")
             continue
-        # Spread over the size distribution rather than taking the first ones:
-        # the point of the cohort is the range of areas.
-        found.sort(key=lambda p: p["area_ha"])
-        chosen = spread(found, per_country)
+        # Fill size bins rather than spreading over the sorted list. A plain
+        # stride follows the country's own size distribution, and that
+        # distribution is overwhelmingly small: it left 232 parcels of which
+        # only 15 passed 5 ha, so the largest strata of the analysis had almost
+        # nothing in them. The bins are the strata the paper reports, so the
+        # cohort is built to fill them.
+        chosen = fill_bins(found, per_country)
         for n, p in enumerate(chosen):
             features.append({
                 "type": "Feature",
