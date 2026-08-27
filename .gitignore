@@ -5,3 +5,9 @@ __pycache__/
 *.egg-info/
 salidas/_prueba.svg
 salidas/barrido.log
+
+# Scripts de parcheo de un solo uso. Se me colaron dos en commits distintos:
+# se escriben, se ejecutan y se borran, pero si el borrado falla acaban en el repo.
+parche_*.py
+seccion*.py
+medicion.log
