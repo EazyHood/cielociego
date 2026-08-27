@@ -4,6 +4,7 @@
 [![cobertura 92%](https://img.shields.io/badge/cobertura-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
 [![licencia MIT](https://img.shields.io/badge/licencia-MIT-1d4ed8)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-555)](pyproject.toml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22132250.svg)](https://doi.org/10.5281/zenodo.22132250)
 
 **Cuánto tiempo el satélite óptico no puede ver un predio, y si el radar cubre el hueco.**
 
@@ -394,6 +395,19 @@ Lo que vigilan, más allá de que el código no reviente:
   lat/lon, y en AWS vive en un bucket de pago por peticionario.
 
 Los COG se leen **por ventana**: nunca se descarga una escena entera.
+
+## Cómo citarlo
+
+```
+del Río, J. (2026). cielociego: cuántos días el satélite óptico no puede ver un
+predio (v0.1.1) [software]. Zenodo. https://doi.org/10.5281/zenodo.22132250
+```
+
+El DOI de arriba es el **de concepto**: resuelve siempre a la última versión.
+Para citar exactamente esta, usa el de versión: `10.5281/zenodo.22132251`.
+
+GitHub también genera la cita desde `CITATION.cff` con el botón
+*Cite this repository*.
 
 ## Licencia
 

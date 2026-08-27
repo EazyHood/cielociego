@@ -4,6 +4,7 @@
 [![coverage 92%](https://img.shields.io/badge/coverage-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-1d4ed8)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-555)](pyproject.toml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22132250.svg)](https://doi.org/10.5281/zenodo.22132250)
 
 **How many days the optical satellite cannot see your field — and whether radar
 covers the gap.**
@@ -232,6 +233,18 @@ What they guard, beyond "it doesn't crash":
   lat/lon, and on AWS lives in a requester-pays bucket.
 
 COGs are read **by window**: a full scene is never downloaded.
+
+## How to cite
+
+```
+del Río, J. (2026). cielociego: how many days the optical satellite cannot see a
+field (v0.1.1) [software]. Zenodo. https://doi.org/10.5281/zenodo.22132250
+```
+
+The DOI above is the **concept DOI**: it always resolves to the latest version.
+To cite this exact one, use the version DOI: `10.5281/zenodo.22132251`.
+
+GitHub also renders the citation from `CITATION.cff` via *Cite this repository*.
 
 ## Licence
 

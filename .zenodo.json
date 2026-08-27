@@ -1,16 +1,26 @@
 {
-  "title": "cielociego: cuantos dias el satelite optico no puede ver un predio",
+  "title": "cielociego: cuántos días el satélite óptico no puede ver un predio",
   "description": "<p>Herramienta que mide, <b>sobre el poligono real de un predio y no sobre la tesela completa</b>, cuantos dias el satelite optico no puede observarlo, y si el radar cubre esos huecos.</p><p>Medido sobre dos predios del Magdalena (Colombia), 2019-2026, 2.794 dias: <b>el 89 % y el 91 % de los dias</b> no hubo una sola observacion optica aprovechable; el tramo mas largo fue de <b>89 dias seguidos</b>; y los <b>66 huecos de 15 dias o mas tienen pasada de Sentinel-1 dentro</b>, sin excepcion. El titular aguanta cualquier definicion de nube: con la mas generosa defendible siguen siendo 82 % y 84 %.</p><p>Usa Sentinel-2 L2A y Sentinel-1 GRD (catalogo STAC de Element84 sobre AWS) y Sentinel-1 RTC (Planetary Computer), sin cuenta, sin clave y sin coste. 190 pruebas sin red, 92 % de cobertura, CI en Linux y Windows.</p>",
   "upload_type": "software",
   "license": "MIT",
   "access_right": "open",
   "language": "spa",
   "creators": [
-    { "name": "del Rio, Jhonatan" }
+    {
+      "name": "del Río, Jhonatan"
+    }
   ],
   "keywords": [
-    "teledeteccion", "remote sensing", "Sentinel-2", "Sentinel-1", "SAR",
-    "cloud cover", "tropical agriculture", "Colombia", "banano", "Python"
+    "teledeteccion",
+    "remote sensing",
+    "Sentinel-2",
+    "Sentinel-1",
+    "SAR",
+    "cloud cover",
+    "tropical agriculture",
+    "Colombia",
+    "banano",
+    "Python"
   ],
   "related_identifiers": [
     {

@@ -6,6 +6,7 @@ authors:
   - family-names: "del Río"
     given-names: "Jhonatan"
     alias: EazyHood
+doi: "10.5281/zenodo.22132250"
 repository-code: "https://github.com/EazyHood/cielociego"
 url: "https://eazyhood.github.io/cielociego/"
 abstract: >-
@@ -26,5 +27,5 @@ keywords:
   - tropical-agriculture
   - colombia
 license: MIT
-version: 0.1.0
+version: 0.1.1
 date-released: "2026-08-27"
