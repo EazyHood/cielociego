@@ -1,0 +1,5 @@
+# The manuscript is not served. It is under double-anonymous review: the draft
+# carries the author's name and affiliation, and a public copy is both a
+# de-anonymisation and, for some publishers, prior publication.
+exclude:
+  - paper
