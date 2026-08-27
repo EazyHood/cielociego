@@ -13,6 +13,7 @@ import re
 from collections.abc import Iterable, Sequence
 from dataclasses import asdict, dataclass
 from datetime import date, datetime, timedelta
+from itertools import pairwise
 from typing import Any
 
 import numpy as np
@@ -161,7 +162,7 @@ def cadence(optical: Sequence[date], radar: Sequence[date]) -> Cadence:
         ordered = sorted(set(days))
         if len(ordered) < 2:
             return float("nan"), float("nan"), 0
-        d = np.array([(b - a).days for a, b in zip(ordered[:-1], ordered[1:], strict=True)])
+        d = np.array([(b - a).days for a, b in pairwise(ordered)])
         return float(np.median(d)), float(np.percentile(d, 95)), int(d.max())
 
     both = sorted(set(optical) | set(radar))
