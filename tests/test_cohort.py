@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import math
+from pathlib import Path
 
 import pytest
 from shapely.geometry import Polygon, box
@@ -259,3 +260,54 @@ def test_the_geometry_survives_a_repair(tmp_path):
     })), encoding="utf-8")
     (parcel,) = load_cohort(p)
     assert parcel.geometry.is_valid and parcel.area_ha > 0
+
+
+# --- the control that ties the cohort to the published case study ----------
+
+def test_reproduces_the_published_two_field_result():
+    """332 false negatives against 9 false positives, from the stored outputs.
+
+    This is the test that matters most in the file. The cohort code is a
+    rewrite of the analysis that produced the published figure, and a rewrite
+    that quietly disagrees with the original is worse than no rewrite: the
+    paper would report one number and the repository another. Reading the same
+    JSON the report was built from, with the same thresholds, must give the
+    same four cells.
+    """
+    root = Path(__file__).resolve().parents[1] / "outputs"
+    rows = []
+    for key in ("field_fundacion", "field_corridor"):
+        doc = json.loads((root / f"{key}_scl.json").read_text(encoding="utf-8"))
+        rows += [
+            Observation(key, "own", "CO", doc.get("area_ha") or 0.0, v["date"], v["scene_id"],
+                        v["pixels"], v["tile_cloud"], v["blind_strict"], v["blind_wide"],
+                        v.get("error"))
+            for v in doc["views"]
+        ]
+
+    m = confusion(rows, tile_threshold=0.10, blind_limit=0.10)
+    assert (m.dropped_useful, m.kept_useless) == (332, 9)
+    assert m.asymmetry == pytest.approx(332 / 9, rel=1e-9)
+
+
+def test_the_published_result_is_not_an_artefact_of_one_threshold():
+    """Control: the asymmetry survives every threshold worth using.
+
+    If it only appeared at 10 % the honest reading would be that the pair of
+    numbers was chosen, not found. It does not: false negatives outnumber false
+    positives at every filter setting up to 30 %.
+    """
+    root = Path(__file__).resolve().parents[1] / "outputs"
+    rows = []
+    for key in ("field_fundacion", "field_corridor"):
+        doc = json.loads((root / f"{key}_scl.json").read_text(encoding="utf-8"))
+        rows += [
+            Observation(key, "own", "CO", doc.get("area_ha") or 0.0, v["date"], v["scene_id"],
+                        v["pixels"], v["tile_cloud"], v["blind_strict"], v["blind_wide"],
+                        v.get("error"))
+            for v in doc["views"]
+        ]
+
+    for t in (0.05, 0.10, 0.20, 0.30):
+        m = confusion(rows, tile_threshold=t)
+        assert m.dropped_useful > m.kept_useless, f"threshold {t} breaks the asymmetry"

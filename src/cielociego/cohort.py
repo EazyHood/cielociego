@@ -48,7 +48,12 @@ from .net import session as _session_with_retries
 # threshold below which enough of the parcel is left to look at anything
 # agronomic. Both are parameters, never hard-coded into a conclusion: the
 # headline number is reported as a curve over both.
-DEFAULT_TILE_FILTER = 0.20
+#
+# 10 % on both sides is the reference pair because it is the one the published
+# two-field result used, so the cohort and the case study stay comparable.
+# `test_reproduces_the_published_two_field_result` pins it: with these values
+# the stored outputs give back 332 false negatives against 9 false positives.
+DEFAULT_TILE_FILTER = 0.10
 DEFAULT_BLIND_LIMIT = 0.10
 
 # Equal-area projection used only to put an area in hectares on a lat/lon
