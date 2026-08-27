@@ -434,6 +434,8 @@ def build_parser() -> argparse.ArgumentParser:
     c.add_argument("--limit", type=int, default=None, metavar="N",
                    help="first N parcels only, for a dry run")
     c.add_argument("--workers", type=int, default=10)
+    c.add_argument("--restart", action="store_true",
+                   help="throw away the partial rows on disk and measure from scratch")
     c.add_argument("--source", default=None, help="label for the boundary dataset")
     c.add_argument("--name", default=None, help="output name; defaults to the file stem")
     c.set_defaults(func=cmd_cohort)

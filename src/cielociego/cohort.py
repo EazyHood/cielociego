@@ -479,6 +479,8 @@ def optical_pass(
     workers: int = 10,
     cap_per_parcel: int | None = None,
     notify: Any = None,
+    on_parcel: Any = None,
+    skip: set[str] | None = None,
 ) -> list[Observation]:
     """Read the classification band over every parcel. The expensive pass.
 
@@ -486,10 +488,22 @@ def optical_pass(
     the bottleneck is range reads against one bucket, so widening the outer loop
     as well only earns throttling. A parcel whose catalogue query fails is
     skipped with a row of its own rather than silently contributing nothing.
+
+    `on_parcel` is called with the rows of each parcel as soon as they exist, and
+    `skip` holds the parcel ids already on disk. Together they make a run of
+    several hundred parcels restartable, which stopped being optional the first
+    time a single slow file held the whole cohort for five minutes: with a
+    sixty-second timeout and five retries, one unlucky object can cost more than
+    the rest of the parcel put together, and losing the work already done to it
+    is the difference between an afternoon and a week.
     """
     session = _session_with_retries()
     out: list[Observation] = []
     for n, parcel in enumerate(parcels, 1):
+        if skip and parcel.id in skip:
+            if notify:
+                notify(n, len(parcels))
+            continue
         try:
             sweep_res = search(S2_L2A, parcel.geometry.bounds, start, end, session=session)
             scenes = thin(_scene_list(sweep_res.items), cap_per_parcel)
@@ -524,6 +538,8 @@ def optical_pass(
                     error=view.error,
                 )
             )
+        if on_parcel:
+            on_parcel(parcel, [o for o in out if o.parcel_id == parcel.id])
         if notify:
             notify(n, len(parcels))
     return out
