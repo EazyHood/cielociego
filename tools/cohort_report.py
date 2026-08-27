@@ -97,6 +97,7 @@ def table_confusion(obs: list[Observation]) -> None:
     print(f"  dropped yet clear  {m.dropped_useful:>7}   false negative")
     print(f"  dropped and blind  {m.dropped_useless:>7}")
     print(f"  rows set aside     {m.unusable_rows:>7}   unreadable or without metadata")
+    print(f"  below pixel floor  {m.below_pixel_floor:>7}   parcel too small for the band")
     lo, hi = wilson(m.kept_useful, m.kept_useful + m.dropped_useful)
     print(f"  recall             {m.recall:>7.3f}   95 % CI [{lo:.3f}, {hi:.3f}]")
     print(f"  asymmetry          {m.asymmetry:>7.1f}   false negatives per false positive")
@@ -178,6 +179,14 @@ def main() -> int:
     table_confusion(obs)
     points = table_by_area(obs)
     table_sensitivity(obs)
+
+    print("\nTABLE 5 - the same matrix with the pixel floor lifted (sensitivity)")
+    m0 = confusion(obs, min_pixels=0)
+    print(f"  n={m0.total}  FN {m0.dropped_useful}  FP {m0.kept_useless}  "
+          f"recall {m0.recall:.3f}  asymmetry {m0.asymmetry:.1f}")
+    print("  (the main tables drop parcels under 25 pixels of the 20 m band; "
+          "this row shows what changes if they are kept)")
+
     path = figure(points, args.figure)
     if path:
         print(f"\nfigure written to {path}")

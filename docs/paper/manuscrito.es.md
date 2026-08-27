@@ -115,6 +115,16 @@ A la cohorte se añaden los dos polígonos del Magdalena (73,5 y 284,1 ha) ya pu
 repositorio con DOI, que son el caso que originó la pregunta y el único anclaje en trópico húmedo
 del Caribe colombiano.
 
+La cohorte quedó en **232 parcelas de 23 países**, de **0,20 a 255,41 ha**, con mediana de
+**0,79 ha**. Incluye trópico: Ruanda, Kenia, India, Vietnam, Camboya y Brasil. El extremo grande lo
+aporta el predio propio del Magdalena, porque un recorte de la fuente mide un kilómetro de lado y
+casi cualquier parcela mayor de unas 20 ha toca el borde y se descarta por el criterio anterior.
+
+**Sesgo de selección que hay que declarar:** el listado del repositorio se lee **una página de mil
+claves por país**. Austria sola tiene más de 400.000 máscaras, así que un listado exhaustivo agota
+cientos de peticiones en un país y nunca llega al trópico. La consecuencia es que la selección
+recorre la cabeza lexicográfica de los recortes de cada país, no el país entero.
+
 [[PENDIENTE: tabla 1 — parcelas por país, mediana y rango de superficie, y régimen de nubosidad.]]
 
 ---
@@ -165,10 +175,51 @@ mismo producto a dos escalas, no sobre cuál acierta más frente al cielo real.
 
 *(Los apartados están fijados; los números salen de `outputs/cohort_*.csv`.)*
 
-### 4.1 Cuánto del archivo son copias
+### 4.1 Cuánto del archivo son copias, y de qué depende
 
-[[PENDIENTE: porcentaje de ítems duplicados sobre la cohorte, discrepancia máxima y media de
-nubosidad declarada entre líneas base, y desfase mínimo del instante de sensado.]]
+Sobre la cohorte completa (232 parcelas, 2023-2024): **60.688 ítems**, de los cuales **547 son
+copias de reprocesado (0,9 %)**. La mayor discrepancia de nubosidad declarada entre dos copias de
+la misma adquisición es de **43,23 puntos porcentuales**, y la mayor razón entre las dos cifras
+declaradas es de **285,7 veces**.
+
+Sobre el predio del Magdalena y el archivo completo 2019-2026, medido el 27 de agosto de 2026:
+**822 ítems, 603 adquisiciones únicas, 219 copias (26,6 %)**, con doce líneas de procesado
+conviviendo (211, 212, 213, 214, 300, 301, 400, 500, 509, 510, 511, 512) y una discrepancia máxima
+de 25,64 puntos (24,22 % contra 49,86 %).
+
+El contraste entre 0,9 % y 26,6 % **no es una contradicción, es el resultado**: la duplicación no
+es uniforme, se concentra en las adquisiciones antiguas, que son las que han pasado por más
+reprocesados. Una serie temporal larga hereda mucha más duplicación que una corta, y es justo la
+serie larga la que se usa para fenología y tendencias.
+
+Desglosada por año de adquisición sobre el predio del Magdalena, la duplicación no es una constante
+sino un escalón:
+
+| Año | Ítems | Adquisiciones únicas | Copias | % copias |
+|---:|---:|---:|---:|---:|
+| 2019 | 130 | 72 | 58 | 44,6 % |
+| 2020 | 143 | 72 | 71 | 49,7 % |
+| 2021 | 158 | 73 | 85 | **53,8 %** |
+| 2022 | 73 | 72 | 1 | 1,4 % |
+| 2023 | 74 | 72 | 2 | 2,7 % |
+| 2024 | 74 | 74 | 0 | 0,0 % |
+| 2025 | 102 | 102 | 0 | 0,0 % |
+| 2026 | 68 | 66 | 2 | 2,9 % |
+| **Total** | **822** | **603** | **219** | **26,6 %** |
+
+En 2021 **más de la mitad de lo que devuelve el catálogo son copias de una adquisición que ya
+estaba**. Desde 2022 prácticamente desaparecen. Eso explica por qué la cohorte, medida sobre
+2023-2024, da un 0,9 %: las dos cifras no se contradicen, describen el mismo escalón desde los dos
+lados.
+
+La consecuencia práctica es la que importa: quien construye una serie que llega antes de 2022
+—que es lo que se hace para fenología, tendencias o líneas base— hereda un catálogo donde hasta la
+mitad de los ítems son copias con nubosidad declarada distinta, y deduplicar por fecha no las junta.
+Quien trabaja solo con los dos últimos años no ve el problema y no tiene motivo para sospecharlo.
+
+**Sobre la caducidad del hallazgo.** La ESA anunció el borrado de productos de líneas base
+antiguas. Medido hoy, las copias **siguen presentes** en el catálogo público: el 26,6 % es un dato
+del 27 de agosto de 2026, no un dato histórico. Se fecha y se versiona la consulta.
 
 ### 4.2 La matriz, agrupada
 

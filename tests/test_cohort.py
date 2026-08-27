@@ -311,3 +311,35 @@ def test_the_published_result_is_not_an_artefact_of_one_threshold():
     for t in (0.05, 0.10, 0.20, 0.30):
         m = confusion(rows, tile_threshold=t)
         assert m.dropped_useful > m.kept_useless, f"threshold {t} breaks the asymmetry"
+
+
+# --- the pixel floor -------------------------------------------------------
+
+def small(tile, blind, pixels, *, area=0.4):
+    return Observation("tiny", "src", "RW", area, "2024-01-01", "s", pixels,
+                       tile, blind, blind)
+
+
+def test_a_parcel_too_small_to_measure_is_set_aside_not_counted():
+    """A 0.4 ha parcel is 10 pixels of the 20 m band: the fraction moves in
+    ten-point steps and the edge outweighs the interior. Letting those rows into
+    the main matrix would let rasterisation noise pose as the size effect the
+    paper claims to find."""
+    rows = [small(90.0, 0.01, 10), small(90.0, 0.01, 400)]
+    m = confusion(rows)
+    assert m.total == 1 and m.below_pixel_floor == 1
+
+
+def test_the_floor_can_be_lifted_because_a_reviewer_will_ask():
+    rows = [small(90.0, 0.01, 10), small(90.0, 0.01, 400)]
+    assert confusion(rows, min_pixels=0).total == 2
+
+
+def test_the_floor_reaches_the_stratified_table_and_the_grid():
+    """Control: a filter that only applied to the pooled matrix would report a
+    clean headline and dirty strata, which is the worst of both."""
+    rows = [small(90.0, 0.01, 10, area=0.4), small(90.0, 0.01, 400, area=30.0)]
+    bins = confusion_by_area(rows)
+    assert sum(c.total for _, c in bins) == 1
+    assert sum(c.below_pixel_floor for _, c in bins) == 1
+    assert all(c.total + c.below_pixel_floor <= 2 for c in sensitivity(rows))

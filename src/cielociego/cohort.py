@@ -43,6 +43,7 @@ from .catalog import S2_L2A, NetworkDown, search
 from .dedup import baseline_pairs, deduplicate, identity
 from .fields import Field
 from .net import session as _session_with_retries
+from .scl import MIN_PIXELS
 
 # Filter a practitioner actually applies when browsing a catalogue, and the
 # threshold below which enough of the parcel is left to look at anything
@@ -312,6 +313,7 @@ class Confusion:
     dropped_useless: int = 0    # true negative
     n_parcels: int = 0
     unusable_rows: int = 0
+    below_pixel_floor: int = 0  # parcel too small for the number to mean anything
 
     @property
     def total(self) -> int:
@@ -349,12 +351,22 @@ def confusion(
     *,
     tile_threshold: float = DEFAULT_TILE_FILTER,
     blind_limit: float = DEFAULT_BLIND_LIMIT,
+    min_pixels: int = MIN_PIXELS,
 ) -> Confusion:
     """Cross the filter's verdict with the polygon's.
 
     Rows with an error, with no declared cloud cover, or with a blind fraction
     that is not a number are counted apart and never guessed at. An acquisition
     that could not be read is not evidence either way.
+
+    `min_pixels` matters more than it looks. Half of a cohort drawn from real
+    parcel boundaries is under a hectare, and a hectare is 25 pixels of the 20 m
+    classification band: below that the blind fraction moves in four-point steps
+    and the polygon edge outweighs its interior. Counting those rows in the
+    main matrix would let rasterisation noise masquerade as the very
+    size effect the paper claims to measure. They are set aside and counted, and
+    the paper reports them as their own stratum. Pass `min_pixels=0` to see the
+    unfiltered matrix, which is exactly the sensitivity check a reviewer asks for.
     """
     out = Confusion(tile_threshold, blind_limit)
     seen: set[str] = set()
@@ -362,6 +374,9 @@ def confusion(
         seen.add(obs.parcel_id)
         if obs.error or obs.tile_cloud is None or math.isnan(obs.blind):
             out.unusable_rows += 1
+            continue
+        if obs.pixels < min_pixels:
+            out.below_pixel_floor += 1
             continue
         kept = obs.tile_cloud / 100.0 <= tile_threshold
         useful = obs.blind <= blind_limit
@@ -383,6 +398,7 @@ def confusion_by_area(
     edges: Sequence[float] = (0.0, 1.0, 5.0, 20.0, 100.0, 500.0, float("inf")),
     tile_threshold: float = DEFAULT_TILE_FILTER,
     blind_limit: float = DEFAULT_BLIND_LIMIT,
+    min_pixels: int = MIN_PIXELS,
 ) -> list[tuple[str, Confusion]]:
     """The same matrix, split by parcel size.
 
@@ -399,9 +415,11 @@ def confusion_by_area(
     for idx in sorted(bins):
         lo, hi = edges[idx], edges[idx + 1]
         label = f">={lo:g} ha" if math.isinf(hi) else f"{lo:g}-{hi:g} ha"
-        out.append(
-            (label, confusion(bins[idx], tile_threshold=tile_threshold, blind_limit=blind_limit))
-        )
+        out.append((
+            label,
+            confusion(bins[idx], tile_threshold=tile_threshold, blind_limit=blind_limit,
+                      min_pixels=min_pixels),
+        ))
     return out
 
 
@@ -410,6 +428,7 @@ def sensitivity(
     *,
     tile_thresholds: Sequence[float] = (0.05, 0.10, 0.20, 0.30, 0.50),
     blind_limits: Sequence[float] = (0.05, 0.10, 0.20),
+    min_pixels: int = MIN_PIXELS,
 ) -> list[Confusion]:
     """The whole grid of thresholds.
 
@@ -417,7 +436,7 @@ def sensitivity(
     worked". Reporting the grid removes the question.
     """
     return [
-        confusion(observations, tile_threshold=t, blind_limit=b)
+        confusion(observations, tile_threshold=t, blind_limit=b, min_pixels=min_pixels)
         for t in tile_thresholds
         for b in blind_limits
     ]
