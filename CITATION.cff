@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "cielociego: cuántos días el satélite óptico no puede ver un predio"
+message: "Si usas este software o sus resultados, cítalo así."
+type: software
+authors:
+  - family-names: "del Río"
+    given-names: "Jhonatan"
+    alias: EazyHood
+repository-code: "https://github.com/EazyHood/cielociego"
+url: "https://eazyhood.github.io/cielociego/"
+abstract: >-
+  Herramienta que mide, sobre el polígono real de un predio y no sobre la tesela
+  completa, cuántos días el satélite óptico no puede observarlo, y si el radar
+  cubre esos huecos. Medido sobre dos predios del Magdalena (Colombia) entre
+  2019 y 2026: el 89 % y el 91 % de los días no hubo una sola observación óptica
+  aprovechable, y los 66 tramos de 15 días o más tienen pasada de Sentinel-1
+  dentro. Usa Sentinel-2 L2A, Sentinel-1 GRD y Sentinel-1 RTC desde catálogos
+  públicos, sin cuenta ni coste.
+keywords:
+  - teledeteccion
+  - remote-sensing
+  - sentinel-2
+  - sentinel-1
+  - sar
+  - cloud-cover
+  - tropical-agriculture
+  - colombia
+license: MIT
+version: 0.1.0
+date-released: "2026-08-27"

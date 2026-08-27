@@ -7,6 +7,8 @@
 
 **Cuánto tiempo el satélite óptico no puede ver un predio, y si el radar cubre el hueco.**
 
+*[Read this in English](README.en.md) · [Informe completo](https://eazyhood.github.io/cielociego/)*
+
 Medido sobre dos predios reales del Magdalena (Colombia), 2019–2026:
 **el 89 % y el 91 % de los días no hubo una sola observación óptica aprovechable.**
 El radar, que atraviesa la nube, tuvo pasada dentro de **los 66 huecos largos, sin
