@@ -1,5 +1,10 @@
 # cielociego
 
+[![pruebas](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml/badge.svg)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
+[![cobertura 92%](https://img.shields.io/badge/cobertura-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
+[![licencia MIT](https://img.shields.io/badge/licencia-MIT-1d4ed8)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-555)](pyproject.toml)
+
 **Cuánto tiempo el satélite óptico no puede ver un predio, y si el radar cubre el hueco.**
 
 Medido sobre dos predios reales del Magdalena (Colombia), 2019–2026:
