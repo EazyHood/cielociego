@@ -3,8 +3,8 @@ __pycache__/
 .pytest_cache/
 .venv/
 *.egg-info/
-salidas/_prueba.svg
-salidas/barrido.log
+outputs/_prueba.svg
+outputs/barrido.log
 
 # Scripts de parcheo de un solo uso. Se me colaron dos en commits distintos:
 # se escriben, se ejecutan y se borran, pero si el borrado falla acaban en el repo.
@@ -14,3 +14,4 @@ medicion.log
 
 # El PDF es un derivado del .docx; se regenera abriendo el Word y exportando.
 docs/paper/*.pdf
+.coverage

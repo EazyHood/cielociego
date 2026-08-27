@@ -13,7 +13,7 @@ acompañan— NO está bajo MIT. Se publica bajo
 Alcanza a:
 
 - `docs/post.md`, `docs/post.html`, `docs/post.es.html`
-- `docs/index.html` y el informe del que sale (`outputs/informe.html`)
+- `docs/index.html` y el informe del que sale (`outputs/report.html`)
 - Las gráficas de `outputs/*.svg`
 - El texto de `README.md` y `README.es.md`
 

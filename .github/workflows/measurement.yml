@@ -21,7 +21,7 @@ jobs:
           cache: pip
       - run: pip install -e ".[dev]"
       - name: Solo el catalogo (rapido, ya destapa si cambio el STAC)
-        run: python -m cielociego catalogo --desde 2024-01-01
+        run: python -m cielociego catalog --start 2024-01-01
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,10 +1,10 @@
 {
-  "title": "cielociego: cuántos días el satélite óptico no puede ver un predio",
-  "description": "<p>Herramienta que mide, <b>sobre el poligono real de un predio y no sobre la tesela completa</b>, cuantos dias el satelite optico no puede observarlo, y si el radar cubre esos huecos.</p><p>Medido sobre dos predios del Magdalena (Colombia), 2019-2026, 2.794 dias: <b>el 89 % y el 91 % de los dias</b> no hubo una sola observacion optica aprovechable; el tramo mas largo fue de <b>89 dias seguidos</b>; y los <b>66 huecos de 15 dias o mas tienen pasada de Sentinel-1 dentro</b>, sin excepcion. El titular aguanta cualquier definicion de nube: con la mas generosa defendible siguen siendo 82 % y 84 %.</p><p>Usa Sentinel-2 L2A y Sentinel-1 GRD (catalogo STAC de Element84 sobre AWS) y Sentinel-1 RTC (Planetary Computer), sin cuenta, sin clave y sin coste. 190 pruebas sin red, 92 % de cobertura, CI en Linux y Windows.</p>",
+  "title": "cielociego: how often an optical satellite can actually see a field",
+  "description": "<p>Measures, <b>over a field's real polygon rather than over the whole 110 km tile</b>, how often an optical satellite can actually see it, by reading the Sentinel-2 Scene Classification Layer inside the boundary instead of trusting the scene-level <code>eo:cloud_cover</code> metadata.</p><p>Measured over two fields in Magdalena, Colombia, across 2,794 days (2019-2026): Sentinel-2 acquired imagery on <b>599 and 601 of those days</b> &mdash; the orbital revisit &mdash; and cloud measured inside the polygon made <b>47 % and 56 % of those acquisitions unusable</b>. Combining both effects, no usable view existed on <b>89 % and 91 % of days</b>; of that figure about 78.5 percentage points are the satellite's revisit and only 10 to 12 points are cloud, so the two contributions must be reported separately. The operationally relevant quantity is the waiting time, whose tail runs to <b>59 and 89 consecutive days</b> with no usable view.</p><p>Uses Sentinel-2 L2A and Sentinel-1 GRD (Element84 STAC catalogue on AWS) and Sentinel-1 RTC (Microsoft Planetary Computer), with no account, no key and no cost. 219 offline tests, 84 % coverage, CI on Linux and Windows.</p>",
   "upload_type": "software",
   "license": "MIT",
   "access_right": "open",
-  "language": "spa",
+  "language": "eng",
   "creators": [
     {
       "name": "del Rio Mejia, Jhonatan"

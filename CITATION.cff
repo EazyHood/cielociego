@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-title: "cielociego: cuántos días el satélite óptico no puede ver un predio"
-message: "Si usas este software o sus resultados, cítalo así."
+title: "cielociego: how often an optical satellite can actually see a field"
+message: "If you use this software or its results, please cite it as below."
 type: software
 authors:
   - family-names: "del Rio Mejia"
@@ -10,13 +10,16 @@ doi: "10.5281/zenodo.22132250"
 repository-code: "https://github.com/EazyHood/cielociego"
 url: "https://eazyhood.github.io/cielociego/"
 abstract: >-
-  Herramienta que mide, sobre el polígono real de un predio y no sobre la tesela
-  completa, cuántos días el satélite óptico no puede observarlo, y si el radar
-  cubre esos huecos. Medido sobre dos predios del Magdalena (Colombia) entre
-  2019 y 2026: el 89 % y el 91 % de los días no hubo una sola observación óptica
-  aprovechable, y los 66 tramos de 15 días o más tienen pasada de Sentinel-1
-  dentro. Usa Sentinel-2 L2A, Sentinel-1 GRD y Sentinel-1 RTC desde catálogos
-  públicos, sin cuenta ni coste.
+  Measures, over a field's real polygon rather than over the whole 110 km tile,
+  how often an optical satellite can actually see it, by reading the Sentinel-2
+  Scene Classification Layer inside the boundary instead of trusting the
+  scene-level eo:cloud_cover metadata. Measured over two fields in Magdalena,
+  Colombia across 2,794 days (2019-2026): Sentinel-2 acquired imagery on 599 and
+  601 of those days, and cloud measured inside the polygon made 47 % and 56 % of
+  those acquisitions unusable. No usable view existed on 89 % and 91 % of days,
+  of which about 78.5 percentage points are the orbital revisit and 10 to 12
+  points are cloud. Uses Sentinel-2 L2A, Sentinel-1 GRD and Sentinel-1 RTC from
+  public catalogues, with no account and no cost.
 keywords:
   - teledeteccion
   - remote-sensing
