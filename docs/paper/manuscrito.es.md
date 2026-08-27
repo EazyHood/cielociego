@@ -61,15 +61,18 @@ de decisión no es la tesela sino un predio agrícola —cuatro órdenes de magn
 filtro deja de ser conservador y pasa a ser sesgado: descarta observaciones útiles mucho más a
 menudo de lo que retiene observaciones inservibles.
 
-Este trabajo cuantifica ese sesgo sobre una cohorte de [[N]] parcelas agrícolas reales de
-[[K]] países, tomadas de un conjunto público de límites parcelarios, y sobre [[M]] adquisiciones.
+Este trabajo cuantifica ese sesgo sobre una cohorte de **323 parcelas agrícolas reales de 23
+países**, tomadas de un conjunto público de límites parcelarios, y sobre **5.143 pares de parcela
+y adquisición medidos**.
 Para cada par parcela × adquisición se compara el valor declarado por la tesela con la fracción de
 la parcela que la banda de clasificación marca como inservible. El resultado se resume en una
 matriz de confusión y en su asimetría: falsos negativos —días despejados sobre el predio que el
 filtro tira— por cada falso positivo. Sobre dos predios del Caribe colombiano medidos previamente
-la asimetría fue de **37 a 1** (332 contra 9). Aquí se comprueba si esa asimetría es una propiedad
-del metadato o una peculiaridad de esos dos polígonos, y se expresa como función del tamaño de
-parcela.
+la asimetría fue de 37 a 1 (332 contra 9). Sobre la cohorte completa es de **48,5 a 1**, y el
+filtro conserva solo el **44,9 %** (IC 95 % 42,0-48,0) de las observaciones que de verdad servían
+sobre la parcela: el caso original no era una anomalía. El sesgo empeora cuanto más estricto es el
+filtro —al 5 % la asimetría llega a 99,7— de modo que el usuario más cuidadoso es el más
+perjudicado.
 
 Como subproducto se documenta y cuantifica un artefacto del propio archivo: la misma adquisición
 se sirve reprocesada bajo varias líneas base, cada copia declara una nubosidad distinta, y el
@@ -103,15 +106,32 @@ supondrá que no se conoce el estado del arte:
 - La **disponibilidad de observaciones libres de nube** se ha cuantificado a escala regional y
   global: Sudmanns et al. (2019), `10.1080/17538947.2019.1572799`; Flores-Anderson et al. (2023),
   *Scientific Data*, `10.1038/s41597-023-02439-x`.
-- Lo más cercano a este trabajo: Tiede et al. (2021), *Remote Sensing of Environment*,
-  `10.1016/j.rse.2020.112163`, que ya documenta que filtrar por la nubosidad estimada de cada
-  imagen esconde datos, con el caso de la alta montaña. [[PENDIENTE: cita textual exacta y su
-  unidad de análisis, para separar con precisión su aporte del de este trabajo.]]
+- **El vecino más cercano, y hay que citarlo en el primer párrafo:** Tiede, Sudmanns, Augustin y
+  Baraldi (2021), *Remote Sensing of Environment* 252, 112163, `10.1016/j.rse.2020.112163`
+  (37 citas en OpenAlex, agosto de 2026). Escriben, literal: *«Almost all optical remote sensing
+  data access portals rely to some degree on a cloud cover filter»*, y que eso produce
+  *«a lot of "hidden" data for very high altitude areas when each image's estimated cloud cover is
+  used as an automated selection criterion»*. Su causa es un umbral sobre banda única en lugar de
+  una firma multibanda; su alcance, declarado por ellos en la última frase del resumen, es
+  *«very high altitude areas»*, con seis sitios de prueba: dos en los Andes, dos en el Himalaya y
+  dos en los Alpes. Su unidad de análisis es el **gránulo completo**, comparado contra la máscara
+  de un sistema experto. No hay polígono de usuario, ni parcela, ni matriz de confusión.
 
-**Párrafo 4 — el hueco y la contribución.** Nadie ha medido el error del metadato **tomando el
-predio agrícola como unidad de decisión**, ni lo ha expresado como matriz de confusión con su
-asimetría, ni como función del tamaño de parcela. Eso es lo que aquí se aporta, junto con el
-conjunto de datos que permite rehacerlo.
+> ⚠️ **Corrección que hay que llevar bien al texto.** Un análisis previo describió la asimetría de
+> este trabajo como «la contraria» a la de Tiede. **Es falsa.** Los 332 falsos negativos son
+> observaciones **útiles sobre el predio que el filtro descarta**: la misma dirección del daño que
+> describe Tiede, imágenes buenas tiradas por el umbral. Lo que cambia no es el signo, es la
+> **causa y la unidad**: Tiede documenta un sesgo del algoritmo en un terreno particular; aquí se
+> mide un desajuste de soporte que no depende del terreno y se expresa como función del tamaño de
+> la parcela. Escribirlo como «dirección contraria» sería un error de bulto que un revisor que
+> haya leído a Tiede detecta en la primera lectura.
+
+**Párrafo 4 — el hueco y la contribución.** Nadie ha evaluado el metadato de nubosidad **como
+filtro** contra la nubosidad observada sobre un polígono de parcela, ni ha construido esa matriz de
+confusión, ni la ha expresado como función del tamaño del área de interés. En duplicados de
+reprocesado el hueco es total: **no hay literatura revisada por pares** que los cuantifique, solo
+foros, documentación del operador y una frase de método en un preprint. Eso es lo que aquí se
+aporta, junto con el conjunto de datos que permite rehacerlo.
 
 **Párrafo 5 — qué NO es este trabajo.** No es una evaluación de la máscara de nube. Los dos números
 que se comparan descienden de la misma clasificación; ese es justamente el diseño. Lo que se mide
@@ -260,22 +280,82 @@ del 27 de agosto de 2026, no un dato histórico. Se fecha y se versiona la consu
 
 ### 4.2 La matriz, agrupada
 
-[[PENDIENTE: tabla 2 — las cuatro celdas, la asimetría, la exhaustividad y la precisión.]]
+Sobre **5.143 pares parcela × adquisición medidos** (25 lecturas fallaron y se cuentan aparte),
+con el filtro de referencia —se conserva la adquisición si la tesela declara ≤ 10 % de nube— y la
+parcela considerada utilizable con ≤ 10 % de su superficie inservible:
+
+| | Adquisición útil sobre la parcela | Adquisición inservible |
+|---|---:|---:|
+| **El filtro la conserva** | 475 | **12** (falso positivo) |
+| **El filtro la descarta** | **582** (falso negativo) | 2.196 |
+
+- **Exhaustividad: 0,449**, IC 95 % [0,420, 0,480]. El filtro por metadato de tesela **deja pasar
+  menos de la mitad de las observaciones que de verdad servían sobre la parcela.**
+- **Asimetría: 48,5 falsos negativos por cada falso positivo.**
+- 1.878 filas quedan por debajo del suelo de píxeles y se reportan como estrato aparte (§4.6).
+
+Sobre los dos predios del Magdalena la asimetría publicada fue de 37 a 1. Sobre 323 parcelas de
+23 países es de **48,5 a 1**: el caso original no era una anomalía, y si algo se quedaba corto.
 
 ### 4.3 La regla en función del tamaño
 
-[[PENDIENTE: figura 1 — exhaustividad del filtro frente a superficie de la parcela, con intervalo
-de confianza. Es la figura que decide el artículo.]]
+| Tramo | n | Exhaustividad | IC 95 % | FN | FP |
+|---|---:|---:|---|---:|---:|
+| 1-5 ha | 2.060 | 0,429 | [0,392, 0,466] | 393 | 7 |
+| 5-20 ha | 1.077 | 0,492 | [0,439, 0,546] | 169 | 5 |
+| 20-100 ha | 112 | 0,520 | [0,335, 0,700] | 12 | 0 |
+| 100-500 ha | 16 | 0,273 | [0,097, 0,566] | 8 | 0 |
+
+La exhaustividad **crece con el tamaño de la parcela** en el rango de 1 a 100 ha —0,429 → 0,492 →
+0,520—, que es la dirección que predice el desajuste de soporte. Ahora bien, hay que decir tres
+cosas y no una:
+
+1. **El efecto es real pero moderado** en ese rango: nueve puntos de exhaustividad entre una
+   parcela de 1 ha y una de 100, con intervalos que se solapan entre tramos contiguos.
+2. **El último tramo rompe la monotonía y no es un contraejemplo, es un confundido.** Las 16
+   observaciones de 100-500 ha son **una sola parcela**, la del Magdalena, en trópico húmedo del
+   Caribe. Ahí la exhaustividad cae a 0,273 porque el cielo es peor, no porque la parcela sea
+   grande. Con una parcela no se separa el tamaño del clima, y presentarlo como efecto de tamaño
+   sería exactamente el error que este artículo denuncia en otros.
+3. **Lo que sí sostiene la cohorte, y con holgura, es la asimetría**, que es grande en todos los
+   tramos y en todos los umbrales.
+
+[[PENDIENTE: para separar tamaño de clima hace falta un modelo con la nubosidad media de la tesela
+como covariable, o más parcelas grandes en climas templados. Es la extensión obvia y honesta.]]
 
 ### 4.4 Sensibilidad a los umbrales
 
-[[PENDIENTE: tabla 3 — rejilla T × U.]]
+La asimetría no es un artefacto del par de umbrales elegido. Se conserva en toda la rejilla y solo
+se invierte cuando el filtro se afloja hasta el 50 %, que es tanto como no filtrar:
 
-### 4.5 Control
+| Filtro de tesela | Límite de inservible | FN | FP | Exhaustividad | Asimetría |
+|---:|---:|---:|---:|---:|---:|
+| 5 % | 5 % | 678 | 11 | 0,344 | 61,6 |
+| 5 % | 10 % | 698 | 7 | 0,340 | 99,7 |
+| 10 % | 5 % | 562 | 16 | 0,456 | 35,1 |
+| **10 %** | **10 %** | **582** | **12** | **0,449** | **48,5** |
+| 20 % | 10 % | 469 | 59 | 0,556 | 7,9 |
+| 30 % | 10 % | 355 | 95 | 0,664 | 3,7 |
+| 50 % | 10 % | 202 | 243 | 0,809 | 0,8 |
 
-[[PENDIENTE: comparar la asimetría medida sobre la cohorte con la de los dos predios del Magdalena.
-Si el orden de magnitud coincide, el caso original no era una anomalía; si no coincide, el
-resultado del caso original hay que reencuadrarlo, y así se dirá.]]
+Cuanto más estricto es el filtro —que es como lo usa quien quiere imágenes limpias— **peor es el
+sesgo**: al 5 % la asimetría llega a 99,7 y la exhaustividad baja a 0,340. El usuario cuidadoso es
+el más perjudicado.
+
+### 4.5 Control: el suelo de píxeles no fabrica el resultado
+
+Repitiendo la matriz **sin** apartar las parcelas pequeñas, sobre las 5.143 filas medidas:
+exhaustividad **0,439** y asimetría **49,4**, contra 0,449 y 48,5 con el suelo puesto. El hallazgo
+no depende de esa decisión metodológica.
+
+### 4.6 El estrato que no se puede medir con esta banda
+
+1.878 de las 5.143 filas corresponden a parcelas con menos de 25 píxeles de la banda de
+clasificación, es decir por debajo de una hectárea. No se descartan por sospechosas sino por
+incontables: con ocho píxeles la fracción inservible se mueve a saltos de doce puntos. Es una
+limitación del instrumento, no del método, y afecta a la mitad de las parcelas de un país como
+Ruanda o Kenia. [[PENDIENTE: decir si con la banda de 10 m del propio producto —que no trae
+clasificación— o con un enmascarador externo se podría bajar ese suelo.]]
 
 ---
 
