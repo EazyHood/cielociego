@@ -215,3 +215,42 @@ def test_el_reparto_va_ordenado_de_mas_a_menos():
 
     items = [item_orb(77)] * 2 + [item_orb(142)] * 9 + [item_orb(69)] * 5
     assert list(reparto_orbitas(items)) == [142, 69, 77]
+
+
+# --- registro de credenciales (antes era un singleton global) --------------
+def test_la_misma_coleccion_reutiliza_la_credencial():
+    from cielociego.sar import credencial, olvida_credenciales
+
+    olvida_credenciales()
+    assert credencial("sentinel-1-rtc") is credencial("sentinel-1-rtc")
+
+
+def test_colecciones_distintas_no_comparten_token():
+    """El singleton viejo habria servido el token equivocado."""
+    from cielociego.sar import credencial, olvida_credenciales
+
+    olvida_credenciales()
+    a, b = credencial("sentinel-1-rtc"), credencial("otra-coleccion")
+    assert a is not b
+    assert a.coleccion == "sentinel-1-rtc" and b.coleccion == "otra-coleccion"
+
+
+def test_se_pueden_olvidar_los_tokens():
+    """Sin esto, el estado se filtra entre pruebas."""
+    from cielociego.sar import credencial, olvida_credenciales
+
+    olvida_credenciales()
+    primera = credencial()
+    olvida_credenciales()
+    assert credencial() is not primera
+
+
+def test_el_registro_aguanta_muchos_hilos():
+    from concurrent.futures import ThreadPoolExecutor
+
+    from cielociego.sar import credencial, olvida_credenciales
+
+    olvida_credenciales()
+    with ThreadPoolExecutor(16) as ex:
+        creds = list(ex.map(lambda _: credencial("x"), range(200)))
+    assert len({id(c) for c in creds}) == 1, "16 hilos deben compartir una sola"

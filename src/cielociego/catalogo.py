@@ -33,6 +33,15 @@ class BarridoIncompleto(RuntimeError):
     """El servidor declaro N resultados y se bajaron otros. No seguir."""
 
 
+class RedCaida(RuntimeError):
+    """La red fallo y los reintentos se agotaron.
+
+    Existe para poder distinguir "no hay dato" de "no pude preguntar". Un
+    `ConnectionError` crudo saliendo del catalogo tumbaba la medicion entera
+    y no decia cual de las dos cosas habia pasado.
+    """
+
+
 @dataclass
 class Barrido:
     items: list[dict[str, Any]]
@@ -73,9 +82,16 @@ def busca(
     avisos: list[str] = []
 
     while True:
-        r = ses.post(STAC, json=payload, timeout=120)
-        r.raise_for_status()
-        doc = r.json()
+        try:
+            r = ses.post(STAC, json=payload, timeout=120)
+            r.raise_for_status()
+            doc = r.json()
+        except requests.RequestException as exc:
+            raise RedCaida(
+                f"{coleccion}: la red fallo tras agotar los reintentos en la pagina "
+                f"{paginas + 1} ({type(exc).__name__}). No es que no haya dato: "
+                "es que no se pudo preguntar."
+            ) from exc
         paginas += 1
         if declarados is None:
             declarados = (doc.get("context") or {}).get("matched")

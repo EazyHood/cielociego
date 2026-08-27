@@ -1,9 +1,89 @@
 {
  "predio": "Predio estudio",
+ "procedencia": {
+  "version": "0.1.0",
+  "commit": "bb62488",
+  "medido_en": "2026-08-27T00:08:01+00:00",
+  "python": "3.12.10",
+  "sistema": "Windows",
+  "parametros": {
+   "desde": "2019-01-01",
+   "hasta": "2026-08-25",
+   "orbita": 77
+  }
+ },
  "orbita": 77,
  "reparto_orbitas": {
   "77": 249,
   "69": 248
+ },
+ "analisis": {
+  "tendencia_vv": {
+   "pendiente": -0.05817286456958274,
+   "ee_clasico": 0.014388623339794822,
+   "ee_hac": 0.018281112338817455,
+   "ic95": [
+    -0.09400384475366495,
+    -0.022341884385500527
+   ],
+   "n": 249,
+   "n_efectivo": 126.54559285527877,
+   "autocorr_residuos": 0.32607068082918655,
+   "inflacion_ee": 1.271,
+   "significativa": true
+  },
+  "formas": [
+   {
+    "nombre": "escalon",
+    "sse": 62.824867972437005,
+    "k": 3,
+    "bic": -326.34601803365535,
+    "corte": "2025-12-05",
+    "corte_fin": null,
+    "nivel_antes": -6.584080568720378,
+    "nivel_despues": -7.07286842105263
+   },
+   {
+    "nombre": "rampa lineal",
+    "sse": 66.14107502086847,
+    "k": 2,
+    "bic": -319.05516510318404,
+    "corte": null,
+    "corte_fin": null,
+    "nivel_antes": null,
+    "nivel_despues": null
+   },
+   {
+    "nombre": "meseta-rampa-meseta",
+    "sse": 63.686898219533326,
+    "k": 4,
+    "bic": -317.43522300057856,
+    "corte": "2025-07-20",
+    "corte_fin": "2026-01-22",
+    "nivel_antes": -6.5747971599631425,
+    "nivel_despues": -7.038587075611058
+   },
+   {
+    "nombre": "constante",
+    "sse": 70.51807665060241,
+    "k": 1,
+    "bic": -308.61691657077927,
+    "corte": null,
+    "corte_fin": null,
+    "nivel_antes": null,
+    "nivel_despues": null
+   }
+  ],
+  "robustez": {
+   "sin 2019": -0.06680855047168248,
+   "sin 2020": -0.07110630373097092,
+   "sin 2021": -0.04792267175142861,
+   "sin 2022": -0.05673325429869306,
+   "sin 2023": -0.058653264301739644,
+   "sin 2024": -0.06267311780542459,
+   "sin 2025": -0.07112655601620145,
+   "sin 2026": -0.03192109525734193
+  }
  },
  "medidas": [
   {

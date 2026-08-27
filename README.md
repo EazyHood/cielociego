@@ -5,9 +5,9 @@
 Medido sobre dos predios reales del Magdalena (Colombia), 2019–2026:
 **el 89 % y el 91 % de los días no hubo una sola observación óptica aprovechable.**
 El radar, que atraviesa la nube, tuvo pasada dentro de **los 66 huecos largos, sin
-una sola excepción** — y su serie no es ruido: detectó en uno de los predios una
-subida sostenida de **3,5 dB en siete años** que sobrevive al control de
-instrumento.
+una sola excepción** — y su serie no es ruido: en uno de los predios registró un
+cambio de **3,5 dB** que sobrevive al control de instrumento, y que **no fue
+gradual**: meseta, transición de unos dos años, y meseta nueva.
 
 Datos abiertos, sin cuenta, sin clave y sin coste. La medición completa se
 reproduce en unos 90 segundos.
@@ -119,27 +119,63 @@ Que exista una pasada no significa que sirva. Se extrajo la serie completa de
 retrodispersión sobre el polígono — **590 medidas**, todas de la misma órbita
 relativa, porque mezclar geometrías inventa saltos que no vienen del cultivo.
 
-En el corredor bananero la serie **sube 3,5 dB en siete años**, de forma
-sostenida, con autocorrelación de 0,96 entre pasadas consecutivas.
-
-La subida arranca justo cuando se retiró Sentinel-1B, así que podía ser un cambio
-de calibración disfrazado de cambio agronómico. **El control es medir la tendencia
-dentro de un solo satélite:**
+En el corredor bananero la serie no es ruido. Pero **tampoco es la recta que
+parecía**. Comparando cuatro formas posibles por BIC —y penalizando los puntos
+de corte que hay que buscar— gana *meseta → transición → meseta*:
 
 ```
-                                        tendencia de gamma0 VV
-CORREDOR   todas las plataformas .............. +0,643 dB/ano
-           solo Sentinel-1A (n=215) ........... +0,688 dB/ano   <- no desaparece
-           solo Sentinel-1B (n=79) ............ +0,150 dB/ano
-FUNDACION  solo Sentinel-1A (n=123) ........... -0,022 dB/ano   <- el vecino, plano
+modelo                    SSE    k       BIC   delta
+meseta-rampa-meseta      71,5    4    -509,5     0      <- gana
+escalon                 126,8    3    -319,8   +190
+rampa lineal            163,2    2    -239,6   +270     <- lo que yo dibujaba
+constante               968,4    1    +361,7   +871
+
+nivel estable hasta 2021-06   ->  -6,78 dB
+TRANSICION  2021-06 -> 2023-08   (unos 26 meses)
+nivel estable desde 2023-08   ->  -3,29 dB      salto +3,50 dB
 ```
 
-No desaparece: dentro de S1A sola la subida es incluso mayor. Y el predio vecino,
-con los mismos satélites, la misma órbita y el mismo procesado, sale plano. En el
-mismo año S1A y S1B difieren entre 0,04 y 0,50 dB, así que no hay sesgo de
+**La diferencia importa para leerlo:** una rampa continua parece crecimiento;
+una meseta, una transición y una meseta nueva parece un *evento* — una siembra,
+una tala, un cambio de uso. El dato no dice cuál, pero sí dice que no fue
+gradual a lo largo de siete años.
+
+#### El control: ¿y si fuera el satélite y no el suelo?
+
+El cambio arranca cerca de la retirada de Sentinel-1B, así que podía ser
+calibración disfrazada de agronomía. El control es medir la tendencia **dentro
+de un solo satélite**: si es artefacto, ahí desaparece.
+
+```
+CORREDOR   todas las plataformas ....... +0,643 dB/ano
+           solo Sentinel-1A (n=215) .... +0,688 dB/ano   <- no desaparece
+           solo Sentinel-1B (n=79) ..... +0,150 dB/ano
+FUNDACION  serie completa .............. -0,058 dB/ano   <- 11 veces menos
+```
+
+En el mismo año, S1A y S1B difieren entre 0,04 y 0,50 dB: no hay sesgo de
 plataforma que explique 3,5.
 
-Algo cambió en esas 284 hectáreas entre 2021 y 2022 y siguió cambiando. **Qué fue,
+**Y aquí hay que ser preciso: el predio vecino no es «plano».** Su pendiente es
+pequeña pero significativa — IC 95 % `[-0,094, -0,022]`, no cruza el cero. Lo
+que dice el control no es que allí no pase nada, sino que **allí no pasa nada
+parecido**. Que el método detecte también el cambio pequeño refuerza el control
+en vez de debilitarlo.
+
+#### Por qué el intervalo es más ancho de lo que parecería
+
+Un ajuste por mínimos cuadrados supone observaciones independientes, y las de
+una serie de radar no lo son: los residuos arrastran (0,76 de autocorrelación),
+así que **las 341 pasadas valen como 47 observaciones independientes**. Con
+errores de Newey-West, robustos a autocorrelación:
+
+```
+pendiente  +0,643 dB/ano   IC95 [+0,591, +0,695]
+el error estandar clasico se quedaba 1,7 veces corto
+robustez dejando fuera un ano entero:  +0,600 a +0,718 dB/ano
+```
+
+Algo cambió en esas 284 hectáreas y se estabilizó en un nivel nuevo. **Qué fue,
 este trabajo no lo sabe.** Lo que queda medido es que el radar lo registró de
 principio a fin, y que en el tramo del cambio el óptico llegó a estar **55 días
 seguidos** sin una imagen aprovechable.
@@ -166,9 +202,25 @@ llega hasta donde llega el dato.
 
 - **Qué cuenta como ciego.** Nube, sombra de nube, cirro, píxel saturado y sin
   dato. La sombra orográfica se calcula aparte (`ciego_amplio`) porque en terreno
-  llano suele ser suelo húmedo, no sombra real. Se publican las dos.
-- **Umbral de «útil»**: 10 % del predio tapado. Moverlo cambia el reparto entre
-  útiles y huecos, no la conclusión.
+  llano suele ser suelo húmedo, no sombra real. **Medido: da igual.** La
+  diferencia media entre las dos definiciones es de 0,0001 y **ninguna toma
+  cambia de bando**. La duda estaba bien planteada y la respuesta es que no
+  afectaba; queda cerrada en vez de arrastrada como salvedad.
+- **Umbral de «útil»**: 10 % del predio tapado. **Medido en todo el rango:**
+
+  ```
+  umbral    dias ciegos Fundacion    dias ciegos Corredor
+     0 %            90 %                    92 %
+    10 %            89 %                    91 %      <- el usado
+    50 %            87 %                    88 %
+  ```
+
+  Exigiendo el predio perfectamente despejado o dejando pasar la mitad tapada,
+  la conclusión es la misma. **No depende del umbral.**
+- **Tamaño mínimo del predio.** Por debajo de 25 píxeles la cifra se marca con
+  un aviso: con 8 píxeles el porcentaje solo se mueve de 12 en 12 puntos y el
+  borde del polígono pesa más que su interior. No se falla —hay predios
+  pequeños legítimos— pero no se deja pasar como si fuera preciso.
 - **Una toma se perdió.** La del 23-ene-2024 en Fundación apunta a una ruta
   antigua que ya no existe en el bucket. Queda declarada como fallo, no contada
   como despejada.

@@ -107,3 +107,51 @@ def test_predios_explicitos_no_miran_la_carpeta(monkeypatch, tmp_path):
     monkeypatch.setattr(cli, "DATOS", tmp_path)  # vacia, pero da igual
     encontrados = cli._predios([ruta])
     assert len(encontrados) == 1 and encontrados[0][1].area_ha
+
+
+def test_un_predio_que_falla_no_tumba_a_los_demas(monkeypatch, tmp_path, capsys):
+    """Un corte de red a mitad tumbaba la medicion entera y perdia lo ya hecho."""
+    from shapely.geometry import box
+
+    import cielociego.cli as cli
+    from cielociego.predios import Predio
+
+    a = Predio("Predio bueno", box(0, 0, 1, 1), 10.0)
+    b = Predio("Predio roto", box(2, 2, 3, 3), 20.0)
+    monkeypatch.setattr(cli, "_predios", lambda r: [("a", a), ("b", b)])
+
+    hechos = []
+
+    def catalogo(clave, predio, desde, hasta):
+        if predio.nombre == "Predio roto":
+            raise ConnectionError("Read timed out")
+        hechos.append(clave)
+        return []
+
+    monkeypatch.setattr(cli, "paso_catalogo", catalogo)
+    monkeypatch.setattr(cli, "paso_scl", lambda *a, **k: {"vistas": []})
+    monkeypatch.setattr(cli, "paso_radar", lambda *a, **k: None)
+    monkeypatch.setattr(cli, "paso_sar", lambda *a, **k: None)
+
+    args = construye_parser().parse_args(["medir"])
+    codigo = cli.cmd_medir(args)
+
+    salida = capsys.readouterr().out
+    assert hechos == ["a"], "el predio bueno debe medirse igual"
+    assert codigo == 1, "el codigo de salida avisa de que quedo incompleta"
+    assert "MEDICION INCOMPLETA" in salida
+    assert "Predio roto" in salida
+
+
+def test_si_todos_van_bien_el_codigo_es_cero(monkeypatch):
+    from shapely.geometry import box
+
+    import cielociego.cli as cli
+    from cielociego.predios import Predio
+
+    monkeypatch.setattr(cli, "_predios", lambda r: [("a", Predio("X", box(0, 0, 1, 1), 1.0))])
+    monkeypatch.setattr(cli, "paso_catalogo", lambda *a, **k: [])
+    monkeypatch.setattr(cli, "paso_scl", lambda *a, **k: {"vistas": []})
+    monkeypatch.setattr(cli, "paso_radar", lambda *a, **k: None)
+    monkeypatch.setattr(cli, "paso_sar", lambda *a, **k: None)
+    assert cli.cmd_medir(construye_parser().parse_args(["medir"])) == 0

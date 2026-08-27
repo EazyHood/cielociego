@@ -185,3 +185,32 @@ def test_no_se_silencian_otros_avisos(raster, recwarn):
         _w.warn("aviso de prueba que SI debe verse", UserWarning, stacklevel=2)
         _lee_scl(raster(np.full((6, 6), scl.VEGETACION)), geom_utm(6, 6))
     assert any("SI debe verse" in str(c.message) for c in capturados)
+
+
+# --- guarda de tamano minimo -----------------------------------------------
+def test_un_predio_diminuto_se_marca_en_vez_de_pasar_por_bueno(raster):
+    """8 pixeles no dan para hablar de porcentajes: la cifra sale AVISADA."""
+    from cielociego.scl import PIXELES_MINIMOS
+
+    v = mide_vista(raster(np.full((3, 3), scl.VEGETACION)), geom_utm(3, 3))
+    assert v.error is None, "no se falla: hay predios pequenos legitimos"
+    assert v.pixeles < PIXELES_MINIMOS
+    assert v.aviso is not None and "pixeles" in v.aviso
+    assert v.fiable is False
+
+
+def test_un_predio_normal_no_lleva_aviso(raster):
+    v = mide_vista(raster(np.full((10, 10), scl.VEGETACION)), geom_utm(10, 10))
+    assert v.aviso is None and v.fiable is True
+
+
+def test_la_resolucion_declarada_es_la_real(raster):
+    """Con 25 pixeles el porcentaje solo se mueve de 4 en 4 puntos."""
+    v = mide_vista(raster(np.full((5, 5), scl.VEGETACION)), geom_utm(5, 5))
+    assert v.pixeles == 25
+    assert v.resolucion_pct == pytest.approx(4.0)
+
+
+def test_el_aviso_viaja_en_el_json(raster):
+    v = mide_vista(raster(np.full((2, 2), scl.NUBE_SEGURA)), geom_utm(2, 2))
+    assert "aviso" in v.dict() and v.dict()["aviso"]

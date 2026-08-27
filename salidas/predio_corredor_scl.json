@@ -1,8 +1,20 @@
 {
  "predio": "Predio de estudio - corredor bananero",
+ "procedencia": {
+  "version": "0.1.0",
+  "commit": "bb62488",
+  "medido_en": "2026-08-27T00:04:54+00:00",
+  "python": "3.12.10",
+  "sistema": "Windows",
+  "parametros": {
+   "umbral_util": 0.1,
+   "hilos": 12
+  }
+ },
  "area_ha": 284.1,
  "medidas": 602,
  "fallidas": 0,
+ "recuperadas_en_segunda_pasada": 0,
  "vistas": [
   {
    "fecha": "2019-01-04",
@@ -16,7 +28,8 @@
     "sin_vegetacion": 8,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-01-09",
@@ -32,7 +45,8 @@
     "nube_probable": 416,
     "cirro": 4099
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-01-14",
@@ -45,7 +59,8 @@
     "vegetacion": 7091,
     "sin_vegetacion": 11
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-01-19",
@@ -58,7 +73,8 @@
     "vegetacion": 7085,
     "sin_vegetacion": 17
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-01-24",
@@ -71,7 +87,8 @@
     "vegetacion": 7085,
     "sin_vegetacion": 17
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-01-29",
@@ -89,7 +106,8 @@
     "nube_probable": 622,
     "nube_segura": 1232
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-03",
@@ -102,7 +120,8 @@
     "vegetacion": 7078,
     "sin_vegetacion": 24
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-08",
@@ -115,7 +134,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-13",
@@ -128,7 +148,8 @@
     "vegetacion": 7068,
     "sin_vegetacion": 34
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-18",
@@ -144,7 +165,8 @@
     "nube_probable": 1034,
     "nube_segura": 2803
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-23",
@@ -157,7 +179,8 @@
     "nube_probable": 5851,
     "cirro": 1251
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-02-28",
@@ -170,7 +193,8 @@
     "vegetacion": 7028,
     "sin_vegetacion": 74
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-05",
@@ -183,7 +207,8 @@
     "vegetacion": 7045,
     "sin_vegetacion": 57
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-10",
@@ -196,7 +221,8 @@
     "vegetacion": 7054,
     "sin_vegetacion": 48
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-15",
@@ -209,7 +235,8 @@
     "vegetacion": 7014,
     "sin_vegetacion": 88
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-20",
@@ -223,7 +250,8 @@
     "sin_vegetacion": 238,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-25",
@@ -236,7 +264,8 @@
     "vegetacion": 7045,
     "sin_vegetacion": 57
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-03-30",
@@ -252,7 +281,8 @@
     "nube_segura": 104,
     "cirro": 4872
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-04",
@@ -265,7 +295,8 @@
     "vegetacion": 7047,
     "sin_vegetacion": 55
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-09",
@@ -278,7 +309,8 @@
     "vegetacion": 3107,
     "sin_vegetacion": 3995
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-14",
@@ -291,7 +323,8 @@
     "nube_probable": 22,
     "cirro": 7080
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-19",
@@ -308,7 +341,8 @@
     "nube_probable": 312,
     "nube_segura": 35
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-24",
@@ -325,7 +359,8 @@
     "nube_probable": 713,
     "nube_segura": 5905
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-04-29",
@@ -338,7 +373,8 @@
     "nube_probable": 2081,
     "cirro": 5021
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-04",
@@ -351,7 +387,8 @@
     "nube_probable": 1470,
     "nube_segura": 5632
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-09",
@@ -363,7 +400,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-14",
@@ -377,7 +415,8 @@
     "nube_segura": 1733,
     "cirro": 3702
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-19",
@@ -391,7 +430,8 @@
     "nube_segura": 4890,
     "cirro": 661
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-24",
@@ -408,7 +448,8 @@
     "nube_probable": 1144,
     "nube_segura": 1251
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-05-29",
@@ -425,7 +466,8 @@
     "nube_probable": 1498,
     "nube_segura": 657
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-03",
@@ -438,7 +480,8 @@
     "vegetacion": 7099,
     "sin_vegetacion": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-08",
@@ -456,7 +499,8 @@
     "nube_segura": 3189,
     "cirro": 720
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-13",
@@ -469,7 +513,8 @@
     "vegetacion": 7101,
     "sin_vegetacion": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-18",
@@ -482,7 +527,8 @@
     "vegetacion": 7097,
     "sin_vegetacion": 5
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-23",
@@ -496,7 +542,8 @@
     "nube_segura": 450,
     "cirro": 5226
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-06-28",
@@ -509,7 +556,8 @@
     "vegetacion": 5199,
     "cirro": 1903
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-03",
@@ -526,7 +574,8 @@
     "nube_probable": 613,
     "nube_segura": 176
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-08",
@@ -543,7 +592,8 @@
     "nube_probable": 999,
     "nube_segura": 71
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-13",
@@ -556,7 +606,8 @@
     "vegetacion": 7098,
     "sin_vegetacion": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-18",
@@ -569,7 +620,8 @@
     "vegetacion": 7095,
     "sin_vegetacion": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-23",
@@ -581,7 +633,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-07-28",
@@ -594,7 +647,8 @@
     "vegetacion": 7094,
     "sin_vegetacion": 8
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-02",
@@ -607,7 +661,8 @@
     "vegetacion": 7093,
     "sin_vegetacion": 9
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-07",
@@ -620,7 +675,8 @@
     "vegetacion": 454,
     "cirro": 6648
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-12",
@@ -633,7 +689,8 @@
     "vegetacion": 6819,
     "cirro": 283
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-17",
@@ -650,7 +707,8 @@
     "nube_probable": 848,
     "nube_segura": 1186
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-22",
@@ -663,7 +721,8 @@
     "vegetacion": 7089,
     "sin_vegetacion": 13
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-08-27",
@@ -676,7 +735,8 @@
     "vegetacion": 7097,
     "sin_vegetacion": 5
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-01",
@@ -694,7 +754,8 @@
     "nube_segura": 629,
     "cirro": 1975
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-06",
@@ -706,7 +767,8 @@
    "histograma": {
     "cirro": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-11",
@@ -720,7 +782,8 @@
     "sin_vegetacion": 4,
     "cirro": 567
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-16",
@@ -737,7 +800,8 @@
     "nube_probable": 2098,
     "nube_segura": 2925
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-21",
@@ -749,7 +813,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-09-26",
@@ -765,7 +830,8 @@
     "nube_segura": 553,
     "cirro": 5097
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-01",
@@ -779,7 +845,8 @@
     "nube_segura": 1224,
     "cirro": 4063
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-06",
@@ -791,7 +858,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-11",
@@ -803,7 +871,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-16",
@@ -815,7 +884,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-21",
@@ -827,7 +897,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-26",
@@ -839,7 +910,8 @@
    "histograma": {
     "cirro": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-10-31",
@@ -856,7 +928,8 @@
     "nube_probable": 1276,
     "nube_segura": 2883
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-11-05",
@@ -870,7 +943,8 @@
     "nube_segura": 64,
     "cirro": 6829
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-11-10",
@@ -888,7 +962,8 @@
     "nube_segura": 1097,
     "cirro": 178
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-11-15",
@@ -903,7 +978,8 @@
     "nube_probable": 753,
     "nube_segura": 1169
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-11-20",
@@ -920,7 +996,8 @@
     "nube_probable": 150,
     "nube_segura": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-11-30",
@@ -933,7 +1010,8 @@
     "nube_probable": 4141,
     "nube_segura": 2961
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-05",
@@ -946,7 +1024,8 @@
     "vegetacion": 7101,
     "sin_vegetacion": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-10",
@@ -959,7 +1038,8 @@
     "vegetacion": 6492,
     "cirro": 610
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-15",
@@ -971,7 +1051,8 @@
    "histograma": {
     "cirro": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-20",
@@ -984,7 +1065,8 @@
     "vegetacion": 7100,
     "sin_vegetacion": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-25",
@@ -997,7 +1079,8 @@
     "nube_probable": 674,
     "nube_segura": 6428
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2019-12-30",
@@ -1010,7 +1093,8 @@
     "vegetacion": 7100,
     "sin_vegetacion": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-04",
@@ -1023,7 +1107,8 @@
     "vegetacion": 7098,
     "sin_vegetacion": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-09",
@@ -1036,7 +1121,8 @@
     "vegetacion": 7098,
     "sin_vegetacion": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-14",
@@ -1049,7 +1135,8 @@
     "vegetacion": 7097,
     "sin_vegetacion": 5
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-19",
@@ -1062,7 +1149,8 @@
     "vegetacion": 7095,
     "sin_vegetacion": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-24",
@@ -1075,7 +1163,8 @@
     "nube_probable": 1051,
     "nube_segura": 6051
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-01-29",
@@ -1088,7 +1177,8 @@
     "vegetacion": 7095,
     "sin_vegetacion": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-03",
@@ -1101,7 +1191,8 @@
     "vegetacion": 7095,
     "sin_vegetacion": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-08",
@@ -1114,7 +1205,8 @@
     "vegetacion": 7089,
     "sin_vegetacion": 13
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-13",
@@ -1127,7 +1219,8 @@
     "vegetacion": 7084,
     "sin_vegetacion": 18
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-18",
@@ -1140,7 +1233,8 @@
     "vegetacion": 7080,
     "sin_vegetacion": 22
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-23",
@@ -1153,7 +1247,8 @@
     "vegetacion": 7085,
     "sin_vegetacion": 17
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-02-28",
@@ -1166,7 +1261,8 @@
     "vegetacion": 7078,
     "sin_vegetacion": 24
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-04",
@@ -1179,7 +1275,8 @@
     "vegetacion": 7068,
     "sin_vegetacion": 34
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-09",
@@ -1192,7 +1289,8 @@
     "vegetacion": 7069,
     "sin_vegetacion": 33
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-14",
@@ -1205,7 +1303,8 @@
     "vegetacion": 7074,
     "sin_vegetacion": 28
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-19",
@@ -1218,7 +1317,8 @@
     "vegetacion": 7058,
     "sin_vegetacion": 44
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-24",
@@ -1231,7 +1331,8 @@
     "vegetacion": 6939,
     "sin_vegetacion": 163
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-03-29",
@@ -1244,7 +1345,8 @@
     "vegetacion": 7007,
     "sin_vegetacion": 95
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-03",
@@ -1257,7 +1359,8 @@
     "vegetacion": 334,
     "sin_vegetacion": 6768
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-08",
@@ -1271,7 +1374,8 @@
     "vegetacion": 6747,
     "sin_vegetacion": 97
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-13",
@@ -1284,7 +1388,8 @@
     "vegetacion": 6920,
     "sin_vegetacion": 182
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-18",
@@ -1297,7 +1402,8 @@
     "vegetacion": 7046,
     "sin_vegetacion": 56
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-23",
@@ -1310,7 +1416,8 @@
     "nube_probable": 6250,
     "nube_segura": 852
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-04-28",
@@ -1325,7 +1432,8 @@
     "nube_probable": 81,
     "cirro": 6972
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-05-03",
@@ -1339,7 +1447,8 @@
     "sin_vegetacion": 10,
     "cirro": 6767
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-05-13",
@@ -1352,7 +1461,8 @@
     "nube_probable": 7064,
     "nube_segura": 38
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-05-18",
@@ -1369,7 +1479,8 @@
     "nube_segura": 54,
     "cirro": 5748
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-05-23",
@@ -1382,7 +1493,8 @@
     "vegetacion": 7073,
     "sin_vegetacion": 29
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-05-28",
@@ -1398,7 +1510,8 @@
     "nube_probable": 2296,
     "cirro": 4323
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-02",
@@ -1416,7 +1529,8 @@
     "nube_segura": 2074,
     "cirro": 326
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-07",
@@ -1434,7 +1548,8 @@
     "nube_segura": 482,
     "cirro": 2528
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-12",
@@ -1449,7 +1564,8 @@
     "nube_probable": 25,
     "cirro": 810
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-17",
@@ -1466,7 +1582,8 @@
     "nube_probable": 1685,
     "nube_segura": 3198
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-22",
@@ -1478,7 +1595,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-06-27",
@@ -1491,7 +1609,8 @@
     "nube_probable": 1627,
     "nube_segura": 5475
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-02",
@@ -1508,7 +1627,8 @@
     "nube_probable": 313,
     "nube_segura": 181
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-07",
@@ -1520,7 +1640,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-12",
@@ -1537,7 +1658,8 @@
     "nube_segura": 315,
     "cirro": 1003
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-17",
@@ -1550,7 +1672,8 @@
     "vegetacion": 720,
     "cirro": 6382
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-22",
@@ -1562,7 +1685,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-07-27",
@@ -1574,7 +1698,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-01",
@@ -1586,7 +1711,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-06",
@@ -1598,7 +1724,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-11",
@@ -1612,7 +1739,8 @@
     "nube_segura": 5607,
     "cirro": 225
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-16",
@@ -1624,7 +1752,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-21",
@@ -1641,7 +1770,8 @@
     "nube_probable": 1376,
     "nube_segura": 3661
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-26",
@@ -1654,7 +1784,8 @@
     "nube_probable": 252,
     "nube_segura": 6850
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-08-31",
@@ -1668,7 +1799,8 @@
     "nube_segura": 2280,
     "cirro": 3137
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-05",
@@ -1684,7 +1816,8 @@
     "nube_probable": 45,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-10",
@@ -1696,7 +1829,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-15",
@@ -1710,7 +1844,8 @@
     "nube_segura": 2190,
     "cirro": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-20",
@@ -1723,7 +1858,8 @@
     "nube_probable": 670,
     "nube_segura": 6432
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-25",
@@ -1736,7 +1872,8 @@
     "nube_probable": 1097,
     "nube_segura": 6005
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-09-30",
@@ -1749,7 +1886,8 @@
     "nube_probable": 6434,
     "nube_segura": 668
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-10-10",
@@ -1766,7 +1904,8 @@
     "nube_probable": 1274,
     "nube_segura": 1379
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-10-15",
@@ -1783,7 +1922,8 @@
     "nube_probable": 482,
     "nube_segura": 209
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-10-20",
@@ -1796,7 +1936,8 @@
     "nube_probable": 2679,
     "nube_segura": 4423
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-10-25",
@@ -1809,7 +1950,8 @@
     "nube_probable": 5330,
     "nube_segura": 1772
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-10-30",
@@ -1823,7 +1965,8 @@
     "nube_segura": 374,
     "cirro": 5700
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-04",
@@ -1840,7 +1983,8 @@
     "nube_probable": 1014,
     "nube_segura": 5800
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-09",
@@ -1857,7 +2001,8 @@
     "nube_probable": 1137,
     "nube_segura": 3037
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-14",
@@ -1869,7 +2014,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-19",
@@ -1886,7 +2032,8 @@
     "nube_probable": 1771,
     "nube_segura": 3184
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-24",
@@ -1903,7 +2050,8 @@
     "nube_probable": 516,
     "nube_segura": 115
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-11-29",
@@ -1919,7 +2067,8 @@
     "nube_probable": 303,
     "nube_segura": 111
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-04",
@@ -1932,7 +2081,8 @@
     "vegetacion": 6994,
     "sin_vegetacion": 108
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-09",
@@ -1948,7 +2098,8 @@
     "nube_probable": 3869,
     "nube_segura": 1884
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-14",
@@ -1960,7 +2111,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-19",
@@ -1972,7 +2124,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-24",
@@ -1984,7 +2137,8 @@
    "histograma": {
     "vegetacion": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2020-12-29",
@@ -1998,7 +2152,8 @@
     "sin_vegetacion": 3,
     "cirro": 254
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-03",
@@ -2015,7 +2170,8 @@
     "nube_probable": 1149,
     "nube_segura": 237
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-08",
@@ -2027,7 +2183,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-13",
@@ -2039,7 +2196,8 @@
    "histograma": {
     "cirro": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-18",
@@ -2052,7 +2210,8 @@
     "vegetacion": 7052,
     "sin_vegetacion": 50
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-23",
@@ -2065,7 +2224,8 @@
     "vegetacion": 6996,
     "sin_vegetacion": 106
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-01-28",
@@ -2078,7 +2238,8 @@
     "vegetacion": 6875,
     "sin_vegetacion": 227
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-02",
@@ -2091,7 +2252,8 @@
     "vegetacion": 6611,
     "sin_vegetacion": 491
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-07",
@@ -2104,7 +2266,8 @@
     "vegetacion": 6347,
     "sin_vegetacion": 755
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-12",
@@ -2117,7 +2280,8 @@
     "vegetacion": 5955,
     "sin_vegetacion": 1147
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-17",
@@ -2134,7 +2298,8 @@
     "nube_probable": 205,
     "nube_segura": 38
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-22",
@@ -2147,7 +2312,8 @@
     "vegetacion": 5116,
     "sin_vegetacion": 1986
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-02-27",
@@ -2160,7 +2326,8 @@
     "vegetacion": 4870,
     "sin_vegetacion": 2232
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-04",
@@ -2173,7 +2340,8 @@
     "vegetacion": 4752,
     "sin_vegetacion": 2350
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-09",
@@ -2187,7 +2355,8 @@
     "nube_segura": 173,
     "cirro": 6251
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-14",
@@ -2200,7 +2369,8 @@
     "vegetacion": 4670,
     "sin_vegetacion": 2432
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-19",
@@ -2212,7 +2382,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-24",
@@ -2229,7 +2400,8 @@
     "nube_probable": 1285,
     "nube_segura": 1486
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-03-29",
@@ -2242,7 +2414,8 @@
     "vegetacion": 4631,
     "sin_vegetacion": 2471
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-03",
@@ -2254,7 +2427,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-08",
@@ -2267,7 +2441,8 @@
     "nube_probable": 7046,
     "nube_segura": 56
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-13",
@@ -2284,7 +2459,8 @@
     "nube_probable": 432,
     "nube_segura": 128
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-18",
@@ -2297,7 +2473,8 @@
     "nube_probable": 6953,
     "cirro": 149
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-23",
@@ -2310,7 +2487,8 @@
     "vegetacion": 4516,
     "sin_vegetacion": 2586
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-04-28",
@@ -2323,7 +2501,8 @@
     "nube_probable": 612,
     "nube_segura": 6490
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-03",
@@ -2339,7 +2518,8 @@
     "nube_probable": 30,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-08",
@@ -2356,7 +2536,8 @@
     "nube_probable": 1036,
     "nube_segura": 550
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-13",
@@ -2369,7 +2550,8 @@
     "vegetacion": 4611,
     "sin_vegetacion": 2491
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-18",
@@ -2381,7 +2563,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-23",
@@ -2394,7 +2577,8 @@
     "nube_probable": 3989,
     "nube_segura": 3113
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-05-28",
@@ -2407,7 +2591,8 @@
     "nube_probable": 1245,
     "nube_segura": 5857
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-02",
@@ -2419,7 +2604,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-07",
@@ -2431,7 +2617,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-12",
@@ -2448,7 +2635,8 @@
     "nube_probable": 369,
     "nube_segura": 67
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-17",
@@ -2465,7 +2653,8 @@
     "nube_probable": 922,
     "nube_segura": 264
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-22",
@@ -2478,7 +2667,8 @@
     "nube_probable": 764,
     "nube_segura": 6338
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-06-27",
@@ -2494,7 +2684,8 @@
     "nube_probable": 1,
     "cirro": 3557
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-02",
@@ -2512,7 +2703,8 @@
     "nube_segura": 16,
     "cirro": 1029
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-07",
@@ -2529,7 +2721,8 @@
     "nube_probable": 2537,
     "nube_segura": 849
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-12",
@@ -2542,7 +2735,8 @@
     "vegetacion": 6732,
     "sin_vegetacion": 370
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-17",
@@ -2554,7 +2748,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-22",
@@ -2567,7 +2762,8 @@
     "vegetacion": 6270,
     "sin_vegetacion": 832
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-07-27",
@@ -2584,7 +2780,8 @@
     "nube_probable": 2035,
     "nube_segura": 1203
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-01",
@@ -2598,7 +2795,8 @@
     "sin_vegetacion": 757,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-06",
@@ -2612,7 +2810,8 @@
     "sin_vegetacion": 562,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-11",
@@ -2625,7 +2824,8 @@
     "nube_probable": 4070,
     "nube_segura": 3032
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-16",
@@ -2643,7 +2843,8 @@
     "nube_segura": 459,
     "cirro": 157
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-21",
@@ -2660,7 +2861,8 @@
     "nube_probable": 441,
     "nube_segura": 67
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-26",
@@ -2672,7 +2874,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-08-31",
@@ -2684,7 +2887,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-05",
@@ -2697,7 +2901,8 @@
     "nube_probable": 7099,
     "nube_segura": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-10",
@@ -2714,7 +2919,8 @@
     "nube_probable": 1091,
     "nube_segura": 359
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-15",
@@ -2731,7 +2937,8 @@
     "nube_probable": 1710,
     "nube_segura": 738
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-20",
@@ -2748,7 +2955,8 @@
     "nube_probable": 1103,
     "nube_segura": 581
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-25",
@@ -2762,7 +2970,8 @@
     "sin_vegetacion": 200,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-09-30",
@@ -2779,7 +2988,8 @@
     "nube_probable": 596,
     "nube_segura": 331
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-05",
@@ -2797,7 +3007,8 @@
     "nube_segura": 30,
     "cirro": 1540
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-10",
@@ -2810,7 +3021,8 @@
     "nube_probable": 165,
     "nube_segura": 6937
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-15",
@@ -2824,7 +3036,8 @@
     "nube_segura": 738,
     "cirro": 1088
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-20",
@@ -2842,7 +3055,8 @@
     "nube_segura": 4313,
     "cirro": 769
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-25",
@@ -2860,7 +3074,8 @@
     "nube_segura": 2713,
     "cirro": 1503
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-10-30",
@@ -2873,7 +3088,8 @@
     "nube_probable": 4215,
     "nube_segura": 2887
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-04",
@@ -2887,7 +3103,8 @@
     "nube_segura": 1571,
     "cirro": 3199
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-09",
@@ -2904,7 +3121,8 @@
     "nube_segura": 1692,
     "cirro": 521
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-14",
@@ -2917,7 +3135,8 @@
     "nube_probable": 2887,
     "cirro": 4215
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-19",
@@ -2931,7 +3150,8 @@
     "sin_vegetacion": 344,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-24",
@@ -2944,7 +3164,8 @@
     "nube_probable": 575,
     "cirro": 6527
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-11-29",
@@ -2958,7 +3179,8 @@
     "sin_vegetacion": 172,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-04",
@@ -2970,7 +3192,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-09",
@@ -2984,7 +3207,8 @@
     "sin_vegetacion": 176,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-14",
@@ -2998,7 +3222,8 @@
     "sin_vegetacion": 158,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-19",
@@ -3012,7 +3237,8 @@
     "sin_vegetacion": 153,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-24",
@@ -3030,7 +3256,8 @@
     "nube_segura": 43,
     "cirro": 3796
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2021-12-29",
@@ -3044,7 +3271,8 @@
     "sin_vegetacion": 129,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-01-03",
@@ -3059,7 +3287,8 @@
     "sin_vegetacion": 125,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-01-13",
@@ -3074,7 +3303,8 @@
     "sin_vegetacion": 136,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-01-18",
@@ -3089,7 +3319,8 @@
     "sin_vegetacion": 272,
     "sin_clasificar": 5
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-01-23",
@@ -3105,7 +3336,8 @@
     "nube_probable": 257,
     "nube_segura": 46
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-01-28",
@@ -3119,7 +3351,8 @@
     "sin_vegetacion": 471,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-02",
@@ -3133,7 +3366,8 @@
     "sin_vegetacion": 542,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-07",
@@ -3147,7 +3381,8 @@
     "sin_vegetacion": 749,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-12",
@@ -3161,7 +3396,8 @@
     "sin_vegetacion": 953,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-17",
@@ -3175,7 +3411,8 @@
     "sin_vegetacion": 1085,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-22",
@@ -3189,7 +3426,8 @@
     "sin_vegetacion": 1273,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-02-27",
@@ -3203,7 +3441,8 @@
     "sin_vegetacion": 1761,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-04",
@@ -3217,7 +3456,8 @@
     "sin_vegetacion": 1961,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-09",
@@ -3231,7 +3471,8 @@
     "sin_vegetacion": 2097,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-14",
@@ -3248,7 +3489,8 @@
     "nube_probable": 343,
     "nube_segura": 37
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-19",
@@ -3261,7 +3503,8 @@
     "nube_probable": 6334,
     "nube_segura": 768
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-24",
@@ -3274,7 +3517,8 @@
     "vegetacion": 4682,
     "sin_vegetacion": 2420
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-03-29",
@@ -3289,7 +3533,8 @@
     "nube_segura": 4,
     "cirro": 6989
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-03",
@@ -3302,7 +3547,8 @@
     "vegetacion": 4638,
     "sin_vegetacion": 2464
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-08",
@@ -3315,7 +3561,8 @@
     "nube_probable": 249,
     "nube_segura": 6853
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-13",
@@ -3329,7 +3576,8 @@
     "sin_vegetacion": 2851,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-18",
@@ -3347,7 +3595,8 @@
     "nube_segura": 1871,
     "cirro": 1982
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-23",
@@ -3364,7 +3613,8 @@
     "nube_probable": 2425,
     "nube_segura": 2797
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-04-28",
@@ -3381,7 +3631,8 @@
     "nube_probable": 1425,
     "nube_segura": 1421
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-03",
@@ -3399,7 +3650,8 @@
     "nube_segura": 178,
     "cirro": 3170
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-08",
@@ -3416,7 +3668,8 @@
     "nube_probable": 607,
     "nube_segura": 346
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-13",
@@ -3429,7 +3682,8 @@
     "nube_probable": 2388,
     "nube_segura": 4714
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-18",
@@ -3441,7 +3695,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-23",
@@ -3454,7 +3709,8 @@
     "vegetacion": 6054,
     "sin_vegetacion": 1048
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-05-28",
@@ -3468,7 +3724,8 @@
     "sin_vegetacion": 1042,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-02",
@@ -3485,7 +3742,8 @@
     "nube_probable": 2249,
     "nube_segura": 2983
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-07",
@@ -3502,7 +3760,8 @@
     "nube_probable": 834,
     "nube_segura": 1345
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-12",
@@ -3516,7 +3775,8 @@
     "nube_segura": 2510,
     "cirro": 1662
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-17",
@@ -3529,7 +3789,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-22",
@@ -3546,7 +3807,8 @@
     "nube_probable": 1179,
     "nube_segura": 616
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-06-27",
@@ -3560,7 +3822,8 @@
     "nube_segura": 24,
     "cirro": 4699
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-02",
@@ -3577,7 +3840,8 @@
     "nube_segura": 1628,
     "cirro": 755
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-07",
@@ -3591,7 +3855,8 @@
     "sin_vegetacion": 336,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-12",
@@ -3605,7 +3870,8 @@
     "sin_vegetacion": 175,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-17",
@@ -3618,7 +3884,8 @@
     "vegetacion": 6760,
     "sin_vegetacion": 342
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-22",
@@ -3635,7 +3902,8 @@
     "nube_segura": 1527,
     "cirro": 3277
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-07-27",
@@ -3652,7 +3920,8 @@
     "nube_probable": 943,
     "nube_segura": 314
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-01",
@@ -3666,7 +3935,8 @@
     "nube_segura": 27,
     "cirro": 2682
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-06",
@@ -3678,7 +3948,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-11",
@@ -3691,7 +3962,8 @@
     "nube_probable": 305,
     "nube_segura": 6797
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-16",
@@ -3708,7 +3980,8 @@
     "nube_probable": 2032,
     "nube_segura": 1718
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-21",
@@ -3720,7 +3993,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-26",
@@ -3734,7 +4008,8 @@
     "nube_segura": 5860,
     "cirro": 210
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-08-31",
@@ -3751,7 +4026,8 @@
     "nube_probable": 890,
     "nube_segura": 1142
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-05",
@@ -3769,7 +4045,8 @@
     "nube_segura": 1,
     "cirro": 4942
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-10",
@@ -3785,7 +4062,8 @@
     "nube_probable": 382,
     "nube_segura": 62
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-15",
@@ -3799,7 +4077,8 @@
     "sin_vegetacion": 610,
     "sin_clasificar": 47
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-20",
@@ -3814,7 +4093,8 @@
     "sin_clasificar": 13,
     "cirro": 476
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-25",
@@ -3827,7 +4107,8 @@
     "nube_probable": 756,
     "nube_segura": 6346
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-09-30",
@@ -3843,7 +4124,8 @@
     "nube_segura": 1,
     "cirro": 6934
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-05",
@@ -3857,7 +4139,8 @@
     "nube_segura": 2864,
     "cirro": 2335
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-10",
@@ -3874,7 +4157,8 @@
     "nube_probable": 1324,
     "nube_segura": 4721
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-15",
@@ -3891,7 +4175,8 @@
     "nube_probable": 789,
     "nube_segura": 141
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-20",
@@ -3909,7 +4194,8 @@
     "nube_segura": 1428,
     "cirro": 489
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-25",
@@ -3923,7 +4209,8 @@
     "nube_segura": 3891,
     "cirro": 758
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-10-30",
@@ -3937,7 +4224,8 @@
     "sin_vegetacion": 327,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-04",
@@ -3953,7 +4241,8 @@
     "nube_segura": 1,
     "cirro": 4559
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-09",
@@ -3967,7 +4256,8 @@
     "nube_probable": 4269,
     "nube_segura": 1300
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-14",
@@ -3984,7 +4274,8 @@
     "nube_probable": 1648,
     "nube_segura": 2875
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-19",
@@ -3999,7 +4290,8 @@
     "sin_vegetacion": 413,
     "sin_clasificar": 13
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-24",
@@ -4013,7 +4305,8 @@
     "vegetacion": 6721,
     "sin_vegetacion": 209
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-11-29",
@@ -4028,7 +4321,8 @@
     "nube_segura": 928,
     "cirro": 5082
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-04",
@@ -4045,7 +4339,8 @@
     "nube_segura": 2,
     "cirro": 4910
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-09",
@@ -4059,7 +4354,8 @@
     "sin_vegetacion": 163,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-14",
@@ -4072,7 +4368,8 @@
     "nube_probable": 7098,
     "nube_segura": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-19",
@@ -4086,7 +4383,8 @@
     "sin_vegetacion": 195,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-24",
@@ -4100,7 +4398,8 @@
     "sin_vegetacion": 222,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2022-12-29",
@@ -4114,7 +4413,8 @@
     "sin_vegetacion": 339,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-03",
@@ -4128,7 +4428,8 @@
     "sin_vegetacion": 308,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-08",
@@ -4144,7 +4445,8 @@
     "nube_probable": 1,
     "cirro": 6377
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-13",
@@ -4158,7 +4460,8 @@
     "sin_vegetacion": 484,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-18",
@@ -4172,7 +4475,8 @@
     "sin_vegetacion": 484,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-23",
@@ -4186,7 +4490,8 @@
     "sin_vegetacion": 487,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-01-28",
@@ -4199,7 +4504,8 @@
     "vegetacion": 6594,
     "sin_vegetacion": 508
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-02",
@@ -4212,7 +4518,8 @@
     "vegetacion": 6579,
     "sin_vegetacion": 523
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-07",
@@ -4226,7 +4533,8 @@
     "sin_vegetacion": 516,
     "sin_clasificar": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-12",
@@ -4240,7 +4548,8 @@
     "sin_vegetacion": 636,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-17",
@@ -4254,7 +4563,8 @@
     "sin_vegetacion": 773,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-22",
@@ -4268,7 +4578,8 @@
     "sin_vegetacion": 853,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-02-27",
@@ -4282,7 +4593,8 @@
     "sin_vegetacion": 864,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-04",
@@ -4296,7 +4608,8 @@
     "sin_vegetacion": 877,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-09",
@@ -4310,7 +4623,8 @@
     "nube_probable": 1534,
     "nube_segura": 5483
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-14",
@@ -4325,7 +4639,8 @@
     "nube_probable": 1243,
     "nube_segura": 5655
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-19",
@@ -4339,7 +4654,8 @@
     "sin_vegetacion": 832,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-24",
@@ -4353,7 +4669,8 @@
     "sin_vegetacion": 841,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-03-29",
@@ -4368,7 +4685,8 @@
     "sin_clasificar": 76,
     "nube_probable": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-03",
@@ -4382,7 +4700,8 @@
     "sin_vegetacion": 860,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-08",
@@ -4399,7 +4718,8 @@
     "nube_segura": 39,
     "cirro": 6484
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-13",
@@ -4413,7 +4733,8 @@
     "sin_vegetacion": 836,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-18",
@@ -4427,7 +4748,8 @@
     "sin_vegetacion": 702,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-23",
@@ -4439,7 +4761,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-04-28",
@@ -4457,7 +4780,8 @@
     "nube_segura": 3133,
     "cirro": 145
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-03",
@@ -4471,7 +4795,8 @@
     "sin_vegetacion": 693,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-08",
@@ -4485,7 +4810,8 @@
     "sin_vegetacion": 652,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-13",
@@ -4499,7 +4825,8 @@
     "sin_vegetacion": 652,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-18",
@@ -4513,7 +4840,8 @@
     "sin_vegetacion": 762,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-23",
@@ -4530,7 +4858,8 @@
     "nube_probable": 1041,
     "nube_segura": 913
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-05-28",
@@ -4547,7 +4876,8 @@
     "nube_probable": 1833,
     "nube_segura": 4415
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-02",
@@ -4560,7 +4890,8 @@
     "nube_probable": 6863,
     "nube_segura": 239
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-07",
@@ -4574,7 +4905,8 @@
     "sin_vegetacion": 495,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-12",
@@ -4591,7 +4923,8 @@
     "nube_probable": 298,
     "nube_segura": 77
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-17",
@@ -4604,7 +4937,8 @@
     "nube_probable": 2337,
     "nube_segura": 4765
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-22",
@@ -4621,7 +4955,8 @@
     "nube_probable": 793,
     "nube_segura": 361
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-06-27",
@@ -4638,7 +4973,8 @@
     "nube_probable": 658,
     "nube_segura": 163
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-02",
@@ -4650,7 +4986,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-07",
@@ -4663,7 +5000,8 @@
     "nube_probable": 6539,
     "nube_segura": 563
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-12",
@@ -4681,7 +5019,8 @@
     "nube_segura": 1,
     "cirro": 519
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-17",
@@ -4696,7 +5035,8 @@
     "nube_segura": 1,
     "cirro": 7094
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-22",
@@ -4711,7 +5051,8 @@
     "nube_segura": 2,
     "cirro": 7095
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-07-27",
@@ -4726,7 +5067,8 @@
     "sin_clasificar": 1,
     "cirro": 171
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-01",
@@ -4739,7 +5081,8 @@
     "vegetacion": 6853,
     "sin_vegetacion": 249
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-06",
@@ -4753,7 +5096,8 @@
     "sin_vegetacion": 321,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-11",
@@ -4767,7 +5111,8 @@
     "sin_vegetacion": 360,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-16",
@@ -4784,7 +5129,8 @@
     "nube_segura": 3761,
     "cirro": 1538
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-21",
@@ -4798,7 +5144,8 @@
     "nube_segura": 4228,
     "cirro": 939
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-26",
@@ -4811,7 +5158,8 @@
     "nube_probable": 4827,
     "nube_segura": 2275
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-08-31",
@@ -4826,7 +5174,8 @@
     "nube_segura": 1,
     "cirro": 7096
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-05",
@@ -4840,7 +5189,8 @@
     "sin_vegetacion": 338,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-10",
@@ -4852,7 +5202,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-15",
@@ -4866,7 +5217,8 @@
     "nube_segura": 2,
     "cirro": 6706
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-20",
@@ -4880,7 +5232,8 @@
     "sin_vegetacion": 348,
     "sin_clasificar": 5
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-25",
@@ -4893,7 +5246,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-09-30",
@@ -4906,7 +5260,8 @@
     "vegetacion": 6757,
     "sin_vegetacion": 345
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-05",
@@ -4918,7 +5273,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-10",
@@ -4935,7 +5291,8 @@
     "nube_probable": 39,
     "nube_segura": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-15",
@@ -4948,7 +5305,8 @@
     "nube_probable": 5675,
     "nube_segura": 1427
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-20",
@@ -4962,7 +5320,8 @@
     "nube_segura": 1,
     "cirro": 6395
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-25",
@@ -4975,7 +5334,8 @@
     "nube_probable": 7098,
     "nube_segura": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-10-30",
@@ -4990,7 +5350,8 @@
     "nube_probable": 2,
     "cirro": 1221
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-04",
@@ -5004,7 +5365,8 @@
     "sin_vegetacion": 86,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-09",
@@ -5018,7 +5380,8 @@
     "sin_vegetacion": 101,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-14",
@@ -5032,7 +5395,8 @@
     "sin_vegetacion": 50,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-19",
@@ -5044,7 +5408,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-24",
@@ -5058,7 +5423,8 @@
     "sin_vegetacion": 36,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-11-29",
@@ -5072,7 +5438,8 @@
     "sin_vegetacion": 28,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-12-09",
@@ -5086,7 +5453,8 @@
     "sin_vegetacion": 26,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-12-14",
@@ -5101,7 +5469,8 @@
     "sin_clasificar": 1,
     "cirro": 9
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-12-19",
@@ -5118,7 +5487,8 @@
     "nube_probable": 823,
     "nube_segura": 2439
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-12-24",
@@ -5132,7 +5502,8 @@
     "sin_vegetacion": 32,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2023-12-29",
@@ -5145,7 +5516,8 @@
     "vegetacion": 7066,
     "sin_vegetacion": 36
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-03",
@@ -5159,7 +5531,8 @@
     "sin_vegetacion": 28,
     "sin_clasificar": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-08",
@@ -5173,7 +5546,8 @@
     "sin_vegetacion": 23,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-13",
@@ -5187,7 +5561,8 @@
     "sin_vegetacion": 29,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-18",
@@ -5200,7 +5575,8 @@
     "vegetacion": 7068,
     "sin_vegetacion": 34
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-23",
@@ -5213,7 +5589,8 @@
     "vegetacion": 7065,
     "sin_vegetacion": 37
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-01-28",
@@ -5226,7 +5603,8 @@
     "vegetacion": 7063,
     "sin_vegetacion": 39
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-02",
@@ -5239,7 +5617,8 @@
     "vegetacion": 7044,
     "sin_vegetacion": 58
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-07",
@@ -5253,7 +5632,8 @@
     "nube_probable": 107,
     "nube_segura": 6991
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-12",
@@ -5266,7 +5646,8 @@
     "vegetacion": 7064,
     "sin_vegetacion": 38
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-17",
@@ -5279,7 +5660,8 @@
     "vegetacion": 7060,
     "sin_vegetacion": 42
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-22",
@@ -5296,7 +5678,8 @@
     "nube_probable": 1218,
     "nube_segura": 1723
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-02-27",
@@ -5309,7 +5692,8 @@
     "vegetacion": 7044,
     "sin_vegetacion": 58
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-03",
@@ -5322,7 +5706,8 @@
     "vegetacion": 7030,
     "sin_vegetacion": 72
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-08",
@@ -5335,7 +5720,8 @@
     "vegetacion": 7037,
     "sin_vegetacion": 65
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-13",
@@ -5348,7 +5734,8 @@
     "vegetacion": 7031,
     "sin_vegetacion": 71
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-18",
@@ -5361,7 +5748,8 @@
     "vegetacion": 7030,
     "sin_vegetacion": 72
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-23",
@@ -5375,7 +5763,8 @@
     "nube_segura": 2,
     "cirro": 4076
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-03-28",
@@ -5389,7 +5778,8 @@
     "nube_segura": 2,
     "cirro": 7057
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-02",
@@ -5405,7 +5795,8 @@
     "nube_segura": 1,
     "cirro": 4988
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-07",
@@ -5419,7 +5810,8 @@
     "sin_vegetacion": 70,
     "cirro": 852
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-12",
@@ -5432,7 +5824,8 @@
     "vegetacion": 7039,
     "sin_vegetacion": 63
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-17",
@@ -5446,7 +5839,8 @@
     "nube_segura": 214,
     "cirro": 5165
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-22",
@@ -5464,7 +5858,8 @@
     "nube_segura": 523,
     "cirro": 701
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-04-27",
@@ -5476,7 +5871,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-02",
@@ -5490,7 +5886,8 @@
     "nube_segura": 1,
     "cirro": 171
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-07",
@@ -5503,7 +5900,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-12",
@@ -5517,7 +5915,8 @@
     "nube_segura": 58,
     "cirro": 6530
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-17",
@@ -5532,7 +5931,8 @@
     "nube_segura": 1,
     "cirro": 7025
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-22",
@@ -5544,7 +5944,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-05-27",
@@ -5556,7 +5957,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-01",
@@ -5572,7 +5974,8 @@
     "nube_segura": 2,
     "cirro": 5861
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-06",
@@ -5584,7 +5987,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-11",
@@ -5601,7 +6005,8 @@
     "nube_probable": 2227,
     "nube_segura": 1410
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-16",
@@ -5614,7 +6019,8 @@
     "nube_probable": 792,
     "nube_segura": 6310
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-21",
@@ -5627,7 +6033,8 @@
     "nube_probable": 3889,
     "nube_segura": 3213
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-06-26",
@@ -5643,7 +6050,8 @@
     "nube_segura": 4557,
     "cirro": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-01",
@@ -5660,7 +6068,8 @@
     "nube_probable": 412,
     "nube_segura": 300
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-06",
@@ -5677,7 +6086,8 @@
     "nube_probable": 1139,
     "nube_segura": 2446
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-11",
@@ -5690,7 +6100,8 @@
     "vegetacion": 7079,
     "sin_vegetacion": 23
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-16",
@@ -5703,7 +6114,8 @@
     "vegetacion": 7077,
     "sin_vegetacion": 25
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-21",
@@ -5716,7 +6128,8 @@
     "vegetacion": 7078,
     "sin_vegetacion": 24
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-26",
@@ -5732,7 +6145,8 @@
     "nube_segura": 21,
     "cirro": 6886
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-07-31",
@@ -5745,7 +6159,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-05",
@@ -5758,7 +6173,8 @@
     "nube_probable": 7100,
     "nube_segura": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-10",
@@ -5770,7 +6186,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-15",
@@ -5785,7 +6202,8 @@
     "nube_segura": 1,
     "cirro": 7096
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-20",
@@ -5798,7 +6216,8 @@
     "vegetacion": 7041,
     "sin_vegetacion": 61
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-25",
@@ -5811,7 +6230,8 @@
     "nube_probable": 6699,
     "nube_segura": 403
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-08-30",
@@ -5824,7 +6244,8 @@
     "nube_probable": 6875,
     "nube_segura": 227
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-04",
@@ -5837,7 +6258,8 @@
     "nube_probable": 3368,
     "nube_segura": 3734
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-09",
@@ -5852,7 +6274,8 @@
     "nube_segura": 1,
     "cirro": 7097
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-14",
@@ -5865,7 +6288,8 @@
     "vegetacion": 7072,
     "sin_vegetacion": 30
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-19",
@@ -5882,7 +6306,8 @@
     "nube_probable": 336,
     "nube_segura": 56
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-24",
@@ -5895,7 +6320,8 @@
     "vegetacion": 7073,
     "sin_vegetacion": 29
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-09-29",
@@ -5907,7 +6333,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-04",
@@ -5920,7 +6347,8 @@
     "vegetacion": 6952,
     "sin_vegetacion": 150
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-09",
@@ -5934,7 +6362,8 @@
     "nube_probable": 598,
     "nube_segura": 6502
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-14",
@@ -5946,7 +6375,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-19",
@@ -5963,7 +6393,8 @@
     "nube_probable": 1791,
     "nube_segura": 760
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-24",
@@ -5978,7 +6409,8 @@
     "nube_segura": 1,
     "cirro": 7095
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-10-29",
@@ -5993,7 +6425,8 @@
     "nube_segura": 213,
     "cirro": 6374
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-03",
@@ -6005,7 +6438,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-08",
@@ -6019,7 +6453,8 @@
     "nube_segura": 2514,
     "cirro": 2122
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-13",
@@ -6037,7 +6472,8 @@
     "nube_segura": 1370,
     "cirro": 771
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-18",
@@ -6054,7 +6490,8 @@
     "nube_probable": 1237,
     "nube_segura": 720
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-23",
@@ -6067,7 +6504,8 @@
     "nube_probable": 7084,
     "nube_segura": 18
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-11-28",
@@ -6080,7 +6518,8 @@
     "vegetacion": 6971,
     "sin_vegetacion": 131
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-03",
@@ -6098,7 +6537,8 @@
     "nube_segura": 2787,
     "cirro": 459
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-08",
@@ -6111,7 +6551,8 @@
     "vegetacion": 7046,
     "sin_vegetacion": 56
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-13",
@@ -6124,7 +6565,8 @@
     "vegetacion": 7054,
     "sin_vegetacion": 48
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-13",
@@ -6137,7 +6579,8 @@
     "vegetacion": 7056,
     "sin_vegetacion": 46
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-18",
@@ -6150,7 +6593,8 @@
     "vegetacion": 7059,
     "sin_vegetacion": 43
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-23",
@@ -6164,7 +6608,8 @@
     "nube_segura": 144,
     "cirro": 2643
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2024-12-28",
@@ -6181,7 +6626,8 @@
     "nube_segura": 80,
     "cirro": 5023
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-02",
@@ -6194,7 +6640,8 @@
     "vegetacion": 7064,
     "sin_vegetacion": 38
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-07",
@@ -6207,7 +6654,8 @@
     "vegetacion": 7066,
     "sin_vegetacion": 36
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-12",
@@ -6220,7 +6668,8 @@
     "vegetacion": 7067,
     "sin_vegetacion": 35
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-17",
@@ -6233,7 +6682,8 @@
     "vegetacion": 7069,
     "sin_vegetacion": 33
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-22",
@@ -6246,7 +6696,8 @@
     "vegetacion": 7052,
     "sin_vegetacion": 50
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-01-27",
@@ -6259,7 +6710,8 @@
     "vegetacion": 7036,
     "sin_vegetacion": 66
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-01",
@@ -6273,7 +6725,8 @@
     "sin_vegetacion": 103,
     "cirro": 233
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-06",
@@ -6286,7 +6739,8 @@
     "vegetacion": 6950,
     "sin_vegetacion": 152
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-11",
@@ -6301,7 +6755,8 @@
     "nube_segura": 1,
     "cirro": 3970
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-16",
@@ -6314,7 +6769,8 @@
     "vegetacion": 6859,
     "sin_vegetacion": 243
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-21",
@@ -6327,7 +6783,8 @@
     "vegetacion": 6830,
     "sin_vegetacion": 272
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-02-26",
@@ -6340,7 +6797,8 @@
     "nube_probable": 48,
     "nube_segura": 7054
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-03",
@@ -6357,7 +6815,8 @@
     "nube_segura": 3997,
     "cirro": 23
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-08",
@@ -6370,7 +6829,8 @@
     "vegetacion": 6843,
     "sin_vegetacion": 259
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-13",
@@ -6384,7 +6844,8 @@
     "sin_vegetacion": 276,
     "cirro": 166
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-15",
@@ -6400,7 +6861,8 @@
     "nube_segura": 2,
     "cirro": 4691
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-18",
@@ -6413,7 +6875,8 @@
     "nube_probable": 836,
     "nube_segura": 6266
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-23",
@@ -6426,7 +6889,8 @@
     "vegetacion": 6755,
     "sin_vegetacion": 347
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-25",
@@ -6439,7 +6903,8 @@
     "vegetacion": 6745,
     "sin_vegetacion": 357
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-03-28",
@@ -6452,7 +6917,8 @@
     "vegetacion": 6502,
     "sin_vegetacion": 600
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-02",
@@ -6466,7 +6932,8 @@
     "sin_vegetacion": 356,
     "cirro": 3344
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-04",
@@ -6480,7 +6947,8 @@
     "nube_segura": 1,
     "cirro": 5479
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-07",
@@ -6493,7 +6961,8 @@
     "nube_probable": 88,
     "nube_segura": 7014
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-12",
@@ -6510,7 +6979,8 @@
     "nube_probable": 405,
     "nube_segura": 24
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-14",
@@ -6525,7 +6995,8 @@
     "nube_probable": 3,
     "cirro": 3522
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-17",
@@ -6543,7 +7014,8 @@
     "nube_segura": 277,
     "cirro": 942
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-22",
@@ -6561,7 +7033,8 @@
     "nube_segura": 104,
     "cirro": 882
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-24",
@@ -6578,7 +7051,8 @@
     "nube_probable": 702,
     "nube_segura": 1034
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-04-27",
@@ -6595,7 +7069,8 @@
     "nube_probable": 2082,
     "nube_segura": 2669
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-02",
@@ -6613,7 +7088,8 @@
     "nube_segura": 1532,
     "cirro": 1355
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-04",
@@ -6630,7 +7106,8 @@
     "nube_probable": 1701,
     "nube_segura": 1522
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-07",
@@ -6646,7 +7123,8 @@
     "nube_probable": 223,
     "nube_segura": 105
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-12",
@@ -6659,7 +7137,8 @@
     "nube_probable": 6910,
     "nube_segura": 192
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-14",
@@ -6676,7 +7155,8 @@
     "nube_segura": 1763,
     "cirro": 2730
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-17",
@@ -6689,7 +7169,8 @@
     "nube_probable": 349,
     "nube_segura": 6753
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-22",
@@ -6702,7 +7183,8 @@
     "nube_probable": 2801,
     "nube_segura": 4301
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-24",
@@ -6714,7 +7196,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-05-27",
@@ -6727,7 +7210,8 @@
     "nube_probable": 1229,
     "nube_segura": 5873
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-01",
@@ -6740,7 +7224,8 @@
     "nube_probable": 533,
     "nube_segura": 6569
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-03",
@@ -6753,7 +7238,8 @@
     "vegetacion": 7063,
     "sin_vegetacion": 39
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-06",
@@ -6765,7 +7251,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-11",
@@ -6777,7 +7264,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-13",
@@ -6789,7 +7277,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-16",
@@ -6802,7 +7291,8 @@
     "vegetacion": 6970,
     "sin_vegetacion": 132
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-21",
@@ -6815,7 +7305,8 @@
     "nube_probable": 7100,
     "nube_segura": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-23",
@@ -6828,7 +7319,8 @@
     "nube_probable": 2,
     "nube_segura": 7100
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-06-26",
@@ -6842,7 +7334,8 @@
     "sin_vegetacion": 20,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-01",
@@ -6855,7 +7348,8 @@
     "vegetacion": 7077,
     "sin_vegetacion": 25
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-03",
@@ -6873,7 +7367,8 @@
     "nube_segura": 191,
     "cirro": 2116
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-06",
@@ -6887,7 +7382,8 @@
     "sin_vegetacion": 93,
     "sin_clasificar": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-11",
@@ -6901,7 +7397,8 @@
     "nube_segura": 4,
     "cirro": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-13",
@@ -6919,7 +7416,8 @@
     "nube_segura": 4,
     "cirro": 600
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-16",
@@ -6932,7 +7430,8 @@
     "vegetacion": 7055,
     "sin_vegetacion": 47
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-21",
@@ -6945,7 +7444,8 @@
     "vegetacion": 7030,
     "sin_vegetacion": 72
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-23",
@@ -6957,7 +7457,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-26",
@@ -6975,7 +7476,8 @@
     "nube_segura": 1652,
     "cirro": 3449
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-07-31",
@@ -6991,7 +7493,8 @@
     "nube_segura": 7,
     "cirro": 6784
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-02",
@@ -7008,7 +7511,8 @@
     "nube_probable": 502,
     "nube_segura": 288
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-05",
@@ -7024,7 +7528,8 @@
     "nube_probable": 819,
     "nube_segura": 488
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-12",
@@ -7041,7 +7546,8 @@
     "nube_probable": 1639,
     "nube_segura": 2039
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-15",
@@ -7056,7 +7562,8 @@
     "nube_segura": 2,
     "cirro": 7094
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-20",
@@ -7073,7 +7580,8 @@
     "nube_probable": 1655,
     "nube_segura": 1270
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-22",
@@ -7090,7 +7598,8 @@
     "nube_probable": 1710,
     "nube_segura": 3423
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-25",
@@ -7103,7 +7612,8 @@
     "nube_probable": 6356,
     "nube_segura": 746
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-08-30",
@@ -7117,7 +7627,8 @@
     "nube_segura": 2051,
     "cirro": 3190
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-01",
@@ -7132,7 +7643,8 @@
     "sin_clasificar": 13,
     "nube_probable": 7
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-04",
@@ -7144,7 +7656,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-09",
@@ -7158,7 +7671,8 @@
     "sin_vegetacion": 69,
     "nube_probable": 18
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-11",
@@ -7171,7 +7685,8 @@
     "vegetacion": 7015,
     "sin_vegetacion": 87
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-14",
@@ -7184,7 +7699,8 @@
     "vegetacion": 7002,
     "sin_vegetacion": 100
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-19",
@@ -7198,7 +7714,8 @@
     "nube_segura": 1,
     "cirro": 1921
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-21",
@@ -7211,7 +7728,8 @@
     "vegetacion": 7030,
     "sin_vegetacion": 72
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-24",
@@ -7224,7 +7742,8 @@
     "nube_probable": 7100,
     "nube_segura": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-09-29",
@@ -7241,7 +7760,8 @@
     "nube_probable": 857,
     "nube_segura": 139
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-01",
@@ -7254,7 +7774,8 @@
     "nube_probable": 7100,
     "nube_segura": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-04",
@@ -7268,7 +7789,8 @@
     "nube_segura": 93,
     "cirro": 6451
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-09",
@@ -7281,7 +7803,8 @@
     "nube_probable": 3305,
     "cirro": 3797
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-11",
@@ -7294,7 +7817,8 @@
     "nube_probable": 3676,
     "nube_segura": 3426
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-14",
@@ -7311,7 +7835,8 @@
     "nube_probable": 78,
     "cirro": 74
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-19",
@@ -7324,7 +7849,8 @@
     "vegetacion": 7083,
     "sin_vegetacion": 19
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-21",
@@ -7337,7 +7863,8 @@
     "nube_probable": 7037,
     "nube_segura": 65
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-24",
@@ -7350,7 +7877,8 @@
     "nube_probable": 390,
     "nube_segura": 6712
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-29",
@@ -7363,7 +7891,8 @@
     "nube_probable": 978,
     "nube_segura": 6124
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-10-31",
@@ -7379,7 +7908,8 @@
     "nube_segura": 1,
     "cirro": 6439
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-03",
@@ -7392,7 +7922,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-08",
@@ -7405,7 +7936,8 @@
     "vegetacion": 7077,
     "sin_vegetacion": 25
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-10",
@@ -7417,7 +7949,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-13",
@@ -7432,7 +7965,8 @@
     "nube_segura": 1,
     "cirro": 7097
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-18",
@@ -7449,7 +7983,8 @@
     "nube_segura": 2523,
     "cirro": 2295
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-20",
@@ -7462,7 +7997,8 @@
     "nube_probable": 6301,
     "nube_segura": 801
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-23",
@@ -7475,7 +8011,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-28",
@@ -7487,7 +8024,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-11-30",
@@ -7504,7 +8042,8 @@
     "nube_segura": 2,
     "cirro": 215
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-03",
@@ -7522,7 +8061,8 @@
     "nube_segura": 586,
     "cirro": 4206
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-08",
@@ -7539,7 +8079,8 @@
     "nube_probable": 713,
     "nube_segura": 233
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-10",
@@ -7552,7 +8093,8 @@
     "vegetacion": 7077,
     "sin_vegetacion": 25
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-13",
@@ -7565,7 +8107,8 @@
     "nube_probable": 7099,
     "nube_segura": 3
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-18",
@@ -7578,7 +8121,8 @@
     "vegetacion": 7075,
     "sin_vegetacion": 27
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-20",
@@ -7591,7 +8135,8 @@
     "vegetacion": 7076,
     "sin_vegetacion": 26
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-23",
@@ -7604,7 +8149,8 @@
     "vegetacion": 7075,
     "sin_vegetacion": 27
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-28",
@@ -7617,7 +8163,8 @@
     "vegetacion": 7072,
     "sin_vegetacion": 30
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2025-12-30",
@@ -7630,7 +8177,8 @@
     "vegetacion": 7074,
     "sin_vegetacion": 28
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-02",
@@ -7643,7 +8191,8 @@
     "vegetacion": 7073,
     "sin_vegetacion": 29
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-07",
@@ -7656,7 +8205,8 @@
     "vegetacion": 7069,
     "sin_vegetacion": 33
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-09",
@@ -7670,7 +8220,8 @@
     "nube_segura": 29,
     "cirro": 293
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-12",
@@ -7687,7 +8238,8 @@
     "nube_segura": 65,
     "cirro": 3979
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-17",
@@ -7700,7 +8252,8 @@
     "vegetacion": 7071,
     "sin_vegetacion": 31
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-22",
@@ -7713,7 +8266,8 @@
     "vegetacion": 7074,
     "sin_vegetacion": 28
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-01-27",
@@ -7726,7 +8280,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-01",
@@ -7738,7 +8293,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-06",
@@ -7750,7 +8306,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-11",
@@ -7763,7 +8320,8 @@
     "vegetacion": 7080,
     "sin_vegetacion": 22
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-16",
@@ -7777,7 +8335,8 @@
     "sin_vegetacion": 18,
     "cirro": 1807
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-21",
@@ -7790,7 +8349,8 @@
     "vegetacion": 7078,
     "sin_vegetacion": 24
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-02-26",
@@ -7804,7 +8364,8 @@
     "nube_segura": 6,
     "cirro": 1111
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-03",
@@ -7817,7 +8378,8 @@
     "vegetacion": 7069,
     "sin_vegetacion": 33
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-08",
@@ -7830,7 +8392,8 @@
     "vegetacion": 7055,
     "sin_vegetacion": 47
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-10",
@@ -7847,7 +8410,8 @@
     "nube_probable": 865,
     "nube_segura": 343
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-13",
@@ -7860,7 +8424,8 @@
     "vegetacion": 7056,
     "sin_vegetacion": 46
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-18",
@@ -7877,7 +8442,8 @@
     "nube_probable": 2043,
     "nube_segura": 1301
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-20",
@@ -7894,7 +8460,8 @@
     "nube_probable": 39,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-23",
@@ -7908,7 +8475,8 @@
     "sin_vegetacion": 157,
     "sin_clasificar": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-28",
@@ -7921,7 +8489,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-03-30",
@@ -7934,7 +8503,8 @@
     "vegetacion": 7056,
     "sin_vegetacion": 46
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-02",
@@ -7950,7 +8520,8 @@
     "nube_probable": 79,
     "nube_segura": 4
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-07",
@@ -7966,7 +8537,8 @@
     "nube_segura": 1,
     "cirro": 7077
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-09",
@@ -7981,7 +8553,8 @@
     "nube_segura": 2,
     "cirro": 2057
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-12",
@@ -7996,7 +8569,8 @@
     "nube_segura": 1,
     "cirro": 697
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-17",
@@ -8009,7 +8583,8 @@
     "vegetacion": 7040,
     "sin_vegetacion": 62
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-19",
@@ -8022,7 +8597,8 @@
     "vegetacion": 7046,
     "sin_vegetacion": 56
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-22",
@@ -8039,7 +8615,8 @@
     "nube_segura": 4390,
     "cirro": 42
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-27",
@@ -8052,7 +8629,8 @@
     "nube_probable": 3206,
     "nube_segura": 3896
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-04-29",
@@ -8066,7 +8644,8 @@
     "nube_segura": 1,
     "cirro": 651
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-02",
@@ -8078,7 +8657,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-07",
@@ -8094,7 +8674,8 @@
     "nube_probable": 331,
     "nube_segura": 100
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-09",
@@ -8107,7 +8688,8 @@
     "vegetacion": 7055,
     "sin_vegetacion": 47
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-12",
@@ -8121,7 +8703,8 @@
     "nube_segura": 117,
     "cirro": 6524
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-17",
@@ -8138,7 +8721,8 @@
     "nube_probable": 539,
     "nube_segura": 219
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-19",
@@ -8151,7 +8735,8 @@
     "vegetacion": 7062,
     "sin_vegetacion": 40
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-22",
@@ -8165,7 +8750,8 @@
     "sin_vegetacion": 37,
     "nube_probable": 23
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-27",
@@ -8178,7 +8764,8 @@
     "nube_probable": 7100,
     "nube_segura": 2
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-05-29",
@@ -8192,7 +8779,8 @@
     "nube_segura": 829,
     "cirro": 3300
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-01",
@@ -8205,7 +8793,8 @@
     "vegetacion": 7065,
     "sin_vegetacion": 37
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-06",
@@ -8217,7 +8806,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-08",
@@ -8230,7 +8820,8 @@
     "nube_probable": 7018,
     "nube_segura": 84
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-11",
@@ -8243,7 +8834,8 @@
     "vegetacion": 7064,
     "sin_vegetacion": 38
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-16",
@@ -8256,7 +8848,8 @@
     "vegetacion": 7068,
     "sin_vegetacion": 34
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-18",
@@ -8268,7 +8861,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-21",
@@ -8281,7 +8875,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-26",
@@ -8294,7 +8889,8 @@
     "vegetacion": 7063,
     "sin_vegetacion": 39
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-06-28",
@@ -8307,7 +8903,8 @@
     "vegetacion": 7062,
     "sin_vegetacion": 40
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-01",
@@ -8319,7 +8916,8 @@
    "histograma": {
     "nube_probable": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-06",
@@ -8332,7 +8930,8 @@
     "vegetacion": 7069,
     "sin_vegetacion": 33
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-08",
@@ -8345,7 +8944,8 @@
     "vegetacion": 7067,
     "sin_vegetacion": 35
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-11",
@@ -8358,7 +8958,8 @@
     "vegetacion": 7073,
     "sin_vegetacion": 29
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-16",
@@ -8371,7 +8972,8 @@
     "vegetacion": 7061,
     "sin_vegetacion": 41
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-18",
@@ -8385,7 +8987,8 @@
     "sin_vegetacion": 37,
     "cirro": 2238
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-21",
@@ -8401,7 +9004,8 @@
     "nube_probable": 1485,
     "cirro": 4355
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-26",
@@ -8415,7 +9019,8 @@
     "nube_segura": 255,
     "cirro": 6271
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-28",
@@ -8428,7 +9033,8 @@
     "vegetacion": 7057,
     "sin_vegetacion": 45
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-07-31",
@@ -8441,7 +9047,8 @@
     "vegetacion": 7062,
     "sin_vegetacion": 40
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-05",
@@ -8454,7 +9061,8 @@
     "nube_probable": 7101,
     "nube_segura": 1
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-07",
@@ -8468,7 +9076,8 @@
     "nube_segura": 2547,
     "cirro": 1302
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-10",
@@ -8481,7 +9090,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-15",
@@ -8494,7 +9104,8 @@
     "vegetacion": 7070,
     "sin_vegetacion": 32
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-17",
@@ -8506,7 +9117,8 @@
    "histograma": {
     "nube_segura": 7102
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-20",
@@ -8519,7 +9131,8 @@
     "vegetacion": 7074,
     "sin_vegetacion": 28
    },
-   "error": null
+   "error": null,
+   "aviso": null
   },
   {
    "fecha": "2026-08-25",
@@ -8532,7 +9145,8 @@
     "vegetacion": 7075,
     "sin_vegetacion": 27
    },
-   "error": null
+   "error": null,
+   "aviso": null
   }
  ],
  "errores": []

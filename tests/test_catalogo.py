@@ -90,3 +90,19 @@ def test_por_ano_agrupa_y_ordena():
     ]
     g = por_ano(items)
     assert list(g) == ["2020", "2022"] and len(g["2022"]) == 2
+
+
+def test_un_fallo_de_red_no_se_confunde_con_ausencia_de_dato():
+    """Distinguir "no hay escenas" de "no pude preguntar" es el punto."""
+    import requests
+
+    from cielociego.catalogo import RedCaida
+
+    class SesionRota:
+        def post(self, *a, **k):
+            raise requests.ConnectionError("Read timed out")
+
+    with pytest.raises(RedCaida) as e:
+        busca("col", (0, 0, 1, 1), "2020-01-01", "2020-12-31", sesion=SesionRota())
+    assert "no se pudo preguntar" in str(e.value)
+    assert "ConnectionError" in str(e.value)

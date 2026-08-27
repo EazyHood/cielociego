@@ -40,8 +40,12 @@ import numpy as np
 os.environ.setdefault("AWS_NO_SIGN_REQUEST", "YES")
 os.environ.setdefault("GDAL_DISABLE_READDIR_ON_OPEN", "EMPTY_DIR")
 os.environ.setdefault("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".tif")
-os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "3")
-os.environ.setdefault("GDAL_HTTP_RETRY_DELAY", "1")
+# GDAL reintenta por su cuenta las lecturas por rango. Sin declarar los
+# codigos, no reintenta los que devuelve S3 al estrangular.
+os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "5")
+os.environ.setdefault("GDAL_HTTP_RETRY_DELAY", "2")
+os.environ.setdefault("GDAL_HTTP_RETRY_CODES", "429,500,502,503,504")
+os.environ.setdefault("GDAL_HTTP_TIMEOUT", "60")
 
 import rasterio
 from rasterio.errors import NotGeoreferencedWarning
@@ -54,6 +58,12 @@ from shapely.geometry.base import BaseGeometry
 SIN_DATO, SATURADO, SOMBRA_OROG, SOMBRA_NUBE = 0, 1, 2, 3
 VEGETACION, SIN_VEGETACION, AGUA, SIN_CLASIF = 4, 5, 6, 7
 NUBE_PROB, NUBE_SEGURA, CIRRO, NIEVE = 8, 9, 10, 11
+
+# Por debajo de esto la cifra deja de significar nada: con 20 pixeles el
+# porcentaje solo se mueve de 5 en 5 puntos, y el borde del poligono pesa mas
+# que su interior. No se falla -- hay predios pequenos legitimos -- pero se
+# MARCA, para que nadie lea "12,5 % ciego" de 8 pixeles como si fuera preciso.
+PIXELES_MINIMOS = 25
 
 CIEGO_ESTRICTO = frozenset({SIN_DATO, SATURADO, SOMBRA_NUBE, NUBE_PROB, NUBE_SEGURA, CIRRO})
 CIEGO_AMPLIO = CIEGO_ESTRICTO | {SOMBRA_OROG}
@@ -77,6 +87,16 @@ class Vista:
     cc_tesela: float | None        # lo que declaraba la tesela, para contrastar
     histograma: dict[str, int]
     error: str | None = None
+    aviso: str | None = None       # la medida vale, pero hay que leerla con cuidado
+
+    @property
+    def resolucion_pct(self) -> float:
+        """Cuanto vale UN pixel en puntos porcentuales. Es la precision real."""
+        return 100.0 / self.pixeles if self.pixeles else float("inf")
+
+    @property
+    def fiable(self) -> bool:
+        return self.error is None and self.pixeles >= PIXELES_MINIMOS
 
     @property
     def util_estricto(self) -> float:
@@ -160,6 +180,11 @@ def mide_vista(
         vacio.error = "0 pixeles dentro del predio"
         return vacio
 
+    aviso = None
+    if n < PIXELES_MINIMOS:
+        aviso = (f"solo {n} pixeles ({n * 4 / 100:.2f} ha): el porcentaje se mueve "
+                 f"de {100 / n:.0f} en {100 / n:.0f} puntos y el borde domina")
+
     clases, cuentas = np.unique(val, return_counts=True)
     # strict=True a proposito: si clases y cuentas no cuadraran, zip() truncaria
     # en silencio y el histograma saldria incompleto sin que nadie lo notara.
@@ -168,4 +193,4 @@ def mide_vista(
     ciego_e = float(sum(k for c, k in pares if int(c) in CIEGO_ESTRICTO)) / n
     ciego_a = float(sum(k for c, k in pares if int(c) in CIEGO_AMPLIO)) / n
 
-    return Vista(fecha, id_toma, n, ciego_e, ciego_a, cc_tesela, hist)
+    return Vista(fecha, id_toma, n, ciego_e, ciego_a, cc_tesela, hist, aviso=aviso)

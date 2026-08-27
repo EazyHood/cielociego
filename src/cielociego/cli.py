@@ -19,10 +19,12 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 from pathlib import Path
 
+from .analisis import forma_del_cambio, robustez_dejando_fuera, tendencia_hac
 from .barrido import _barra, barre
 from .catalogo import S1_GRD, S2_L2A, busca, por_ano
 from .dedup import deduplica
 from .predios import Predio, carga_predio
+from .procedencia import ficha
 from .radar import a_pasadas, cruza
 from .red import sesion as _sesion
 from .sar import busca_rtc, elige_orbita, mide_retro, reparto_orbitas
@@ -74,7 +76,13 @@ def paso_catalogo(clave: str, predio: Predio, desde: str, hasta: str) -> list[di
     ]
     destino = SALIDAS / f"{clave}_s2_tomas.json"
     destino.parent.mkdir(parents=True, exist_ok=True)
-    destino.write_text(json.dumps(tomas, ensure_ascii=False, indent=1), encoding="utf-8")
+    destino.write_text(
+        json.dumps(
+            {"procedencia": ficha(desde=desde, hasta=hasta, coleccion=S2_L2A), "tomas": tomas},
+            ensure_ascii=False, indent=1,
+        ),
+        encoding="utf-8",
+    )
     return tomas
 
 
@@ -82,8 +90,10 @@ def paso_scl(clave: str, predio: Predio, tomas: list[dict], hilos: int) -> dict:
     """Mide la fraccion ciega del predio en cada toma."""
     t0 = time.time()
     r = barre(predio, tomas, hilos=hilos, avisa=_barra)
-    r.guarda(SALIDAS / f"{clave}_scl.json")
-    _log(f"  SCL        {len(r.vistas)} medidas, {len(r.fallidas)} fallidas, "
+    r.guarda(SALIDAS / f"{clave}_scl.json",
+             procedencia=ficha(umbral_util=UMBRAL_UTIL, hilos=hilos))
+    rec = f", {r.recuperadas} recuperadas en 2a pasada" if r.recuperadas else ""
+    _log(f"  SCL        {len(r.vistas)} medidas, {len(r.fallidas)} fallidas{rec}, "
          f"{time.time() - t0:.0f}s")
     for v in r.fallidas:
         _log(f"    ! {v.fecha}  {v.error}")
@@ -117,6 +127,7 @@ def paso_radar(clave: str, predio: Predio, scl: dict, desde: str, hasta: str) ->
         json.dumps(
             {
                 "predio": predio.nombre,
+                "procedencia": ficha(desde=desde, hasta=hasta, umbral_util=UMBRAL_UTIL),
                 "pasadas_s1": [
                     {"fecha": p.iso, "plataforma": p.plataforma, "orbita": p.orbita}
                     for p in pasadas
@@ -178,9 +189,23 @@ def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int,
 
     ok = sorted([m for m in medidas if m.error is None], key=lambda m: m.fecha)
     mal = [m for m in medidas if m.error]
+    analisis: dict[str, object] = {}
+    if len(ok) >= 20:
+        fechas = [m.fecha for m in ok]
+        vv = [m.vv_db for m in ok]
+        t = tendencia_hac(fechas, vv)
+        formas = forma_del_cambio(fechas, vv)
+        analisis = {
+            "tendencia_vv": t.dict(),
+            "formas": [f.dict() for f in formas],
+            "robustez": robustez_dejando_fuera(fechas, vv),
+        }
+
     (SALIDAS / f"{clave}_sar.json").write_text(
         json.dumps(
-            {"predio": predio.nombre, "orbita": orbita, "reparto_orbitas": reparto,
+            {"predio": predio.nombre,
+             "procedencia": ficha(desde=desde, hasta=hasta, orbita=orbita),
+             "orbita": orbita, "reparto_orbitas": reparto, "analisis": analisis,
              "medidas": [m.dict() for m in ok], "errores": [m.dict() for m in mal]},
             ensure_ascii=False, indent=1,
         ),
@@ -190,33 +215,68 @@ def paso_sar(clave: str, predio: Predio, desde: str, hasta: str, hilos: int,
     for m in mal[:3]:
         _log(f"    ! {m.fecha}  {m.error}")
 
-    if len(ok) > 2:
+    if analisis:
         import numpy as np
 
-        f = np.array([date.fromisoformat(m.fecha).toordinal() for m in ok], dtype=float)
-        vv = np.array([m.vv_db for m in ok])
-        pendiente = float(np.polyfit(f, vv, 1)[0] * 365)
-        _log(f"  VV medio  {vv.mean():.2f} dB (sd {vv.std():.2f}) | "
-             f"tendencia {pendiente:+.3f} dB/ano")
+        t = tendencia_hac([m.fecha for m in ok], [m.vv_db for m in ok])
+        serie = np.array([m.vv_db for m in ok])
+        _log(f"  VV medio  {serie.mean():.2f} dB (sd {serie.std():.2f})")
+        _log(f"  tendencia {t.pendiente:+.3f} dB/ano  IC95 [{t.ic95[0]:+.3f}, {t.ic95[1]:+.3f}] "
+             f"(HAC; n={t.n}, n_efectivo={t.n_efectivo:.0f})")
+        mejor, segundo = formas[0], formas[1]
+        _log(f'  forma     gana "{mejor.nombre}" por dBIC {segundo.bic - mejor.bic:.0f} '
+             f'sobre "{segundo.nombre}"')
+        antes, despues = mejor.nivel_antes, mejor.nivel_despues
+        if antes is not None and despues is not None:
+            tramo = f"{mejor.corte}" + (f" -> {mejor.corte_fin}" if mejor.corte_fin else "")
+            _log(f"            nivel {antes:+.2f} -> {despues:+.2f} dB "
+                 f"({despues - antes:+.2f})  en {tramo}")
 
         # Control: la tendencia DENTRO de un solo satelite. Si desaparece ahi,
         # era un cambio de calibracion disfrazado de cambio en el suelo.
         solo = [m for m in ok if m.plataforma.lower() == "sentinel-1a"]
         if len(solo) > 20:
-            fa = np.array([date.fromisoformat(m.fecha).toordinal() for m in solo], dtype=float)
-            va = np.array([m.vv_db for m in solo])
-            _log(f"  control   solo Sentinel-1A (n={len(solo)}): "
-                 f"{float(np.polyfit(fa, va, 1)[0] * 365):+.3f} dB/ano")
+            ts = tendencia_hac([m.fecha for m in solo], [m.vv_db for m in solo])
+            _log(f"  control   solo Sentinel-1A (n={len(solo)}): {ts.pendiente:+.3f} dB/ano "
+                 f"IC95 [{ts.ic95[0]:+.3f}, {ts.ic95[1]:+.3f}]")
 
 
 def cmd_medir(args) -> int:
-    for clave, predio in _predios(args.predio):
+    """Mide cada predio por separado, y sigue aunque uno falle.
+
+    POR QUE VA AISLADO
+    ------------------
+    Medido el 2026-08-26: un corte de red a mitad del catalogo tumbaba el
+    proceso entero con un `ConnectionError` crudo, y se perdia tambien el
+    trabajo de los predios que ya habian salido bien. Ahora el que falla se
+    declara y se pasa al siguiente, y el **codigo de salida es 1** para que
+    nadie lea `salidas/` como si estuviera completa.
+    """
+    predios = _predios(args.predio)
+    fallados: list[tuple[str, str]] = []
+
+    for clave, predio in predios:
         _log(f"\n=== {predio.nombre}  ({predio.area_ha} ha)")
-        tomas = paso_catalogo(clave, predio, args.desde, args.hasta)
-        scl = paso_scl(clave, predio, tomas, args.hilos)
-        paso_radar(clave, predio, scl, args.desde, args.hasta)
-        if not args.sin_radar:
-            paso_sar(clave, predio, args.desde, args.hasta, args.hilos, args.orbita)
+        try:
+            tomas = paso_catalogo(clave, predio, args.desde, args.hasta)
+            scl = paso_scl(clave, predio, tomas, args.hilos)
+            paso_radar(clave, predio, scl, args.desde, args.hasta)
+            if not args.sin_radar:
+                paso_sar(clave, predio, args.desde, args.hasta, args.hilos, args.orbita)
+        except KeyboardInterrupt:
+            raise
+        except Exception as exc:
+            fallados.append((predio.nombre, f"{type(exc).__name__}: {exc}"[:160]))
+            _log(f"  !! {predio.nombre} queda SIN MEDIR ({type(exc).__name__})")
+            _log(f"     {str(exc)[:150]}")
+
+    if fallados:
+        _log(f"\nMEDICION INCOMPLETA: {len(fallados)} de {len(predios)} predios sin medir")
+        for nombre, motivo in fallados:
+            _log(f"  - {nombre}: {motivo}")
+        _log("  Si el motivo es de red, relanzalo: lo que ya salio bien esta escrito.")
+        return 1
+
     _log(f"\nlisto. Resultados en {SALIDAS}")
     return 0
 

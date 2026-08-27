@@ -144,7 +144,33 @@ def pasadas_anuales(s2_por_ano, s1_por_ano) -> str:
     return _svg(fig)
 
 
-def serie_radar(medidas, huecos, desde: date, hasta: date, *, titulo_y="γ⁰ VV (dB)") -> str:
+def _curva(modelo, fechas) -> np.ndarray:
+    """Valores ajustados del modelo ganador, para trazarlo sobre los puntos."""
+    o = np.array([date.fromisoformat(f).toordinal() for f in fechas], dtype=float)
+    a, b = modelo.get("nivel_antes"), modelo.get("nivel_despues")
+    nombre = modelo.get("nombre", "")
+    if a is None or b is None:
+        return np.full(len(o), np.nan)
+    if nombre == "escalon" and modelo.get("corte"):
+        c = date.fromisoformat(modelo["corte"]).toordinal()
+        return np.where(o < c, a, b)
+    if nombre == "meseta-rampa-meseta" and modelo.get("corte") and modelo.get("corte_fin"):
+        c0 = date.fromisoformat(modelo["corte"]).toordinal()
+        c1 = date.fromisoformat(modelo["corte_fin"]).toordinal()
+        return a + (b - a) * np.clip((o - c0) / max(c1 - c0, 1), 0, 1)
+    return np.full(len(o), np.nan)
+
+
+def _etiqueta(modelo) -> str:
+    nombre = modelo.get("nombre", "modelo")
+    a, b = modelo.get("nivel_antes"), modelo.get("nivel_despues")
+    if a is None or b is None:
+        return nombre
+    return f"{nombre}: {a:+.2f} → {b:+.2f} dB ({b - a:+.2f})"
+
+
+def serie_radar(medidas, huecos, desde: date, hasta: date, *,
+                titulo_y="γ⁰ VV (dB)", modelo=None) -> str:
     """Serie de retrodispersion con los tramos ciegos del optico sombreados.
 
     Un solo grupo de orbita: mezclarlos crearia saltos que no son del cultivo.
@@ -165,10 +191,18 @@ def serie_radar(medidas, huecos, desde: date, hasta: date, *, titulo_y="γ⁰ VV
     ax.plot(xs, ys, linestyle="none", marker="o", markersize=2.3,
             color=RADAR, markeredgewidth=0, zorder=4)
 
-    if len(xs) > 2:
+    # El modelo que se dibuja NO es siempre una recta: se pinta el que gana por
+    # BIC. Antes se trazaba una tendencia lineal pase lo que pase, y en este
+    # predio eso era enganoso -- la serie es meseta-transicion-meseta, y una
+    # recta la describe peor por 270 puntos de BIC.
+    if modelo is not None and len(xs) > 2:
+        ax.plot(xs, _curva(modelo, [m["fecha"] for m in medidas]), color=CIEGO,
+                linewidth=2.0, zorder=5, label=_etiqueta(modelo))
+        ax.legend(frameon=False, fontsize=9, labelcolor=TINTA, loc="upper left")
+    elif len(xs) > 2:
         b = np.polyfit(xs, ys, 1)
-        ax.plot(xs, np.polyval(b, xs), color=CIEGO, linewidth=1.9,
-                zorder=5, label=f"tendencia {b[0] * 365:+.2f} dB/año")
+        ax.plot(xs, np.polyval(b, xs), color=CIEGO, linewidth=1.9, linestyle=(0, (5, 3)),
+                zorder=5, label=f"tendencia lineal {b[0] * 365:+.2f} dB/año")
         ax.legend(frameon=False, fontsize=9, labelcolor=TINTA, loc="upper left")
 
     ax.set_xlim(0, hasta.toordinal() - d0)

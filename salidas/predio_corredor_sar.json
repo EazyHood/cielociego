@@ -1,10 +1,90 @@
 {
  "predio": "Predio de estudio - corredor bananero",
+ "procedencia": {
+  "version": "0.1.0",
+  "commit": "bb62488",
+  "medido_en": "2026-08-27T00:06:06+00:00",
+  "python": "3.12.10",
+  "sistema": "Windows",
+  "parametros": {
+   "desde": "2019-01-01",
+   "hasta": "2026-08-25",
+   "orbita": 77
+  }
+ },
  "orbita": 77,
  "reparto_orbitas": {
   "77": 341,
   "142": 265,
   "69": 248
+ },
+ "analisis": {
+  "tendencia_vv": {
+   "pendiente": 0.6430595137236886,
+   "ee_clasico": 0.01572447624191759,
+   "ee_hac": 0.026629606485286717,
+   "ic95": [
+    0.5908654850125267,
+    0.6952535424348506
+   ],
+   "n": 341,
+   "n_efectivo": 47.011574466670204,
+   "autocorr_residuos": 0.7576795252497889,
+   "inflacion_ee": 1.694,
+   "significativa": true
+  },
+  "formas": [
+   {
+    "nombre": "meseta-rampa-meseta",
+    "sse": 71.44119237890062,
+    "k": 4,
+    "bic": -509.65814701604046,
+    "corte": "2021-06-23",
+    "corte_fin": "2023-08-12",
+    "nivel_antes": -6.784500103771837,
+    "nivel_despues": -3.286335652810126
+   },
+   {
+    "nombre": "escalon",
+    "sse": 126.82534322791471,
+    "k": 3,
+    "bic": -319.77776391357787,
+    "corte": "2022-07-12",
+    "corte_fin": null,
+    "nivel_antes": -6.618717391304346,
+    "nivel_despues": -3.4669171974522293
+   },
+   {
+    "nombre": "rampa lineal",
+    "sse": 163.20643798601617,
+    "k": 2,
+    "bic": -239.60774124239086,
+    "corte": null,
+    "corte_fin": null,
+    "nivel_antes": null,
+    "nivel_despues": null
+   },
+   {
+    "nombre": "constante",
+    "sse": 968.3763661524927,
+    "k": 1,
+    "bic": 361.74665724781846,
+    "corte": null,
+    "corte_fin": null,
+    "nivel_antes": null,
+    "nivel_despues": null
+   }
+  ],
+  "robustez": {
+   "sin 2019": 0.7175288067618318,
+   "sin 2020": 0.6346035112641281,
+   "sin 2021": 0.5998371528363298,
+   "sin 2022": 0.6425534048157086,
+   "sin 2023": 0.633072077298445,
+   "sin 2024": 0.6234933594931557,
+   "sin 2025": 0.6410048851048541,
+   "sin 2026": 0.6844564392796616
+  }
  },
  "medidas": [
   {

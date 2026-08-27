@@ -80,3 +80,33 @@ def test_el_control_de_plataforma_marca_las_tendencias_grandes():
     """Las que superan 0,3 dB/ano se pintan en color de aviso, no en gris."""
     svg = graficas.control_plataforma({"grande": 0.688, "plano": -0.022})
     assert graficas.CIEGO.lstrip("#") in svg.lower().replace("#", "")
+
+
+# --- la grafica debe dibujar el modelo que gana, no una recta siempre -------
+MODELO_MESETA = {
+    "nombre": "meseta-rampa-meseta", "corte": "2019-03-01", "corte_fin": "2019-06-01",
+    "nivel_antes": -6.8, "nivel_despues": -3.3,
+}
+
+
+def test_la_serie_dibuja_el_modelo_que_se_le_pasa():
+    svg = graficas.serie_radar(MEDIDAS, HUECOS, D0, D1, modelo=MODELO_MESETA)
+    assert "meseta-rampa-meseta" in svg
+    assert "-6.80" in svg or "−6.80" in svg or "-6.8" in svg
+
+
+def test_sin_modelo_avisa_de_que_la_recta_es_solo_una_referencia():
+    """La recta queda punteada a proposito: es un resumen, no el modelo."""
+    svg = graficas.serie_radar(MEDIDAS, HUECOS, D0, D1)
+    assert "tendencia lineal" in svg
+
+
+def test_un_modelo_de_escalon_se_dibuja_como_escalon():
+    escalon = {"nombre": "escalon", "corte": "2019-05-01",
+               "nivel_antes": -7.0, "nivel_despues": -3.0}
+    assert "escalon" in graficas.serie_radar(MEDIDAS, HUECOS, D0, D1, modelo=escalon)
+
+
+def test_un_modelo_sin_niveles_no_revienta_la_grafica():
+    pobre = {"nombre": "rampa lineal", "nivel_antes": None, "nivel_despues": None}
+    assert graficas.serie_radar(MEDIDAS, HUECOS, D0, D1, modelo=pobre).startswith("<svg")

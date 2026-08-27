@@ -161,12 +161,33 @@ class Credencial:
         return f"{href}?{self.token(sesion)}"
 
 
-_CREDENCIAL = Credencial()
+# Una credencial por coleccion, creada cuando hace falta. Antes era un unico
+# singleton de modulo fijado a `sentinel-1-rtc`: funcionaba, pero era estado
+# global que se filtraba entre pruebas y que habria servido el token
+# equivocado el dia que se leyera otra coleccion.
+_CREDENCIALES: dict[str, Credencial] = {}
+_CERROJO_CRED = threading.Lock()
 
 
-def firma(href: str, *, sesion: requests.Session | None = None) -> str:
+def credencial(coleccion: str = COLECCION) -> Credencial:
+    """Credencial de esa coleccion, reutilizada si ya existe."""
+    with _CERROJO_CRED:
+        if coleccion not in _CREDENCIALES:
+            _CREDENCIALES[coleccion] = Credencial(coleccion)
+        return _CREDENCIALES[coleccion]
+
+
+def olvida_credenciales() -> None:
+    """Tira los tokens guardados. Para las pruebas y para forzar una renovacion."""
+    with _CERROJO_CRED:
+        _CREDENCIALES.clear()
+
+
+def firma(
+    href: str, *, sesion: requests.Session | None = None, coleccion: str = COLECCION
+) -> str:
     """Firma anonima del Planetary Computer, con el token de contenedor cacheado."""
-    return _CREDENCIAL.firma(href, sesion)
+    return credencial(coleccion).firma(href, sesion)
 
 
 def mide_retro(

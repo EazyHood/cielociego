@@ -21,6 +21,19 @@ HUE_F = json.load(open("salidas/predio_fundacion_radar.json", encoding="utf-8"))
 HUE_C = json.load(open("salidas/predio_corredor_radar.json", encoding="utf-8"))["huecos"]
 SAR_C = json.load(open("salidas/predio_corredor_sar.json", encoding="utf-8"))
 SAR_F = json.load(open("salidas/predio_fundacion_sar.json", encoding="utf-8"))
+ANA_C = SAR_C.get("analisis", {})
+ANA_F = SAR_F.get("analisis", {})
+_FORMAS = ANA_C.get("formas") or [{}, {}]
+FORMA_C, FORMA_C2 = _FORMAS[0], (_FORMAS[1] if len(_FORMAS) > 1 else {})
+TEND_C = ANA_C.get("tendencia_vv", {})
+TEND_FU = ANA_F.get("tendencia_vv", {})
+ROB_C = ANA_C.get("robustez", {})
+_IC_C = TEND_C.get("ic95", [0, 0])
+_IC_F = TEND_FU.get("ic95", [0, 0])
+VECES = abs((TEND_C.get("pendiente") or 1) / (TEND_FU.get("pendiente") or 1))
+SALTO = (FORMA_C.get("nivel_despues") or 0) - (FORMA_C.get("nivel_antes") or 0)
+DBIC = FORMA_C2.get("bic", 0) - FORMA_C.get("bic", 0)
+
 for _k in ("sar_c", "sar_f", "ctrl"):
     G[_k] = open(f"salidas/grafica_{_k}.svg", encoding="utf-8").read()
 
@@ -326,46 +339,79 @@ HTML = f"""<title>Nueve de cada diez días</title>
   <div class="cuerpo">
     <h2>Y no solo estaba: traía señal</h2>
     <div class="pila g2 medida">
-      <p>Que exista una pasada no significa que sirva. Así que se extrajo la serie completa de
+      <p>Que exista una pasada no significa que sirva. Se extrajo la serie completa de
       retrodispersión sobre el polígono — <b>{n(len(SAR_C["medidas"]) + len(SAR_F["medidas"]))}
       medidas</b>, todas de la misma órbita, porque mezclar geometrías inventa saltos que no son
       del cultivo.</p>
-      <p>En el corredor bananero la serie no es ruido: <b>sube {n(SUBIDA, 1)} dB en siete años</b>,
-      de forma sostenida y con una autocorrelación entre pasadas consecutivas de 0,96.</p>
+      <p>En el corredor bananero la serie no es ruido. Pero <b>tampoco es la recta que parecía</b>:
+      comparando cuatro formas posibles —y penalizando los puntos de corte que hay que buscar— la
+      que gana es <b>meseta&nbsp;→&nbsp;transición&nbsp;→&nbsp;meseta</b>, por
+      {n(DBIC)} puntos de BIC sobre la siguiente.</p>
     </div>
+    <pre>nivel estable hasta   {FORMA_C.get("corte", "?")}      {n(FORMA_C.get("nivel_antes") or 0, 2)} dB
+TRANSICION            {FORMA_C.get("corte", "?")} -> {FORMA_C.get("corte_fin", "?")}
+nivel estable desde   {FORMA_C.get("corte_fin", "?")}      {n(FORMA_C.get("nivel_despues") or 0, 2)} dB
+                                           <span class="suave">salto {n(SALTO, 2)} dB</span></pre>
     <figure>
       <div class="lienzo">{G["sar_c"]}</div>
       <figcaption>Corredor bananero, órbita 77, {n(N_TODAS)} pasadas. Cada punto es la media del
-      predio en γ⁰ VV. Las franjas naranjas son los tramos de 15 días o más en que el óptico no vio
-      nada.</figcaption>
+      predio en γ⁰ VV; la línea es <b>el modelo que gana</b>, no una recta impuesta. Las franjas
+      naranjas son los tramos de 15 días o más sin óptico.</figcaption>
     </figure>
+    <p class="nota medida">La diferencia importa para leerlo. <b>Una rampa continua parece
+    crecimiento; una meseta, una transición y una meseta nueva parece un evento</b> — una siembra,
+    una tala, un cambio de uso. El dato no dice cuál, pero sí dice que no fue gradual a lo largo de
+    siete años.</p>
+
     <div class="aviso pila g2">
       <h3>Antes de creérselo: ¿y si fuera el satélite y no el suelo?</h3>
-      <p class="suave">La subida arranca justo cuando se retiró Sentinel-1B, así que podía ser un
+      <p class="suave">El cambio arranca cerca de la retirada de Sentinel-1B, así que podía ser un
       cambio de calibración disfrazado de cambio agronómico. El control es medir la tendencia
       <b>dentro de un solo satélite</b>: si es artefacto, ahí desaparece.</p>
     </div>
     <figure>
       <div class="lienzo">{G["ctrl"]}</div>
-      <figcaption>No desaparece: dentro de Sentinel-1A sola la subida es de
-      {n(TEND_S1A, 3)} dB/año, incluso mayor que mezclando plataformas. Y el predio vecino, con los
-      mismos satélites, la misma órbita y el mismo procesado, sale plano.</figcaption>
+      <figcaption>No desaparece: dentro de Sentinel-1A sola la pendiente es {n(TEND_S1A, 3)} dB/año,
+      incluso mayor que mezclando plataformas. En el mismo año, S1A y S1B difieren entre 0,04 y
+      0,50 dB: no hay sesgo de plataforma que explique 3,5.</figcaption>
     </figure>
     <div class="balance">
-      <div class="err"><span class="cifra">{n(TEND_S1A, 2)}</span>
-        <span class="rotulo">dB/año en el corredor, <b>medido dentro de Sentinel-1A sola</b>
-        (n={N_S1A})</span></div>
-      <div class="ok"><span class="cifra">{n(TEND_FUND, 3)}</span>
-        <span class="rotulo">dB/año en Fundación, <b>mismo satélite y misma órbita</b> (n={N_FUND})</span></div>
+      <div class="err"><span class="cifra">{n(TEND_C.get("pendiente", 0), 2)}</span>
+        <span class="rotulo">dB/año en el corredor, con
+        <b>IC 95 % [{n(_IC_C[0], 2)}, {n(_IC_C[1], 2)}]</b> robusto a autocorrelación</span></div>
+      <div class="ok"><span class="cifra">{n(VECES, 0)}×</span>
+        <span class="rotulo">menos cambia el predio vecino: {n(TEND_FU.get("pendiente", 0), 3)} dB/año,
+        y en sentido contrario</span></div>
     </div>
+    <p class="nota medida"><b>Y aquí hay que hilar fino: el vecino no es exactamente «plano».</b>
+    En la serie completa su pendiente es {n(TEND_FU.get("pendiente", 0), 3)} dB/año con
+    IC 95 % [{n(_IC_F[0], 3)}, {n(_IC_F[1], 3)}] — pequeña, pero el intervalo no cruza el cero.
+    Restringido a Sentinel-1A, el mismo predio da −0,022 con IC [−0,093, +0,049], que <em>sí</em>
+    lo cruza: <b>con ese subconjunto es indistinguible de plano; con la serie entera hay un
+    descenso leve y real</b>. Lo que el control demuestra no es que allí no pase nada, sino que
+    <b>allí no pasa nada parecido</b>. Que el método detecte también el cambio pequeño lo refuerza
+    en vez de debilitarlo.</p>
+
+    <div class="pila g2 medida">
+      <p class="nota"><b>Por qué el intervalo es más ancho de lo que parecería.</b> Un ajuste por
+      mínimos cuadrados supone observaciones independientes, y las de una serie de radar no lo son:
+      los residuos arrastran ({n(TEND_C.get("autocorr_residuos", 0), 2)} de autocorrelación), así
+      que las <b>{n(TEND_C.get("n", 0))} pasadas valen como
+      {n(TEND_C.get("n_efectivo", 0), 0)} observaciones independientes</b>. El error estándar
+      clásico se quedaba <b>{n(TEND_C.get("inflacion_ee", 1), 1)} veces corto</b>; el que se publica
+      aquí es el corregido.</p>
+      <p class="nota"><b>Y no depende de un año suelto.</b> Recalculando la pendiente y quitando
+      cada año entero, sale entre {n(min(ROB_C.values()) if ROB_C else 0, 2)} y
+      {n(max(ROB_C.values()) if ROB_C else 0, 2)} dB/año.</p>
+    </div>
+
     <figure>
       <div class="lienzo">{G["sar_f"]}</div>
-      <figcaption>Fundación, órbita 77. La misma medida sobre el predio vecino: sin tendencia. Es el
-      control que descarta que la subida del corredor sea del instrumento.</figcaption>
+      <figcaption>Fundación, órbita 77. El mismo procedimiento sobre el predio vecino.</figcaption>
     </figure>
-    <p class="nota medida">Algo cambió en esas 284 hectáreas entre 2021 y 2022 y siguió cambiando
-    después. <b>Qué fue, este trabajo no lo sabe</b> — hace falta ir al campo o cruzar con registros
-    de siembra. Lo que sí queda medido es que el radar lo registró de principio a fin, y que en el
+    <p class="nota medida">Algo cambió en esas 284 hectáreas y se estabilizó en un nivel nuevo.
+    <b>Qué fue, este trabajo no lo sabe</b> — hace falta ir al campo o cruzar con registros de
+    siembra. Lo que sí queda medido es que el radar lo registró de principio a fin, y que en el
     tramo del cambio el óptico llegó a estar <b>55 días seguidos</b> sin una imagen aprovechable.</p>
   </div>
 </article>

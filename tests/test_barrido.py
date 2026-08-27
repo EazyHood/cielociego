@@ -110,3 +110,50 @@ def test_barrido_vacio_no_revienta(escenario):
     predio, _ = escenario
     r = barre(predio, [], hilos=2)
     assert r.total == 0 and not r.vistas
+
+
+# --- segunda pasada: separar el tropiezo de red del fichero muerto ---------
+def test_una_escena_que_falla_y_luego_va_se_recupera(escenario, monkeypatch):
+    """El caso real: 0 fallidas por la manana, 14 por la tarde, por DNS."""
+    predio, toma = escenario
+    t = toma("intermitente", scl.VEGETACION, "2023-01-01")
+
+    from cielociego import barrido as mod
+
+    real = mod.mide_vista
+    fallos = {"n": 0}
+
+    def falla_la_primera(href, geom, **kw):
+        if fallos["n"] == 0:
+            fallos["n"] += 1
+            v = real("/no/existe.tif", geom, **kw)   # provoca un error real
+            return v
+        return real(href, geom, **kw)
+
+    monkeypatch.setattr(mod, "mide_vista", falla_la_primera)
+    r = barre(predio, [t], hilos=1, reintentos=2, espera=0.01)
+    assert len(r.vistas) == 1 and not r.fallidas
+    assert r.recuperadas == 1, "debe contar cuantas salvo la segunda pasada"
+
+
+def test_un_fichero_muerto_de_verdad_sigue_fallando(escenario):
+    """La del 23-ene-2024 apunta a una ruta que ya no existe: insistir no la salva."""
+    predio, _ = escenario
+    t = {"scl": "/no/existe.tif", "fecha": "2024-01-23T15:00:00Z", "id": "muerta", "cc": 0}
+    r = barre(predio, [t], hilos=1, reintentos=2, espera=0.01)
+    assert len(r.fallidas) == 1 and r.recuperadas == 0
+    assert r.fallidas[0].error
+
+
+def test_se_puede_desactivar_la_segunda_pasada(escenario):
+    predio, _ = escenario
+    t = {"scl": "/no/existe.tif", "fecha": "2023-01-01T15:00:00Z", "id": "x", "cc": 0}
+    r = barre(predio, [t], hilos=1, reintentos=0)
+    assert len(r.fallidas) == 1 and r.recuperadas == 0
+
+
+def test_las_recuperadas_quedan_escritas_en_el_json(escenario, tmp_path):
+    predio, toma = escenario
+    r = barre(predio, [toma("a", scl.VEGETACION, "2023-01-01")], hilos=1, reintentos=0)
+    doc = json.loads(r.guarda(tmp_path / "s.json").read_text(encoding="utf-8"))
+    assert "recuperadas_en_segunda_pasada" in doc

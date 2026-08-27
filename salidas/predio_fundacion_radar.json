@@ -1,5 +1,17 @@
 {
  "predio": "Predio estudio",
+ "procedencia": {
+  "version": "0.1.0",
+  "commit": "bb62488",
+  "medido_en": "2026-08-27T00:07:03+00:00",
+  "python": "3.12.10",
+  "sistema": "Windows",
+  "parametros": {
+   "desde": "2019-01-01",
+   "hasta": "2026-08-25",
+   "umbral_util": 0.1
+  }
+ },
  "pasadas_s1": [
   {
    "fecha": "2019-01-11",

@@ -66,8 +66,9 @@ def test_el_paso_de_catalogo_deduplica_y_guarda(entorno, monkeypatch, capsys):
     assert len(tomas) == 2, "la copia de linea vieja debe caer"
     assert tomas[0]["cc"] == 5.0, "se conserva la linea de procesado mas alta"
     guardado = json.loads((salidas / "finca_s2_tomas.json").read_text(encoding="utf-8"))
-    assert guardado == tomas
-    assert "26.6 %" not in capsys.readouterr().out or True  # el log no debe reventar
+    assert guardado["tomas"] == tomas
+    assert guardado["procedencia"]["version"], "cada salida lleva su procedencia"
+    assert guardado["procedencia"]["parametros"]["desde"] == "2023-01-01"
 
 
 # --- paso 2: SCL sobre el poligono -----------------------------------------
