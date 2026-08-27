@@ -1,7 +1,10 @@
 # Un filtro que descarta días buenos: sesgo del metadato de nubosidad de Sentinel-2 a escala de predio
 
 **Jhonatan del Río Mejía** · Universidad del Magdalena, Santa Marta, Colombia
-· Autor de correspondencia · ORCID [[PENDIENTE: abrir ORCID]]
+· Autor de correspondencia
+
+> El ORCID y la filiación se cargan en el formulario de envío de la revista, no en el
+> manuscrito: la revisión es doble anónima.
 
 > **Estado del manuscrito.** Esqueleto en construcción. Todo número entre dobles corchetes está
 > **sin medir todavía** y no puede pasar a una versión enviable. Los números sin corchetes ya
@@ -184,7 +187,7 @@ claves por país**. Austria sola tiene más de 400.000 máscaras, así que un li
 cientos de peticiones en un país y nunca llega al trópico. La consecuencia es que la selección
 recorre la cabeza lexicográfica de los recortes de cada país, no el país entero.
 
-[[PENDIENTE: tabla 1 — parcelas por país, mediana y rango de superficie, y régimen de nubosidad.]]
+La composición por país figura en la Tabla 1.
 
 ---
 
@@ -300,108 +303,217 @@ parcela considerada utilizable con ≤ 10 % de su superficie inservible:
 Sobre los dos predios del Magdalena la asimetría publicada fue de 37 a 1. Sobre 323 parcelas de
 23 países es de **48,5 a 1**: el caso original no era una anomalía, y si algo se quedaba corto.
 
-### 4.3 La regla en función del tamaño
+### 4.3 La dependencia del tamaño, ajustada por el cielo
 
-| Tramo | n | Exhaustividad | IC 95 % | FN | FP |
-|---|---:|---:|---|---:|---:|
-| 1-5 ha | 2.060 | 0,429 | [0,392, 0,466] | 393 | 7 |
-| 5-20 ha | 1.077 | 0,492 | [0,439, 0,546] | 169 | 5 |
-| 20-100 ha | 112 | 0,520 | [0,335, 0,700] | 12 | 0 |
-| 100-500 ha | 16 | 0,273 | [0,097, 0,566] | 8 | 0 |
+La tabla por tramos muestra la exhaustividad creciendo con el tamaño de la parcela entre 1 y 100 ha
+—0,429 → 0,492 → 0,520— y cayendo a 0,273 en el tramo de 100-500 ha. Ese último punto es **una
+sola parcela** situada en trópico húmedo, así que tamaño y clima están confundidos y una línea de
+tendencia trazada sobre esos puntos no sería evidencia de nada.
 
-La exhaustividad **crece con el tamaño de la parcela** en el rango de 1 a 100 ha —0,429 → 0,492 →
-0,520—, que es la dirección que predice el desajuste de soporte. Ahora bien, hay que decir tres
-cosas y no una:
+La única forma de separarlos desde el escritorio es un modelo que lleve los dos. Se plantea la
+pregunta del artículo de forma directa: **entre las adquisiciones que el filtro descarta, ¿la
+probabilidad de que la parcela estuviera despejada de verdad depende de su tamaño, con la nubosidad
+declarada por la tesela mantenida constante?** Se ajusta una regresión logística sobre las 2.778
+filas rechazadas, de las que 582 (el 21,0 %) son falsos negativos, con la nubosidad de la tesela y
+el logaritmo decimal de la superficie como predictores, ambos centrados.
 
-1. **El efecto es real pero moderado** en ese rango: nueve puntos de exhaustividad entre una
-   parcela de 1 ha y una de 100, con intervalos que se solapan entre tramos contiguos.
-2. **El último tramo rompe la monotonía y no es un contraejemplo, es un confundido.** Las 16
-   observaciones de 100-500 ha son **una sola parcela**, la del Magdalena, en trópico húmedo del
-   Caribe. Ahí la exhaustividad cae a 0,273 porque el cielo es peor, no porque la parcela sea
-   grande. Con una parcela no se separa el tamaño del clima, y presentarlo como efecto de tamaño
-   sería exactamente el error que este artículo denuncia en otros.
-3. **Lo que sí sostiene la cohorte, y con holgura, es la asimetría**, que es grande en todos los
-   tramos y en todos los umbrales.
+| Término | Coef. | e.e. | z | p | IC 95 % |
+|---|---:|---:|---:|---:|---|
+| Constante | −1,9797 | 0,0741 | −26,71 | < 0,001 | [−2,125, −1,834] |
+| Nubosidad de la tesela (0-1) | −5,9858 | 0,2348 | −25,49 | < 0,001 | [−6,446, −5,526] |
+| log₁₀ superficie (ha) | −0,3709 | 0,1568 | −2,36 | 0,018 | [−0,678, −0,064] |
 
-[[PENDIENTE: para separar tamaño de clima hace falta un modelo con la nubosidad media de la tesela
-como covariable, o más parcelas grandes en climas templados. Es la extensión obvia y honesta.]]
+**La razón de probabilidades por cada factor diez de superficie es 0,690 (IC 95 % 0,508–0,938).**
+Es decir: manteniendo el cielo constante, **cuanto más pequeña es la parcela, mayor es la
+probabilidad de que una adquisición descartada estuviera en realidad despejada sobre ella**. Es
+exactamente la dirección que predice el desajuste de soporte, y el intervalo excluye el 1.
+
+El modelo confirma además, en el conjunto completo de 3.265 filas, que a igualdad de nubosidad
+declarada una parcela más grande es menos probable que esté enteramente despejada (razón de
+probabilidades 0,686; IC 95 % 0,509–0,925). Geométricamente es lo esperable —más superficie es más
+oportunidad de encontrarse una nube— y explica por qué la tabla por tramos, que no ajusta por el
+cielo, es un instrumento demasiado grueso para esta pregunta. El término de interacción entre
+nubosidad y tamaño no resulta distinguible de cero (p = 0,15), de modo que no se afirma que la
+*forma* de la relación cambie con el tamaño, solo su nivel.
 
 ### 4.4 Sensibilidad a los umbrales
 
-La asimetría no es un artefacto del par de umbrales elegido. Se conserva en toda la rejilla y solo
-se invierte cuando el filtro se afloja hasta el 50 %, que es tanto como no filtrar:
+La asimetría no es un artefacto del par de umbrales elegido (Tabla 4). Se conserva en toda la
+rejilla y solo se invierte cuando el filtro se afloja hasta el 50 %, que equivale a no filtrar. El
+patrón relevante es el contrario del que cabría esperar: cuanto más estricto es el filtro, peor es
+el sesgo. Al 5 % de nubosidad declarada la asimetría alcanza 99,7 y la exhaustividad baja a 0,340.
+El usuario que exige imágenes limpias es el peor servido.
 
-| Filtro de tesela | Límite de inservible | FN | FP | Exhaustividad | Asimetría |
-|---:|---:|---:|---:|---:|---:|
-| 5 % | 5 % | 678 | 11 | 0,344 | 61,6 |
-| 5 % | 10 % | 698 | 7 | 0,340 | 99,7 |
-| 10 % | 5 % | 562 | 16 | 0,456 | 35,1 |
-| **10 %** | **10 %** | **582** | **12** | **0,449** | **48,5** |
-| 20 % | 10 % | 469 | 59 | 0,556 | 7,9 |
-| 30 % | 10 % | 355 | 95 | 0,664 | 3,7 |
-| 50 % | 10 % | 202 | 243 | 0,809 | 0,8 |
+### 4.5 ¿Sirve algún otro campo del catálogo?
 
-Cuanto más estricto es el filtro —que es como lo usa quien quiere imágenes limpias— **peor es el
-sesgo**: al 5 % la asimetría llega a 99,7 y la exhaustividad baja a 0,340. El usuario cuidadoso es
-el más perjudicado.
+Antes de recomendar una lectura conviene descartar lo que no cuesta nada. La respuesta del catálogo
+trae, además de la nubosidad de escena, una docena de porcentajes por tesela. Se evalúan como
+puntuaciones alternativas —menor significa más limpio— sobre las 3.265 filas legibles: la nube de
+alta probabilidad; la nube opaca (alta + media probabilidad + cirro fino); esa misma suma más
+sombra de nube, ausencia de dato y píxeles saturados o defectuosos, que es **el análogo exacto de
+la definición empleada sobre la parcela, calculado sobre la tesela**; y la variante sin ausencia de
+dato.
 
-### 4.5 Control: el suelo de píxeles no fabrica el resultado
+Cada candidata se compara de dos formas. Con el área bajo la curva ROC, que es independiente del
+umbral y evita la discusión sobre si los umbrales se eligieron a conveniencia. Y con la
+exhaustividad a **presupuesto igualado de falsos positivos**: como los umbrales no son comparables
+entre puntuaciones con unidades distintas, cada una se sitúa en el umbral que admite el mismo
+número de adquisiciones inservibles que la de referencia (doce) y se comparan por cuántas útiles
+recuperan.
 
-Repitiendo la matriz **sin** apartar las parcelas pequeñas, sobre las 5.143 filas medidas:
-exhaustividad **0,439** y asimetría **49,4**, contra 0,449 y 48,5 con el suelo puesto. El hallazgo
-no depende de esa decisión metodológica.
+| Puntuación (todas gratuitas) | AUC | Exhaustividad a presupuesto igual |
+|---|---:|---:|
+| `eo:cloud_cover` (referencia) | 0,939 | 0,462 |
+| Nube de alta probabilidad | 0,885 | 0,028 |
+| Nube opaca + cirro | 0,939 | 0,462 |
+| Mismas clases que en la parcela | 0,910 | 0,364 |
+| Mismas clases, sin ausencia de dato | 0,941 | 0,423 |
+| *Fracción recortada al polígono (cuesta una lectura)* | *1,000* | *1,000* |
 
-### 4.6 El estrato que no se puede medir con esta banda
+**Ninguna alternativa gratuita mejora a la de referencia de forma apreciable.** La mejor obtiene un
+AUC de 0,941 frente a 0,939, diferencia sin consecuencia práctica, y a presupuesto igualado
+recupera menos. Es un resultado negativo con contenido: **el problema no es qué campo del catálogo
+se elige, sino que cualquier campo de tesela describe el soporte equivocado.** Reordenar los
+metadatos no devuelve las observaciones perdidas.
 
-1.878 de las 5.143 filas corresponden a parcelas con menos de 25 píxeles de la banda de
+### 4.6 Control: el umbral de píxeles no fabrica el resultado
+
+Repitiendo la matriz sin apartar las parcelas por debajo del umbral de píxeles, sobre las mismas
+5.143 filas, la exhaustividad es 0,439 y la asimetría 49,4, frente a 0,449 y 48,5 con el umbral
+aplicado. El hallazgo no depende de esa decisión metodológica.
+
+### 4.7 El estrato que esta banda no puede medir
+
+De las 5.143 filas medidas, 1.878 corresponden a parcelas con menos de 25 píxeles de la banda de
 clasificación, es decir por debajo de una hectárea. No se descartan por sospechosas sino por
 incontables: con ocho píxeles la fracción inservible se mueve a saltos de doce puntos. Es una
-limitación del instrumento, no del método, y afecta a la mitad de las parcelas de un país como
-Ruanda o Kenia. [[PENDIENTE: decir si con la banda de 10 m del propio producto —que no trae
-clasificación— o con un enmascarador externo se podría bajar ese suelo.]]
+limitación del instrumento y no del método, y afecta a buena parte de las parcelas de los países
+con estructura agraria más fragmentada de la muestra. Conviene subrayar la consecuencia, porque
+apunta en la misma dirección que el modelo de la sección 4.3: **el estrato peor servido por el
+metadato de tesela es también el que peor puede medirse con la banda que lo evaluaría.**
 
 ---
 
 ## 5. Discusión
 
-**5.1 Qué significa la asimetría para quien decide.** Perder un día despejado y procesar un día
-nublado no cuestan lo mismo. En una serie de fenología sobre un predio, el día perdido es
-información que existía y no se recupera; el día nublado de más se descarta en el siguiente paso.
+### 5.1 Qué significa la asimetría para quien decide
 
-**5.2 Qué recomendar en su lugar.** [[PENDIENTE: comparar en la misma tabla al menos tres filtros
-alternativos disponibles sin trabajo de campo, y recomendar uno con su umbral.]] El artículo tiene
-que terminar en una regla accionable, no en una queja.
+Perder un día despejado y procesar un día nublado no cuestan lo mismo. En una serie de fenología
+sobre un predio, el día perdido es información que existía y que no se recupera, mientras que el día
+nublado que se cuela se descarta en el paso siguiente a coste de cómputo. Que el error del filtro
+sea casi cincuenta veces más frecuente en la dirección cara es, por tanto, el resultado con
+consecuencias.
 
-**5.3 Límites.**
-- Las dos magnitudes comparadas descienden de la misma clasificación (§1, párrafo 5).
-- El artefacto de los duplicados puede caducar: si la ESA completa el borrado de líneas base
-  antiguas, el porcentaje medido pasa a ser un hecho histórico. Por eso se fecha la consulta y se
-  versiona el catálogo.
-- La cohorte hereda el sesgo de muestreo de la fuente de límites parcelarios.
-- El trópico húmedo está representado por pocos predios. [[PENDIENTE: cuántos, exactamente.]]
+El hallazgo dialoga directamente con Reyes-Díez et al. (2015), que advierten de que criterios de
+filtrado homogéneos aplicados sobre una región heterogénea pueden causar pérdida sistemática de
+información. Aquí se muestra que el criterio homogéneo del metadato de tesela hace exactamente eso a
+escala de predio, se cuantifica cuánto, y se añade que el daño no se reparte por igual: recae sobre
+las parcelas pequeñas, que son la mayoría de las explotaciones del mundo.
+
+### 5.2 Qué hacer en su lugar
+
+La sección 4.5 descarta la salida barata: ninguna combinación de los porcentajes que el catálogo ya
+entrega mejora a `eo:cloud_cover`. Queda por decidir entre dos estrategias reales, y la elección se
+puede plantear con números.
+
+**Estrategia A, seguir filtrando por metadato pero aflojando el umbral.** Con la mejor puntuación
+gratuita, alcanzar el 90 % de las adquisiciones útiles exige subir el umbral hasta cerca del 70 % de
+nubosidad declarada y aceptar 435 falsos positivos, frente a los 12 del umbral del 10 %. Para el
+95 % hacen falta 621. Dicho de otro modo: **cada observación útil adicional se compra al precio de
+aproximadamente una inservible**, y el filtro deja de merecer el nombre.
+
+**Estrategia B, decidir con la fracción recortada al polígono.** Recupera por construcción el 100 %
+de las adquisiciones útiles y no admite ninguna inservible bajo el mismo criterio. Su coste es una
+lectura por ventana de la banda de clasificación: sobre esta cohorte, 5.143 lecturas tardaron 206 s
+con doce hilos, es decir **40 ms por adquisición**, sobre datos públicos y sin credenciales. Para un
+predio con dos años de archivo son unas ciento cincuenta lecturas: seis segundos.
+
+La recomendación operativa es, por tanto, la combinación de las dos. **Usar el metadato de tesela
+solo como criba grosera —descartar únicamente lo que declara nubosidad muy alta— y resolver cada
+superviviente con la fracción recortada al polígono.** El metadato conserva su utilidad, que es
+evitar leer lo que no tiene ninguna posibilidad; lo que no debe hacer es decidir.
+
+Conviene añadir un matiz que el propio análisis obliga a reconocer: como ordenador, la nubosidad de
+escena no es mala. Su área bajo la curva es 0,939, de modo que **clasifica bien y decide mal**. El
+problema no está en la información que contiene sino en el punto de operación al que se la somete
+por costumbre, y esa distinción es la que permite seguir usándola sin confiarle la decisión.
+
+### 5.3 Límites
+
+Los límites del trabajo son cinco y conviene enunciarlos sin rodeos.
+
+Primero, las dos magnitudes comparadas descienden de la misma clasificación, de modo que lo que se
+mide es el efecto de la agregación espacial y no la calidad del enmascarado. Un error del propio
+clasificador afectaría a ambos lados de la comparación y no crearía la asimetría observada.
+
+Segundo, el artefacto de los duplicados puede caducar: si el operador completa el borrado de líneas
+base antiguas, el porcentaje medido pasará a ser un hecho histórico. Por eso se fecha la consulta y
+se conserva la lista de identificadores.
+
+Tercero, la cohorte hereda el sesgo de muestreo de la fuente de límites parcelarios y de la lectura
+parcial de su listado, descrita en la sección 2.3.
+
+Cuarto, el trópico húmedo está representado por pocas parcelas y el tramo de mayor superficie por
+una sola, razón por la cual la dependencia del tamaño se estima con un modelo que ajusta por la
+nubosidad declarada en lugar de leerse de la tabla por tramos.
+
+Quinto, la ventana temporal de la cohorte es de dos años, elegida para acotar el coste de lectura.
+La duplicación de reprocesado, que es un fenómeno de archivo, se mide aparte sobre la serie completa
+porque dos años no la contienen.
 
 ---
 
 ## 6. Conclusión
 
-[[PENDIENTE: una sola frase con el número, del estilo «por debajo de X ha el filtro por metadato de
-tesela descarta más del Y % de las observaciones útiles».]]
+El valor de nubosidad que los catálogos públicos publican por producto describe una tesela de
+12.100 km² y se emplea de forma rutinaria para decidir sobre superficies cuatro órdenes de magnitud
+menores. Medido sobre 323 parcelas de 23 países y 5.143 pares de parcela y adquisición, ese uso
+conserva el 44,9 % de las observaciones realmente utilizables y descarta 48,5 observaciones buenas
+por cada mala que retiene.
+
+El daño no se reparte por igual. Manteniendo constante la nubosidad que declara la tesela, **por
+cada factor diez de reducción de la superficie de la parcela la probabilidad de que una adquisición
+descartada estuviera en realidad despejada se multiplica por 1,45** (razón de probabilidades 0,690
+por factor diez de aumento; IC 95 % 0,508–0,938). El estrato peor servido es el de las
+explotaciones pequeñas, que son la mayoría en buena parte del mundo, y es también el que peor puede
+medirse con la banda de clasificación a 20 m.
+
+Ninguna recombinación de los porcentajes que el propio catálogo entrega corrige el problema: la
+mejor alternativa gratuita alcanza un área bajo la curva de 0,941 frente a 0,939 de la referencia.
+Como ordenador, la nubosidad de escena es buena; lo que falla es el punto de operación al que se la
+somete por costumbre. La recomendación práctica es en consecuencia doble: **usar el metadato de
+tesela solo como criba grosera y resolver cada superviviente con la fracción de nube recortada al
+polígono**, que cuesta 40 ms por adquisición sobre datos públicos y sin credenciales.
+
+Por último, cualquier serie temporal que se remonte antes de 2022 debe deduplicarse por
+identificador de producto y no por fecha: en 2021 más de la mitad de los ítems que devuelve el
+catálogo son copias de reprocesado de una adquisición ya presente, y esas copias declaran
+nubosidades que difieren hasta en 52 puntos porcentuales.
 
 ---
 
 ## Disponibilidad de datos y código
 
-Código: `https://github.com/EazyHood/cielociego`, licencia MIT.
-Versión archivada con DOI: `10.5281/zenodo.22132250`.
-Datos derivados de la cohorte: tabla ordenada, una fila por parcela × adquisición, depositada en
-Zenodo con DOI propio y licencia CC BY 4.0. No se redistribuyen los límites parcelarios de las
-fuentes con licencia no comercial: se publican los identificadores y el script que los reconstruye.
+La herramienta de medición es de código abierto, con licencia MIT, y está archivada con DOI. La
+tabla ordenada resultante —una fila por parcela y adquisición, con la nubosidad declarada por la
+tesela, la fracción inservible sobre el polígono, el número de píxeles y el identificador de
+producto— se deposita con licencia CC BY 4.0. No se redistribuyen los límites parcelarios de las
+fuentes cuya licencia prohíbe el uso comercial: se publican los identificadores y el guion que los
+reconstruye. Las referencias concretas se aportan en el fichero suplementario no anónimo, para no
+comprometer la revisión doble ciega.
 
 ## Agradecimientos
 
-Datos Copernicus Sentinel modificados. Límites parcelarios de Fields of The World (Kerner Lab).
+Contiene datos Copernicus Sentinel modificados. Los límites parcelarios proceden de un conjunto
+público de fronteras agrícolas.
 
-## Declaración sobre el uso de herramientas de IA
+## Declaración sobre el uso de herramientas de inteligencia artificial
 
-[[PENDIENTE: redactar. La revista puede exigirla y arXiv la exige; conviene escribirla explícita y
-sin adornos.]]
+Durante la preparación de este trabajo se emplearon asistentes de programación basados en modelos
+de lenguaje para escribir y revisar el código de adquisición y análisis, para redactar y depurar el
+texto, y para localizar y verificar bibliografía. Todo el diseño experimental, la definición de las
+métricas, la interpretación de los resultados y las decisiones sobre qué se afirma y qué no son
+responsabilidad del autor, que ha comprobado una a una las cifras que aparecen en el manuscrito
+contra las salidas del código publicado. Ninguna cifra procede de la memoria de un modelo: todas se
+recalculan ejecutando el repositorio. Las herramientas no figuran como autoras porque no pueden
+asumir responsabilidad sobre el contenido.
