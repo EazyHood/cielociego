@@ -1,0 +1,215 @@
+# ¿Cada cuánto puede ver un satélite tu predio, de verdad?
+
+Sentinel-2 son dos satélites europeos que fotografían toda la superficie
+terrestre del planeta, gratis, cada cinco días. Las imágenes tienen resolución
+suficiente para distinguir un lote de otro, y cualquiera puede descargarlas sin
+registrarse. Visto así, monitorear una finca desde el escritorio parece un
+problema resuelto.
+
+Entre enero de 2019 y agosto de 2026 esos satélites pasaron unas seiscientas
+veces sobre un predio de 73 hectáreas en Fundación, Magdalena. Fui a mirar
+cuántas de esas pasadas produjeron una imagen en la que el predio se viera.
+
+Trescientas dieciséis. Y como los días despejados se agrupan en vez de repartirse
+parejo, el predio pasó el 89 % de esos siete años y medio sin una sola vista
+aprovechable. En un segundo predio, de 284 hectáreas en el corredor bananero
+cerca de Aracataca, la cifra fue del 91 %. El tramo más largo sin una sola imagen
+utilizable fue del 13 de abril al 10 de julio de 2024: ochenta y nueve días
+seguidos, casi un ciclo entero de cultivo.
+
+Nada de esto sorprende a quien haya trabajado con imagen óptica en el trópico.
+Las nubes son la queja más vieja del oficio. Lo que me pareció interesante fue
+cuánto más grande resultó el número frente al que asumen la mayoría de los flujos
+de trabajo, y por qué.
+
+## El número que trae la imagen no es el número que necesitas
+
+Cada escena de Sentinel-2 llega con un campo llamado `eo:cloud_cover`, un
+porcentaje. Es lo primero por lo que filtra casi cualquier procedimiento:
+descartar todo lo que pase del treinta por ciento, quedarse con el resto y armar
+la serie temporal.
+
+Ese porcentaje está calculado sobre la escena completa, y una escena de
+Sentinel-2 cubre 110 por 110 kilómetros: unos doce mil kilómetros cuadrados. El
+predio de Fundación son 0,735 kilómetros cuadrados. Ocupa seis milésimas de uno
+por ciento del área que ese número describe.
+
+La consecuencia no es un sesgo pequeño. Es una medición distinta. Las nubes en el
+trópico son irregulares a escala de uno o dos kilómetros, así que una escena de
+doce mil kilómetros cuadrados casi siempre está parcialmente nublada y su cifra
+se queda a medio camino. Un predio pequeño, en cambio, suele estar debajo de una
+nube o no estarlo. Medido sobre el polígono real, el 85 % de las observaciones
+cayó en un extremo o en el otro: despejado del todo, o tapado del todo. Sobre la
+escena completa, apenas el 14 %.
+
+Filtrar por el número de la escena descarta, entonces, una cantidad enorme de
+datos buenos. Entre los dos predios hubo 332 ocasiones en que ese valor decía que
+la imagen estaba demasiado nublada para usarla y el predio se veía entero. Al
+revés —la escena parecía buena y el predio estaba tapado— ocurrió nueve veces.
+Una asimetría de treinta y siete a uno, y toda en la dirección de tirar
+observaciones que servían.
+
+El arreglo no tiene misterio. Los productos de Sentinel-2 incluyen una banda de
+clasificación que etiqueta cada píxel de 20 metros como vegetación, agua, nube,
+sombra de nube, cirro, y así. Leer esa banda dentro del lindero del predio, en
+lugar de fiarse de un resumen calculado sobre un área dieciocho mil veces mayor,
+son unas pocas líneas de código y una lectura por ventana. Las herramientas
+existen hace años. Simplemente no es lo que hace casi nadie, porque el número
+cómodo viene ahí puesto.
+
+## ¿Cuánto depende la respuesta de dónde pongas la raya?
+
+Una medición así invita a una objeción obvia: tú decidiste qué cuenta como
+«ciego», así que puedes hacer que el número sea el que quieras.
+
+Vale la pena tomársela en serio, así que la medí en lugar de discutirla. La
+definición estricta cuenta como bloqueante la nube, la sombra de nube, el cirro
+fino, los píxeles saturados y los que no tienen dato. Con esa lectura, los dos
+predios dan 89 % y 91 % de días sin vista aprovechable.
+
+Aflojemos. El cirro fino es la categoría más discutible —un velo alto que según
+para qué todavía deja trabajar— y representa entre la cuarta parte y un tercio de
+todo lo marcado. Si se saca por completo, las cifras pasan a 86 % y 89 %.
+
+Aflojemos hasta donde honestamente se puede: contar solo los píxeles que el
+clasificador da por nube segura, e ignorar la nube probable, el cirro y la sombra.
+Es más permisivo que cualquier flujo de trabajo publicado que yo conozca. El
+resultado es 82 % y 84 %.
+
+O sea que la respuesta está entre el ochenta y dos y el noventa y uno por ciento
+según lo generoso que uno quiera ser, y la conclusión es la misma en los dos
+extremos. Eso es lo útil de saber: el hallazgo no se sostiene en el umbral, y
+prefiero enseñar el rango entero antes que defender un número.
+
+El corte de «utilizable» se comporta igual. Llamé aprovechable a una imagen
+cuando menos del diez por ciento del predio estaba tapado. Exigir el predio
+perfectamente despejado da 90 % y 92 % de días ciegos; aceptar imágenes con la
+mitad tapada da 87 % y 88 %.
+
+## La máscara de nubes es un modelo, y los modelos se actualizan
+
+Mientras depuraba el catálogo noté que muchas tomas aparecen dos veces,
+procesadas con dos versiones distintas del software de corrección atmosférica de
+la ESA. Las marcas de tiempo de las dos copias difieren en un milisegundo, lo
+suficiente para burlar cualquier deduplicación basada en la hora.
+
+Y las dos copias no siempre coinciden sobre las nubes. Comparando sesenta y una
+de esas parejas sobre el polígono, el ochenta por ciento eran idénticas bit a
+bit. El veinte por ciento restante difería en promedio un siete por ciento del
+área del predio, y en un caso —el 29 de noviembre de 2021— una versión daba el
+predio completamente despejado y la otra lo daba tapado en un setenta y dos por
+ciento. El mismo satélite, la misma toma, los mismos píxeles. Otro software.
+
+Alrededor de una observación de cada quince cruza el umbral de utilidad según cuál
+versión te haya tocado, y siempre en el mismo sentido: el procesador nuevo marca
+más nube. Como yo me quedo siempre con la versión más reciente, las cifras de
+arriba son el extremo conservador de ese rango.
+
+Esto es comportamiento documentado, no un descubrimiento: la ESA dice
+explícitamente que los umbrales de clasificación se reajustan entre versiones, y
+existe literatura de validación sobre cómo rinden estas máscaras. Lo menciono
+porque es fácil trabajar años con estos datos sin notar que la máscara de nubes
+lleva número de versión, y porque pone un piso a la precisión con la que se puede
+enunciar cualquier medición de este tipo.
+
+## Al radar las nubes le dan igual
+
+Hay un segundo programa europeo, Sentinel-1, que en lugar de cámara lleva radar.
+En vez de registrar la luz del sol reflejada en la superficie, emite pulsos de
+microondas y mide lo que vuelve. Las microondas atraviesan la nube. El
+instrumento funciona de noche, con cielo cubierto y en plena tormenta, y sus
+datos son tan gratuitos como los ópticos.
+
+La pregunta evidente es si sus pasadas caen dentro de los huecos que deja el
+óptico, o si se agolpan en los mismos días despejados por alguna razón ajena. No
+se agolpan: entre los dos predios hubo sesenta y seis tramos de quince días o más
+sin vista óptica aprovechable, y **todos y cada uno** contienen al menos una
+adquisición de radar. Durante aquel apagón de ochenta y nueve días en 2024,
+Sentinel-1 pasó sobre el predio veintidós veces.
+
+Si esas pasadas *sirven* es otra pregunta, y conviene separarla con cuidado. Una
+imagen de radar no sustituye a una óptica. Los sensores ópticos miden
+reflectancia, que tiene que ver con el pigmento y la química de la hoja: sobre
+eso están construidos el NDVI y sus parientes. El radar mide retrodispersión, que
+tiene que ver con la rugosidad, la geometría y la humedad. Responden preguntas
+distintas, y quien diga que el radar simplemente reemplaza al óptico lo está
+vendiendo de más.
+
+Pero la retrodispersión sí responde a lo que crece. Para comprobar si la señal
+llevaba información o solo estaba presente, extraje la serie completa sobre el
+predio del corredor bananero: 341 adquisiciones, todas de una misma órbita
+relativa, porque el brillo del radar depende de la geometría de observación y
+mezclar órbitas fabrica escalones que no vienen del suelo.
+
+La serie no es ruido. Entre mediados de 2021 y finales de 2023 la retrodispersión
+media del predio subió tres decibelios y medio, y después se estabilizó en un
+nivel nuevo donde sigue. Antes y después de la transición está plana.
+
+Esa subida arranca cerca del momento en que Sentinel-1B falló y fue retirado, que
+es justo la clase de coincidencia que debería hacerte desconfiar de tu propio
+resultado. Si el cambio fuera un artefacto de calibración, desaparecería al
+restringir el análisis a un solo satélite. No desaparece: medido dentro de
+Sentinel-1A sola la pendiente es incluso algo mayor. El predio vecino, observado
+por los mismos satélites en la misma órbita y con la misma cadena de procesado,
+se movió unas once veces menos en el mismo periodo.
+
+También debo decir qué forma resultó tener ese cambio, porque al principio me
+equivoqué. Mi primera versión lo describía como una subida gradual a lo largo de
+siete años y le dibujaba una recta encima. Comparando cuatro formas candidatas
+como se debe —y cobrándole a cada una los puntos de corte que necesita— los datos
+prefieren una meseta, una transición de unos dos años y una meseta nueva, por un
+margen amplísimo sobre la recta. Y la distinción cambia la lectura: una rampa
+sostenida parece crecimiento; un escalón entre dos niveles estables parece un
+evento.
+
+## Lo que esto no demuestra
+
+No demuestra qué pasó en el suelo. El radar registra que algo cambió y fecha la
+transición; no puede decir si la causa fue una renovación de lotes, un cambio de
+cultivo, un sistema de riego u otra cosa. Confirmarlo exigiría registros de campo.
+
+Hay, eso sí, una línea de evidencia independiente que apunta en la misma
+dirección. Un análisis óptico anterior del mismo predio, hecho aparte y sin
+radar, encontró que el NDVI cae en 2021 en tres bloques compactos con los bordes
+siguiendo los linderos, y que recuperan en 2025. Bordes rectos sobre líneas
+catastrales indican manejo, no clima. Dos instrumentos, dos métodos, el mismo
+evento, las mismas fechas.
+
+Tampoco demuestra que el radar sea en general más abundante que el óptico. Con
+Sentinel-1B retirado, la órbita que usé entregó unas veintiocho pasadas al año
+entre 2022 y 2024, menos que las imágenes ópticas aprovechables de esos mismos
+años. La ventaja está en el catálogo completo —890 pasadas de radar en tres
+órbitas frente a 264 observaciones ópticas útiles—, no en una órbita cualquiera.
+Restringirse a una es lo correcto para una serie comparable, y cuesta
+observaciones.
+
+## Por qué podría importarte
+
+Si monitoreas algo en el trópico húmedo desde órbita, la implicación práctica es
+que tu revisita efectiva es mucho peor que los cinco días nominales, y que
+filtrar por la nubosidad de la escena la está empeorando todavía más sin ganar
+nada a cambio. Leer la banda de clasificación dentro de tu propio polígono es
+barato y recupera muchísimo dato.
+
+Si construyes productos que dependen de poder observar con óptico —modelos de
+rendimiento, seguros paramétricos, alertas de deforestación, cualquier cosa con
+una cadencia temporal en sus especificaciones— conviene saber que un predio del
+Caribe colombiano puede pasar tres meses sin una sola imagen utilizable, y que
+eso es lo normal y no la excepción.
+
+Y si estás en un sitio con otro clima, el número será otro. De eso se trata
+precisamente. La herramienta que produjo estas cifras corre sobre cualquier
+polígono que le des, tarda unos noventa segundos y no necesita cuenta ni clave.
+
+---
+
+El código, los datos intermedios y el método completo están en
+[github.com/EazyHood/cielociego](https://github.com/EazyHood/cielociego), bajo
+MIT. El informe con todas las gráficas está en
+[eazyhood.github.io/cielociego](https://eazyhood.github.io/cielociego/), y la
+versión publicada quedó archivada en
+[doi.org/10.5281/zenodo.22132250](https://doi.org/10.5281/zenodo.22132250).
+
+Los datos son Copernicus Sentinel-2 y Sentinel-1, obtenidos a través del catálogo
+STAC de Element84 sobre AWS y del Planetary Computer de Microsoft. Los dos son
+abiertos y ninguno exige registro.

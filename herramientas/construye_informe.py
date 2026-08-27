@@ -1,11 +1,15 @@
 """Genera el informe HTML con las cifras y graficas medidas."""
-import json, sys
+import json
+import sys
 from collections import Counter
 from datetime import date
+
 sys.path.insert(0, "src")
 import os
+
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
+
 from cielociego import graficas
 
 DESDE, HASTA = date(2019, 1, 1), date(2026, 8, 25)

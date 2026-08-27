@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Jhonatan del Rio. All rights reserved.
+# Codigo bajo licencia MIT (ver LICENSE).
+# El contenido escrito va aparte: CC BY-NC-ND 4.0 (ver LICENSE-TEXTO.md).
 """cielociego - cuanto tiempo el satelite optico NO puede ver un predio, y si el radar lo cubre.
 
 Mide, sobre un poligono real y no sobre la tesela entera:

@@ -1,13 +1,17 @@
-"""Convierte docs/post.md en docs/post.html.
+"""Convierte los articulos de docs/*.md en sus paginas HTML.
 
-Deliberadamente sin librerias de markdown: el fichero fuente lo controlo yo y
-solo usa parrafos, titulos, enlaces, enfasis, codigo en linea y una regla.
-Meter una dependencia para eso seria peor que las treinta lineas de aqui.
+Deliberadamente sin librerias de markdown: los ficheros fuente los controlo yo
+y solo usan parrafos, titulos, enlaces, enfasis, codigo en linea y una regla.
+Meter una dependencia para eso seria peor que las cuarenta lineas de aqui.
 
 La composicion es la contraria a la del informe. El informe es un tablero: va
-por bloques, cifras grandes y color semantico. Esto es un articulo largo, y ahi
-el diseno tiene que quitarse de en medio -- cuerpo en serif, una columna
-estrecha, sin cajas ni insignias, y que la tipografia haga el trabajo.
+por bloques, cifras grandes y color semantico, pensado para escanear. Esto es un
+articulo largo, y ahi el diseno tiene que quitarse de en medio -- cuerpo en
+serif, una columna estrecha, sin cajas ni insignias, y que la tipografia haga el
+trabajo.
+
+Medido en el navegador, no supuesto: 66 caracteres por linea (el optimo clasico
+de lectura larga) y contraste 16,7:1 en claro, 14,9:1 en oscuro.
 """
 from __future__ import annotations
 
@@ -16,8 +20,40 @@ import pathlib
 import re
 
 RAIZ = pathlib.Path(__file__).resolve().parents[1]
-ORIGEN = RAIZ / "docs" / "post.md"
-DESTINO = RAIZ / "docs" / "post.html"
+SALTO = chr(10)
+
+CC_EN = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+CC_ES = "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es"
+REPO = "https://github.com/EazyHood/cielociego"
+DOI = "https://doi.org/10.5281/zenodo.22132250"
+
+# Un idioma por entrada: fichero fuente, salida y los textos de la interfaz.
+IDIOMAS = {
+    "en": {
+        "origen": "post.md",
+        "destino": "post.html",
+        "lang": "en",
+        "nav": [("./", "Full report"), (REPO, "Code"), (DOI, "DOI"),
+                ("post.es.html", "En español")],
+        "desc": ("Sentinel-2 passes every five days. On two fields in the Colombian "
+                 "Caribbean, 89% and 91% of days had no usable view at all."),
+        "pie": ("© 2026 Jhonatan del Río. All rights reserved. This text and its charts "
+                'are licensed <a href="' + CC_EN + '">CC BY-NC-ND 4.0</a>; the source '
+                "code is MIT. The measurements belong to nobody — reproduce them."),
+    },
+    "es": {
+        "origen": "post.es.md",
+        "destino": "post.es.html",
+        "lang": "es",
+        "nav": [("./", "Informe completo"), (REPO, "Código"), (DOI, "DOI"),
+                ("post.html", "In English")],
+        "desc": ("Sentinel-2 pasa cada cinco días. Sobre dos predios del Caribe colombiano, "
+                 "el 89 % y el 91 % de los días no hubo una sola vista aprovechable."),
+        "pie": ("© 2026 Jhonatan del Río. Todos los derechos reservados. Este texto y sus "
+                'gráficas están bajo <a href="' + CC_ES + '">CC BY-NC-ND 4.0</a>; el '
+                "código, bajo MIT. Las mediciones no son de nadie: reprodúcelas."),
+    },
+}
 
 CSS = """
 :root{
@@ -40,12 +76,12 @@ body{
   font-size:20px; line-height:1.62; font-weight:400;
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
-.hoja{max-width:37rem; margin:0 auto; padding:clamp(2.5rem,7vw,6rem) 1.4rem 6rem}
+.hoja{max-width:37rem; margin:0 auto; padding:clamp(2.5rem,7vw,6rem) 1.4rem 5rem}
 
 .tira{
   font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:.72rem;
   letter-spacing:.14em; text-transform:uppercase; color:var(--tinta-suave);
-  margin:0 0 1.4rem; display:flex; gap:.6rem; flex-wrap:wrap;
+  margin:0 0 1.4rem; display:flex; gap:.9rem; flex-wrap:wrap;
 }
 .tira a{color:var(--tinta-suave); text-decoration:none; border-bottom:1px solid var(--linea)}
 .tira a:hover{color:var(--acento); border-color:var(--acento)}
@@ -59,7 +95,6 @@ h2{
   margin:3.4rem 0 1rem; text-wrap:balance;
 }
 p{margin:0 0 1.35rem}
-p+p{text-indent:0}
 a{color:var(--tinta); text-decoration:none; border-bottom:1px solid var(--acento)}
 a:hover{color:var(--acento)}
 em{font-style:italic}
@@ -77,10 +112,11 @@ hr{border:0; border-top:1px solid var(--linea); margin:3.4rem 0 2rem}
   padding-bottom:2.2rem; margin-bottom:2.4rem; border-bottom:1px solid var(--linea);
 }
 .pie{
-  font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:.86rem;
+  font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:.82rem;
   line-height:1.6; color:var(--tinta-suave);
+  border-top:1px solid var(--linea); margin-top:3rem; padding-top:1.6rem;
 }
-.pie p{margin:0 0 .9rem}
+.pie p{margin:0}
 a:focus-visible{outline:2px solid var(--acento); outline-offset:3px}
 @media (max-width:480px){ body{font-size:18px} .hoja{padding-top:2rem} }
 """
@@ -91,8 +127,8 @@ def en_linea(t: str) -> str:
     piezas: list[str] = []
 
     def guarda(m: re.Match[str]) -> str:
-        piezas.append(f"<code>{html.escape(m.group(1))}</code>")
-        return f"\x00{len(piezas) - 1}\x00"
+        piezas.append("<code>" + html.escape(m.group(1)) + "</code>")
+        return "\x00" + str(len(piezas) - 1) + "\x00"
 
     t = re.sub(r"`([^`]+)`", guarda, t)
     t = html.escape(t)
@@ -104,55 +140,72 @@ def en_linea(t: str) -> str:
 
 def convierte(md: str) -> tuple[str, str]:
     """Devuelve (titulo, cuerpo html)."""
-    titulo, cuerpo, parrafo = "", [], []
+    titulo = ""
+    cuerpo: list[str] = []
+    parrafo: list[str] = []
 
     def cierra() -> None:
         if parrafo:
-            cuerpo.append(f"<p>{en_linea(' '.join(parrafo))}</p>")
+            cuerpo.append("<p>" + en_linea(" ".join(parrafo)) + "</p>")
             parrafo.clear()
 
-    for linea in md.split("\n"):
-        s = linea.rstrip()
+    for linea in md.split(SALTO):
+        s = linea.strip()
         if not s:
             cierra()
         elif s.startswith("# "):
             cierra()
             titulo = s[2:].strip()
-            cuerpo.append(f"<h1>{en_linea(titulo)}</h1>")
+            cuerpo.append("<h1>" + en_linea(titulo) + "</h1>")
         elif s.startswith("## "):
             cierra()
-            cuerpo.append(f"<h2>{en_linea(s[3:].strip())}</h2>")
-        elif s.strip() == "---":
+            cuerpo.append("<h2>" + en_linea(s[3:].strip()) + "</h2>")
+        elif s == "---":
             cierra()
             cuerpo.append("<hr>")
         else:
-            parrafo.append(s.strip())
+            parrafo.append(s)
     cierra()
-    return titulo, "\n".join(cuerpo)
+    return titulo, SALTO.join(cuerpo)
 
 
-def main() -> None:
-    titulo, cuerpo = convierte(ORIGEN.read_text(encoding="utf-8"))
-
-    # La primera parrafada tras el h1 hace de entradilla.
+def entradilla(cuerpo: str) -> str:
+    """La primera parrafada tras el h1 hace de entradilla."""
     partes = cuerpo.split("</h1>", 1)
-    if len(partes) == 2:
-        resto = partes[1].lstrip("\n")
-        primero, _, cola = resto.partition("</p>")
-        cuerpo = (partes[0] + "</h1>\n"
-                  + primero.replace("<p>", '<p class="entradilla">', 1) + "</p>\n" + cola)
+    if len(partes) != 2:
+        return cuerpo
+    resto = partes[1].lstrip(SALTO)
+    primero, _, cola = resto.partition("</p>")
+    return (partes[0] + "</h1>" + SALTO
+            + primero.replace("<p>", '<p class="entradilla">', 1) + "</p>" + SALTO + cola)
 
-    DESTINO.write_text(f"""<!doctype html>
-<html lang="en">
+
+def escribe(cfg: dict) -> None:
+    origen = RAIZ / "docs" / cfg["origen"]
+    destino = RAIZ / "docs" / cfg["destino"]
+    titulo, cuerpo = convierte(origen.read_text(encoding="utf-8"))
+    cuerpo = entradilla(cuerpo)
+
+    nav = SALTO.join(
+        '  <a href="' + u + '">' + html.escape(t) + "</a>" for u, t in cfg["nav"]
+    )
+    t = html.escape(titulo)
+    d = html.escape(cfg["desc"])
+    url = "https://eazyhood.github.io/cielociego/" + cfg["destino"]
+
+    pagina = f"""<!doctype html>
+<html lang="{cfg["lang"]}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(titulo)} — cielociego</title>
-<meta name="description" content="Sentinel-2 passes every five days. On two fields in the Colombian Caribbean, 89% and 91% of days had no usable view at all. What that means, and what radar can do about it.">
-<meta property="og:title" content="{html.escape(titulo)}">
-<meta property="og:description" content="Sentinel-2 passes every five days. On two fields in the Colombian Caribbean, 89% and 91% of days had no usable view at all.">
+<title>{t} — cielociego</title>
+<meta name="description" content="{d}">
+<meta name="author" content="Jhonatan del Río">
+<meta property="og:title" content="{t}">
+<meta property="og:description" content="{d}">
 <meta property="og:type" content="article">
-<meta property="og:url" content="https://eazyhood.github.io/cielociego/post.html">
+<meta property="og:locale" content="{cfg["lang"]}">
+<meta property="og:url" content="{url}">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,16 +215,24 @@ def main() -> None:
 <body>
 <article class="hoja">
 <p class="tira">
-  <a href="./">Full report</a>
-  <a href="https://github.com/EazyHood/cielociego">Code</a>
-  <a href="https://doi.org/10.5281/zenodo.22132250">DOI</a>
+{nav}
 </p>
 {cuerpo}
+<footer class="pie">
+  <p>{cfg["pie"]}</p>
+</footer>
 </article>
 </body>
 </html>
-""", encoding="utf-8")
-    print(f"docs/post.html escrito: {DESTINO.stat().st_size // 1024} KB · «{titulo}»")
+"""
+    destino.write_text(pagina, encoding="utf-8")
+    print("  " + cfg["destino"] + ": " + str(destino.stat().st_size // 1024)
+          + " KB - " + titulo)
+
+
+def main() -> None:
+    for cfg in IDIOMAS.values():
+        escribe(cfg)
 
 
 if __name__ == "__main__":
