@@ -1,7 +1,7 @@
 # cielociego
 
-[![tests](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml/badge.svg)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
-[![coverage 92%](https://img.shields.io/badge/coverage-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
+[![tests](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml/badge.svg)](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml)
+[![coverage 92%](https://img.shields.io/badge/coverage-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-1d4ed8)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-555)](pyproject.toml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22132250.svg)](https://doi.org/10.5281/zenodo.22132250)
@@ -22,7 +22,7 @@ Open data. No account, no API key, no cost.
 
 ```bash
 pip install -e ".[dev]"
-python -m cielociego medir          # measures the bundled demo area
+python -m cielociego measure          # measures the bundled demo area
 ```
 
 ---
@@ -55,7 +55,7 @@ it is a false-negative machine.
 
 ## What it does, in five steps
 
-Each step writes its JSON into `salidas/` and the next one reads it from there.
+Each step writes its JSON into `outputs/` and the next one reads it from there.
 You can stop, resume, and check any figure by hand.
 
 | | Step | Module |
@@ -118,7 +118,7 @@ worst case measured, 2021-11-29, the SAME acquisition:
 
 Since the highest baseline is always kept, **what is published is the
 conservative estimate**: more blind days than the older processor would report,
-not fewer. Reproducible via `dedup.pares_de_lineas`.
+not fewer. Reproducible via `dedup.baseline_pairs`.
 
 This is not a bug in the archive or in this code — ESA documents that scene
 classification thresholds are tuned between baselines. **What would be a fault is
@@ -158,12 +158,12 @@ not saying so.**
 ## Usage
 
 ```bash
-python -m cielociego medir                              # the demo area
-python -m cielociego medir --predio my_field.geojson    # your own field
-python -m cielociego medir --desde 2022-01-01 --hilos 8
-python -m cielociego medir --sin-radar                  # skip the slow step
-python -m cielociego medir --orbita 142                 # force one orbit
-python -m cielociego pruebas                            # 190 tests
+python -m cielociego measure                              # the demo area
+python -m cielociego measure --field my_field.geojson    # your own field
+python -m cielociego measure --start 2022-01-01 --workers 8
+python -m cielociego measure --no-radar                  # skip the slow step
+python -m cielociego measure --orbit 142                 # force one orbit
+python -m cielociego tests                            # 190 tests
 ```
 
 The **radar orbit is chosen per field**, because relative orbits depend on where
@@ -180,7 +180,7 @@ is precisely the error this project exists to avoid.
 
 ## Bundled data, and what is not bundled
 
-`datos/area_demo.geojson` is a **256 ha demonstration area** — a rectangle drawn
+`data/area_demo.geojson` is a **256 ha demonstration area** — a rectangle drawn
 deliberately across property lines, corresponding to no real holding. It exists
 so the tool runs straight after cloning.
 
@@ -188,7 +188,7 @@ so the tool runs straight after cloning.
 come from university coursework and one is a lecturer's study area. Publishing
 the exact location of someone else's land next to an analysis saying *"something
 happened here"* is not this repository's business. The **aggregate figures are**
-in `salidas/`, and they cannot reconstruct the polygons: the finest thing present
+in `outputs/`, and they cannot reconstruct the polygons: the finest thing present
 is the tile code, which covers 110 × 110 km.
 
 ## Tests
@@ -255,7 +255,7 @@ Two licences, because code and writing are different things:
 - **Source code — MIT** (`LICENSE`). Use it, modify it, build on it, including
   commercially. Keep the copyright notice. The point of this tool is that people
   run it on their own fields.
-- **Written content — CC BY-NC-ND 4.0** (`LICENSE-TEXTO.md`). The article, the
+- **Written content — CC BY-NC-ND 4.0** (`LICENSE-TEXT.md`). The article, the
   report and their charts may be read, linked and cited freely, but not sold,
   altered or republished elsewhere as a derivative.
 

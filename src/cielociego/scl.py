@@ -1,32 +1,10 @@
-"""Fraccion del PREDIO inservible por nube, leyendo la banda SCL.
+"""Fraction of a field made unusable by cloud, from the scene classification band.
 
-POR QUE NO VALE `eo:cloud_cover`
---------------------------------
-Ese campo se calcula sobre la tesela entera: 110 x 110 km = 12.100 km2.
-El predio de Fundacion son 73,5 ha = 0,735 km2, el 0,006 % de la tesela.
-Usar el numero de la tesela para decidir si SE VE EL PREDIO es medir un
-decorado parecido a la partida. Puede fallar en las dos direcciones: la
-tesela al 60 % con el predio despejado, o al 15 % con el predio tapado.
+Not `eo:cloud_cover`: that is computed over the whole 110 x 110 km tile, and a
+73 ha field is 0.006 % of it. This reads the 20 m classification band by window
+and clips it to the polygon.
 
-Este modulo lee la banda SCL (clasificacion de escena, 20 m/pixel) por
-ventana, la recorta al poligono y cuenta pixeles. Nada mas.
-
-LAS CLASES, Y LA DECISION QUE HAY QUE DECLARAR
-----------------------------------------------
-    0 sin dato        1 saturado/defectuoso   2 sombra orografica
-    3 sombra de nube  4 vegetacion            5 sin vegetacion
-    6 agua            7 sin clasificar        8 nube probable
-    9 nube segura    10 cirro fino           11 nieve/hielo
-
-Que cuenta como "ciego" no es obvio, y de eso depende el resultado. Por
-eso se calculan DOS definiciones y se publican las dos:
-
-  ESTRICTA  ciego = {0,1,3,8,9,10}          <- la de referencia
-  AMPLIA    ciego = estricta + {2}          <- suma la sombra orografica
-
-La 2 es dudosa a proposito: en llano es casi siempre agua oscura o suelo
-humedo, no sombra real. Si las dos definiciones dan lo mismo, la eleccion
-no importaba; si dan distinto, hay que decirlo. Nunca publicar una sola.
+Two blind definitions are computed and both reported. See DECISIONS.md #3-#5.
 """
 from __future__ import annotations
 
@@ -40,8 +18,8 @@ import numpy as np
 os.environ.setdefault("AWS_NO_SIGN_REQUEST", "YES")
 os.environ.setdefault("GDAL_DISABLE_READDIR_ON_OPEN", "EMPTY_DIR")
 os.environ.setdefault("CPL_VSIL_CURL_ALLOWED_EXTENSIONS", ".tif")
-# GDAL reintenta por su cuenta las lecturas por rango. Sin declarar los
-# codigos, no reintenta los que devuelve S3 al estrangular.
+# GDAL retries range reads on its own, but without the codes spelled out it
+# does not retry the ones S3 returns when it throttles.
 os.environ.setdefault("GDAL_HTTP_MAX_RETRY", "5")
 os.environ.setdefault("GDAL_HTTP_RETRY_DELAY", "2")
 os.environ.setdefault("GDAL_HTTP_RETRY_CODES", "429,500,502,503,504")
@@ -55,20 +33,19 @@ from rasterio.windows import from_bounds
 from shapely.geometry import mapping, shape
 from shapely.geometry.base import BaseGeometry
 
-SIN_DATO, SATURADO, SOMBRA_OROG, SOMBRA_NUBE = 0, 1, 2, 3
-VEGETACION, SIN_VEGETACION, AGUA, SIN_CLASIF = 4, 5, 6, 7
-NUBE_PROB, NUBE_SEGURA, CIRRO, NIEVE = 8, 9, 10, 11
+NO_DATA, SATURATED, CAST_SHADOW, CLOUD_SHADOW = 0, 1, 2, 3
+VEGETATION, NOT_VEGETATED, WATER, UNCLASSIFIED = 4, 5, 6, 7
+CLOUD_MEDIUM, CLOUD_HIGH, CIRRUS, SNOW = 8, 9, 10, 11
 
-# Por debajo de esto la cifra deja de significar nada: con 20 pixeles el
-# porcentaje solo se mueve de 5 en 5 puntos, y el borde del poligono pesa mas
-# que su interior. No se falla -- hay predios pequenos legitimos -- pero se
-# MARCA, para que nadie lea "12,5 % ciego" de 8 pixeles como si fuera preciso.
-PIXELES_MINIMOS = 25
+# Below this the figure stops meaning anything: with 20 pixels a percentage
+# only moves in 5-point steps and the polygon edge outweighs its interior.
+# Small fields are legitimate, so this flags rather than refuses.
+MIN_PIXELS = 25
 
-CIEGO_ESTRICTO = frozenset({SIN_DATO, SATURADO, SOMBRA_NUBE, NUBE_PROB, NUBE_SEGURA, CIRRO})
-CIEGO_AMPLIO = CIEGO_ESTRICTO | {SOMBRA_OROG}
+BLIND_STRICT = frozenset({NO_DATA, SATURATED, CLOUD_SHADOW, CLOUD_MEDIUM, CLOUD_HIGH, CIRRUS})
+BLIND_WIDE = BLIND_STRICT | {CAST_SHADOW}
 
-NOMBRES = {
+CLASS_NAMES = {
     0: "sin_dato", 1: "saturado", 2: "sombra_orografica", 3: "sombra_nube",
     4: "vegetacion", 5: "sin_vegetacion", 6: "agua", 7: "sin_clasificar",
     8: "nube_probable", 9: "nube_segura", 10: "cirro", 11: "nieve",
@@ -76,96 +53,93 @@ NOMBRES = {
 
 
 @dataclass
-class Vista:
-    """Lo que el satelite pudo ver del predio en UNA pasada."""
+class View:
+    """What the satellite managed to see of the field on one pass."""
 
-    fecha: str
-    id_toma: str
-    pixeles: int
-    ciego_estricto: float          # fraccion 0-1 del predio inservible
-    ciego_amplio: float
-    cc_tesela: float | None        # lo que declaraba la tesela, para contrastar
-    histograma: dict[str, int]
+    date: str
+    scene_id: str
+    pixels: int
+    blind_strict: float             # 0-1 fraction of the field that is unusable
+    blind_wide: float
+    tile_cloud: float | None        # what the tile claimed, for contrast
+    histogram: dict[str, int]
     error: str | None = None
-    aviso: str | None = None       # la medida vale, pero hay que leerla con cuidado
+    warning: str | None = None      # the value stands, but read it with care
 
     @property
-    def resolucion_pct(self) -> float:
-        """Cuanto vale UN pixel en puntos porcentuales. Es la precision real."""
-        return 100.0 / self.pixeles if self.pixeles else float("inf")
+    def resolution_pct(self) -> float:
+        """What one pixel is worth in percentage points -- the real precision."""
+        return 100.0 / self.pixels if self.pixels else float("inf")
 
     @property
-    def fiable(self) -> bool:
-        return self.error is None and self.pixeles >= PIXELES_MINIMOS
+    def reliable(self) -> bool:
+        return self.error is None and self.pixels >= MIN_PIXELS
 
     @property
-    def util_estricto(self) -> float:
-        return 1.0 - self.ciego_estricto
+    def usable_strict(self) -> float:
+        return 1.0 - self.blind_strict
 
-    def sirve(self, umbral_ciego: float = 0.10) -> bool:
-        """True si queda predio suficiente para mirar algo agronomico."""
-        return self.error is None and self.ciego_estricto <= umbral_ciego
+    def usable(self, umbral_ciego: float = 0.10) -> bool:
+        """Enough field left to look at anything agronomic."""
+        return self.error is None and self.blind_strict <= umbral_ciego
 
     def dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
-def _mascara_predio(src, geom_4326: BaseGeometry):
-    """Ventana del raster que cubre el predio + mascara booleana del poligono.
-
-    Devuelve (ventana, transform de la ventana, mascara donde True = DENTRO).
-    """
+def _field_mask(src, geom_4326: BaseGeometry):
+    """Raster window covering the field, plus a boolean mask of the polygon."""
     geom_ras = shape(transform_geom("EPSG:4326", src.crs, mapping(geom_4326)))
     ventana = from_bounds(*geom_ras.bounds, transform=src.transform).round_offsets().round_lengths()
-    # margen de 1 pixel: from_bounds puede recortar el borde por redondeo
+    # one-pixel margin: from_bounds can clip the edge through rounding
     ventana = ventana.round_lengths()
     tr = src.window_transform(ventana)
     alto, ancho = int(ventana.height), int(ventana.width)
     if alto <= 0 or ancho <= 0:
-        raise ValueError("el predio no cae dentro del raster")
+        raise ValueError("el field no cae dentro del raster")
     dentro = ~geometry_mask(
         [mapping(geom_ras)], out_shape=(alto, ancho), transform=tr, invert=False
     )
     return ventana, dentro
 
 
-def _lee_scl(href: str, geom_4326: BaseGeometry):
-    """Abre el COG y devuelve (valores dentro del predio).
+def _read_scl(href: str, geom_4326: BaseGeometry):
+    """Abre el COG y devuelve (values dentro del field).
 
-    Se silencia NotGeoreferencedWarning A PROPOSITO y solo aqui. Con 12 hilos
+    Se silencia NotGeoreferencedWarning A PROPOSITO y solo aqui. Con 12 workers
     sobre el mismo bucket, GDAL lo emitia en 9 de 602 escenas aunque el CRS
-    era correcto (EPSG:32618) y la transformada no era la identidad. Se
-    comprobo que NO afecta al resultado: las mismas 27 tomas medidas en serie
-    y con 12 hilos dieron valores identicos, histograma incluido, 27 de 27.
+    era correcto (EPSG:32618) y la transformada no era la identity. Se
+    comprobo que NO afecta al resultado: las mismas 27 scenes medidas en serie
+    y con 12 workers dieron values identicos, histogram incluido, 27 de 27.
     La prueba `test_medida_es_determinista_con_hilos` vigila que siga asi.
-    Silenciarlo es lo correcto porque 9 avisos falsos en cada barrido tapan
-    los avisos de verdad.
+    Silenciarlo es lo correcto porque 9 warnings falsos en cada sweep tapan
+    los warnings de verdad.
     """
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", category=NotGeoreferencedWarning)
         with rasterio.open(href) as src:
-            ventana, dentro = _mascara_predio(src, geom_4326)
+            ventana, dentro = _field_mask(src, geom_4326)
             datos = src.read(1, window=ventana)
     return datos, dentro
 
 
-def mide_vista(
+def measure_view(
     href_scl: str,
     geom_4326: BaseGeometry,
     *,
-    fecha: str = "",
-    id_toma: str = "",
-    cc_tesela: float | None = None,
-) -> Vista:
-    """Lee la SCL de una toma y devuelve que fraccion del predio es inservible.
+    date: str = "",
+    scene_id: str = "",
+    tile_cloud: float | None = None,
+) -> View:
+    """Read one acquisition's SCL and return the unusable fraction of the field.
 
-    Nunca lanza por fallo de red o de lectura: devuelve la Vista con `error`
-    puesto. Un barrido de 600 escenas no puede morir por una corrupta, pero
-    tampoco puede fingir que esa escena estaba despejada.
+    Never raises on a network or read failure: the View comes back with
+    `error` set. A sweep of 600 scenes cannot die on one bad file -- and it
+    must not pretend that file was clear either.
     """
-    vacio = Vista(fecha, id_toma, 0, float("nan"), float("nan"), cc_tesela, {})
+    vacio = View(date, scene_id, 0, float("nan"), float("nan"), tile_cloud, {})
     try:
-        datos, dentro = _lee_scl(href_scl, geom_4326)
+        datos, dentro = _read_scl(href_scl, geom_4326)
     except Exception as exc:
         vacio.error = f"{type(exc).__name__}: {exc}"[:200]
         return vacio
@@ -177,20 +151,20 @@ def mide_vista(
     val = datos[dentro]
     n = int(val.size)
     if n == 0:
-        vacio.error = "0 pixeles dentro del predio"
+        vacio.error = "0 pixels dentro del field"
         return vacio
 
-    aviso = None
-    if n < PIXELES_MINIMOS:
-        aviso = (f"solo {n} pixeles ({n * 4 / 100:.2f} ha): el porcentaje se mueve "
+    warning = None
+    if n < MIN_PIXELS:
+        warning = (f"solo {n} pixels ({n * 4 / 100:.2f} ha): el porcentaje se mueve "
                  f"de {100 / n:.0f} en {100 / n:.0f} puntos y el borde domina")
 
     clases, cuentas = np.unique(val, return_counts=True)
-    # strict=True a proposito: si clases y cuentas no cuadraran, zip() truncaria
-    # en silencio y el histograma saldria incompleto sin que nadie lo notara.
+    # strict=True on purpose: were the two to disagree, zip() would truncate
+    # silently and the histogram would come out short with nobody noticing.
     pares = list(zip(clases, cuentas, strict=True))
-    hist = {NOMBRES.get(int(c), f"clase_{int(c)}"): int(k) for c, k in pares}
-    ciego_e = float(sum(k for c, k in pares if int(c) in CIEGO_ESTRICTO)) / n
-    ciego_a = float(sum(k for c, k in pares if int(c) in CIEGO_AMPLIO)) / n
+    hist = {CLASS_NAMES.get(int(c), f"clase_{int(c)}"): int(k) for c, k in pares}
+    ciego_e = float(sum(k for c, k in pares if int(c) in BLIND_STRICT)) / n
+    ciego_a = float(sum(k for c, k in pares if int(c) in BLIND_WIDE)) / n
 
-    return Vista(fecha, id_toma, n, ciego_e, ciego_a, cc_tesela, hist, aviso=aviso)
+    return View(date, scene_id, n, ciego_e, ciego_a, tile_cloud, hist, warning=warning)

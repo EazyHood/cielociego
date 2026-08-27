@@ -1,29 +1,8 @@
-"""Serie temporal de radar sobre el predio, con Sentinel-1 RTC.
+"""Backscatter time series over a field, from Sentinel-1 RTC.
 
-QUE DATO SE USA Y POR QUE
--------------------------
-NO el GRD crudo. El GRD de nivel 1 viene en geometria de radar, sin
-geocodificar y sin corregir por terreno: no se puede recortar por lat/lon ni
-comparar entre fechas. Ademas en AWS vive en un bucket de pago por peticionario.
-
-Se usa **Sentinel-1 RTC** (Radiometrically Terrain Corrected) del Planetary
-Computer: ya proyectado a UTM, a 10 m, en gamma0 lineal, y con **firma anonima**
--- sin cuenta, sin clave y sin coste, igual que el optico.
-
-LAS DOS TRAMPAS QUE ARRUINAN UNA SERIE DE RADAR
------------------------------------------------
-1. **Mezclar orbitas.** La retrodispersion depende del angulo de incidencia y
-   de la direccion de mirada. Dos pasadas del mismo dia desde orbitas distintas
-   dan valores distintos del MISMO cultivo sin que haya cambiado nada. Aqui la
-   serie se agrupa SIEMPRE por orbita relativa y nunca se promedian entre si;
-   sobre este predio hay tres (142 desc, 77 asc, 69 desc).
-
-2. **Promediar en decibelios.** El dB es logaritmico: promediar dB da la media
-   geometrica, no la aritmetica, y sesga el resultado hacia abajo. Lo correcto
-   es promediar la **potencia lineal** y convertir despues. La diferencia sobre
-   un predio heterogeneo llega a varias decimas de dB, que es justo el orden de
-   lo que se quiere detectar. `media_db()` lo hace bien y hay una prueba que lo
-   vigila.
+RTC rather than raw GRD, one relative orbit per series, linear power averaged
+before conversion to dB, and one container token instead of a signature per
+file. Each of those is a decision that changed a result: see DECISIONS.md #6-#9.
 """
 from __future__ import annotations
 
@@ -37,52 +16,52 @@ from typing import Any
 import numpy as np
 import requests
 
-from .predios import Predio
-from .red import sesion as _sesion_con_reintentos
+from .fields import Field
+from .net import session as _sesion_con_reintentos
 
 PC_STAC = "https://planetarycomputer.microsoft.com/api/stac/v1"
 PC_TOKEN = "https://planetarycomputer.microsoft.com/api/sas/v1/token"
-COLECCION = "sentinel-1-rtc"
+COLLECTION = "sentinel-1-rtc"
 
-# Los RTC son .tiff (dos efes): la lista de extensiones de scl.py solo admite
-# .tif y bloquearia la lectura. Se amplia aqui, en vez de tocar la del optico.
+# RTC files are .tiff: scl.py's extension list only allows .tif and would
+# block the read. Widened here rather than touching the optical side.
 os.environ["CPL_VSIL_CURL_ALLOWED_EXTENSIONS"] = ".tif,.tiff"
 
 import rasterio  # noqa: E402
 from rasterio.errors import NotGeoreferencedWarning  # noqa: E402
 
-from .scl import _mascara_predio  # noqa: E402
+from .scl import _field_mask  # noqa: E402
 
 
 @dataclass
-class Retro:
-    """Retrodispersion media del predio en una pasada."""
+class Backscatter:
+    """Mean backscatter over the field on one pass."""
 
-    fecha: str
-    orbita_rel: int
-    estado: str            # ascending | descending
-    plataforma: str
-    pixeles: int
+    date: str
+    rel_orbit: int
+    orbit_state: str            # ascending | descending
+    platform: str
+    pixels: int
     vv_db: float
     vh_db: float
     error: str | None = None
 
     @property
-    def razon_db(self) -> float:
-        """VH - VV en dB. Sube con la estructura de la vegetacion."""
+    def ratio_db(self) -> float:
+        """VH minus VV in dB. Rises with vegetation structure."""
         return self.vh_db - self.vv_db
 
     def dict(self) -> dict[str, Any]:
         d = asdict(self)
-        d["razon_db"] = None if self.error else round(self.razon_db, 3)
+        d["ratio_db"] = None if self.error else round(self.ratio_db, 3)
         return d
 
 
-def media_db(potencia_lineal: np.ndarray) -> float:
-    """Media en dB hecha bien: promediar la POTENCIA, luego convertir.
+def mean_db(potencia_lineal: np.ndarray) -> float:
+    """Mean in dB done properly: average the power, then convert.
 
-    Promediar decibelios directamente da la media geometrica y sesga a la baja.
-    Se descartan ceros y no finitos (borde del RTC, sombra de radar).
+    Averaging decibels gives the geometric mean and biases low. Zeros and
+    non-finite values are dropped (RTC edge, radar shadow).
     """
     v = np.asarray(potencia_lineal, dtype="float64")
     v = v[np.isfinite(v) & (v > 0)]
@@ -91,15 +70,15 @@ def media_db(potencia_lineal: np.ndarray) -> float:
     return float(10.0 * np.log10(v.mean()))
 
 
-def busca_rtc(
-    predio: Predio, desde: str, hasta: str, *, sesion: requests.Session | None = None
+def search_rtc(
+    field: Field, start: str, end: str, *, session: requests.Session | None = None
 ) -> list[dict[str, Any]]:
-    """Items Sentinel-1 RTC que tocan el predio, paginando hasta el final."""
-    ses = sesion or _sesion_con_reintentos()
+    """Sentinel-1 RTC items touching the field, paged to the end."""
+    ses = session or _sesion_con_reintentos()
     payload: dict[str, Any] = {
-        "collections": [COLECCION],
-        "bbox": list(predio.bbox),
-        "datetime": f"{desde}T00:00:00Z/{hasta}T23:59:59Z",
+        "collections": [COLLECTION],
+        "bbox": list(field.bbox),
+        "datetime": f"{start}T00:00:00Z/{end}T23:59:59Z",
         "limit": 100,
     }
     items: list[dict[str, Any]] = []
@@ -113,134 +92,125 @@ def busca_rtc(
     return items
 
 
-class Credencial:
-    """Token de lectura del Planetary Computer, pedido UNA vez y reutilizado.
+class Credential:
+    """Planetary Computer read token, requested once and reused.
 
-    POR QUE NO SE FIRMA CADA FICHERO
-    --------------------------------
-    La primera version llamaba al endpoint de firma por cada banda de cada
-    escena: 2 peticiones x 590 escenas = 1.180 llamadas con 8 hilos. El
-    servidor devolvio **429 Too Many Requests** y solo pasaron 54 de 590
-    medidas -- y lo peor es que habrian quedado registradas como "el radar no
-    tenia dato", que es una conclusion falsa por un fallo de fontaneria.
-
-    Mirando el token se ve que lleva `sr=c`: es de CONTENEDOR, no de fichero.
-    Vale para todas las escenas de la coleccion. Se pide uno, se guarda con su
-    caducidad y se renueva solo cuando va a expirar. De 1.180 llamadas a 1.
-
-    Es anonimo: sin cuenta, sin clave y sin coste.
+    Signing every file meant 1,180 calls and a 429 that silently dropped 536
+    of 590 measurements. The token is container-scoped (`sr=c`), so one
+    request covers the whole collection. Anonymous: no account, no key, no
+    cost. See DECISIONS.md #9.
     """
 
-    MARGEN = timedelta(minutes=5)  # renovar antes de que caduque de verdad
+    MARGEN = timedelta(minutes=5)  # refresh before it actually expires
 
-    def __init__(self, coleccion: str = COLECCION) -> None:
-        self.coleccion = coleccion
+    def __init__(self, collection: str = COLLECTION) -> None:
+        self.collection = collection
         self._token: str | None = None
         self._caduca: datetime | None = None
         self._cerrojo = threading.Lock()
-        self.peticiones = 0  # para poder afirmar cuantas se hicieron
+        self.requests_made = 0  # so the count can be asserted
 
-    def token(self, sesion: requests.Session | None = None) -> str:
+    def token(self, session: requests.Session | None = None) -> str:
         with self._cerrojo:
             ahora = datetime.now(timezone.utc)
             if self._token and self._caduca and ahora < self._caduca - self.MARGEN:
                 return self._token
-            ses = sesion or _sesion_con_reintentos()
-            r = ses.get(f"{PC_TOKEN}/{self.coleccion}", timeout=60)
+            ses = session or _sesion_con_reintentos()
+            r = ses.get(f"{PC_TOKEN}/{self.collection}", timeout=60)
             r.raise_for_status()
             doc = r.json()
             self._token = doc["token"]
             self._caduca = datetime.fromisoformat(doc["msft:expiry"].replace("Z", "+00:00"))
-            self.peticiones += 1
+            self.requests_made += 1
             return self._token
 
-    def firma(self, href: str, sesion: requests.Session | None = None) -> str:
-        """Pega el token al href. Si ya lo trae, lo deja como esta."""
+    def sign(self, href: str, session: requests.Session | None = None) -> str:
+        """Append the token to the href. Left alone if it already has one."""
         if "?" in href:
             return href
-        return f"{href}?{self.token(sesion)}"
+        return f"{href}?{self.token(session)}"
 
 
-# Una credencial por coleccion, creada cuando hace falta. Antes era un unico
-# singleton de modulo fijado a `sentinel-1-rtc`: funcionaba, pero era estado
-# global que se filtraba entre pruebas y que habria servido el token
-# equivocado el dia que se leyera otra coleccion.
-_CREDENCIALES: dict[str, Credencial] = {}
+# One credential per collection, created on demand. This used to be a single
+# module-level singleton pinned to `sentinel-1-rtc`: it worked, but the state
+# leaked between tests and it would have served the wrong token the day
+# another collection was read.
+_CREDENCIALES: dict[str, Credential] = {}
 _CERROJO_CRED = threading.Lock()
 
 
-def credencial(coleccion: str = COLECCION) -> Credencial:
-    """Credencial de esa coleccion, reutilizada si ya existe."""
+def credential(collection: str = COLLECTION) -> Credential:
+    """Credential for that collection, reused if it already exists."""
     with _CERROJO_CRED:
-        if coleccion not in _CREDENCIALES:
-            _CREDENCIALES[coleccion] = Credencial(coleccion)
-        return _CREDENCIALES[coleccion]
+        if collection not in _CREDENCIALES:
+            _CREDENCIALES[collection] = Credential(collection)
+        return _CREDENCIALES[collection]
 
 
-def olvida_credenciales() -> None:
-    """Tira los tokens guardados. Para las pruebas y para forzar una renovacion."""
+def forget_credentials() -> None:
+    """Drop the cached tokens. For tests, and to force a refresh."""
     with _CERROJO_CRED:
         _CREDENCIALES.clear()
 
 
-def firma(
-    href: str, *, sesion: requests.Session | None = None, coleccion: str = COLECCION
+def sign(
+    href: str, *, session: requests.Session | None = None, collection: str = COLLECTION
 ) -> str:
-    """Firma anonima del Planetary Computer, con el token de contenedor cacheado."""
-    return credencial(coleccion).firma(href, sesion)
+    """Anonymous Planetary Computer signature, container token cached."""
+    return credential(collection).sign(href, session)
 
 
-def mide_retro(
-    item: dict[str, Any], predio: Predio, *, sesion: requests.Session | None = None
-) -> Retro:
-    """Lee VV y VH del predio en una pasada y devuelve las medias en dB."""
+def measure_backscatter(
+    item: dict[str, Any], field: Field, *, session: requests.Session | None = None
+) -> Backscatter:
+    """Read VV and VH over the field and return the means in dB."""
     p = item.get("properties", {})
-    base = Retro(
-        fecha=p.get("datetime", "")[:10],
-        orbita_rel=int(p.get("sat:relative_orbit") or -1),
-        estado=p.get("sat:orbit_state", "?"),
-        plataforma=p.get("platform", "?"),
-        pixeles=0,
+    base = Backscatter(
+        date=p.get("datetime", "")[:10],
+        rel_orbit=int(p.get("sat:relative_orbit") or -1),
+        orbit_state=p.get("sat:orbit_state", "?"),
+        platform=p.get("platform", "?"),
+        pixels=0,
         vv_db=float("nan"),
         vh_db=float("nan"),
     )
     try:
-        valores: dict[str, np.ndarray] = {}
+        values: dict[str, np.ndarray] = {}
         with rasterio.Env(CPL_VSIL_CURL_ALLOWED_EXTENSIONS=".tif,.tiff"):
             import warnings
 
             for pol in ("vv", "vh"):
-                href = firma(item["assets"][pol]["href"], sesion=sesion)
+                href = sign(item["assets"][pol]["href"], session=session)
                 with warnings.catch_warnings():
                     warnings.filterwarnings("ignore", category=NotGeoreferencedWarning)
                     with rasterio.open(href) as src:
-                        ventana, dentro = _mascara_predio(src, predio.geometria)
-                        valores[pol] = src.read(1, window=ventana)[dentro]
+                        ventana, dentro = _field_mask(src, field.geometry)
+                        values[pol] = src.read(1, window=ventana)[dentro]
     except Exception as exc:
         base.error = f"{type(exc).__name__}: {exc}"[:180]
         return base
 
-    base.pixeles = int(valores["vv"].size)
-    base.vv_db = round(media_db(valores["vv"]), 3)
-    base.vh_db = round(media_db(valores["vh"]), 3)
+    base.pixels = int(values["vv"].size)
+    base.vv_db = round(mean_db(values["vv"]), 3)
+    base.vh_db = round(mean_db(values["vh"]), 3)
     if not np.isfinite(base.vv_db) or not np.isfinite(base.vh_db):
-        base.error = "sin pixeles validos (borde del RTC o sombra de radar)"
+        base.error = "sin pixels validos (borde del RTC o sombra de radar)"
     return base
 
 
-def elige_orbita(items: Iterable[dict[str, Any]]) -> int | None:
-    """Orbita relativa con mas escenas sobre ESTE predio.
+def pick_orbit(items: Iterable[dict[str, Any]]) -> int | None:
+    """Relative orbit best covering this field.
 
     POR QUE NO SE PUEDE FIJAR EN EL CODIGO
     --------------------------------------
-    Las orbitas relativas dependen de DONDE esta el predio. La 77 cubre la
+    Las orbitas relativas dependen de DONDE esta el field. La 77 cubre la
     Zona Bananera del Magdalena, pero en Uraba -- la principal zona bananera
     de Colombia -- no pasa: alli son la 142 y la 48. Una constante fija en el
     codigo dejaba la serie de radar VACIA en cualquier sitio distinto de
-    aquellos dos predios, y ademas en silencio.
+    aquellos dos fields, y ademas en silencio.
 
     Se elige la mas poblada porque da la serie mas densa. El empate se rompe
-    por el numero de orbita mas bajo, para que dos ejecuciones sobre los
+    por el numero de orbit mas bajo, para que dos ejecuciones sobre los
     mismos datos den siempre lo mismo.
     """
     cuenta: dict[int, int] = {}
@@ -253,8 +223,8 @@ def elige_orbita(items: Iterable[dict[str, Any]]) -> int | None:
     return min(cuenta, key=lambda o: (-cuenta[o], o))
 
 
-def reparto_orbitas(items: Iterable[dict[str, Any]]) -> dict[int, int]:
-    """Cuantas escenas aporta cada orbita. Para poder declararlo en el informe."""
+def orbit_breakdown(items: Iterable[dict[str, Any]]) -> dict[int, int]:
+    """How many scenes each orbit contributes, so it can be declared."""
     cuenta: dict[int, int] = {}
     for it in items:
         orb = it.get("properties", {}).get("sat:relative_orbit")
@@ -263,17 +233,17 @@ def reparto_orbitas(items: Iterable[dict[str, Any]]) -> dict[int, int]:
     return dict(sorted(cuenta.items(), key=lambda kv: (-kv[1], kv[0])))
 
 
-def por_orbita(retros: Iterable[Retro]) -> dict[int, list[Retro]]:
-    """Agrupa por orbita relativa. NUNCA promediar entre grupos."""
-    salida: dict[int, list[Retro]] = {}
+def by_orbit(retros: Iterable[Backscatter]) -> dict[int, list[Backscatter]]:
+    """Group by relative orbit. Never average across groups."""
+    out: dict[int, list[Backscatter]] = {}
     for r in retros:
         if r.error is None:
-            salida.setdefault(r.orbita_rel, []).append(r)
-    for v in salida.values():
-        v.sort(key=lambda x: x.fecha)
-    return dict(sorted(salida.items(), key=lambda kv: -len(kv[1])))
+            out.setdefault(r.rel_orbit, []).append(r)
+    for v in out.values():
+        v.sort(key=lambda x: x.date)
+    return dict(sorted(out.items(), key=lambda kv: -len(kv[1])))
 
 
-def cubre_hueco(retros: Sequence[Retro], inicio: str, fin: str) -> list[Retro]:
-    """Pasadas de radar con medida valida dentro de un tramo ciego."""
-    return [r for r in retros if r.error is None and inicio <= r.fecha <= fin]
+def within_gap(retros: Sequence[Backscatter], start: str, fin: str) -> list[Backscatter]:
+    """Radar passes with a valid measurement inside a blind stretch."""
+    return [r for r in retros if r.error is None and start <= r.date <= fin]

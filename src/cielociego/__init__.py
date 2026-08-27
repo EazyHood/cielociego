@@ -1,13 +1,13 @@
 # Copyright (c) 2026 Jhonatan del Rio Mejia. All rights reserved.
 # Codigo bajo licencia MIT (ver LICENSE).
 # El contenido escrito va aparte: CC BY-NC-ND 4.0 (ver LICENSE-TEXTO.md).
-"""cielociego - cuanto tiempo el satelite optico NO puede ver un predio, y si el radar lo cubre.
+"""cielociego -- how many days the optical satellite cannot see a field.
 
-Mide, sobre un poligono real y no sobre la tesela entera:
-  1. cuantas pasadas de Sentinel-2 hay al ano,
-  2. que fraccion del predio queda inservible por nube y sombra en cada pasada,
-  3. cuanto duran los huecos sin una sola observacion util,
-  4. si Sentinel-1 (radar, atraviesa nubes) tiene pasada dentro de esos huecos.
+Measures, over a real polygon rather than the whole tile:
+  1. how many Sentinel-2 passes there are per year,
+  2. what fraction of the field each pass leaves unusable,
+  3. how long the stretches with no usable observation run,
+  4. whether Sentinel-1, which sees through cloud, passes inside them.
 """
 
 __version__ = "0.1.0"

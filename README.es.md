@@ -1,7 +1,7 @@
 # cielociego
 
-[![pruebas](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml/badge.svg)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
-[![cobertura 92%](https://img.shields.io/badge/cobertura-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/pruebas.yml)
+[![pruebas](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml/badge.svg)](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml)
+[![cobertura 92%](https://img.shields.io/badge/cobertura-92%25-2f7d4f)](https://github.com/EazyHood/cielociego/actions/workflows/tests.yml)
 [![licencia MIT](https://img.shields.io/badge/licencia-MIT-1d4ed8)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-555)](pyproject.toml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22132250.svg)](https://doi.org/10.5281/zenodo.22132250)
@@ -18,12 +18,12 @@ cambio de **3,5 dB** que sobrevive al control de instrumento, y que **no fue
 gradual**: meseta, transición de unos dos años, y meseta nueva.
 
 Datos abiertos, sin cuenta, sin clave y sin coste. La medición completa se
-reproduce con un comando: **unos 90 s** sin la serie de radar (`--sin-radar`),
+reproduce con un comando: **unos 90 s** sin la serie de radar (`--no-radar`),
 **unos 4 min** con ella.
 
 ```bash
 pip install -e ".[dev]"
-python -m cielociego medir          # mide el area de ejemplo incluida
+python -m cielociego measure          # mide el area de ejemplo incluida
 ```
 
 El repositorio trae un **área de demostración** de 256 ha sobre el corredor
@@ -45,7 +45,7 @@ predio concreto, con el método declarado y las pruebas dentro.
 
 ## Qué hace, en cinco pasos
 
-Cada paso escribe su JSON en `salidas/` y el siguiente lo lee de ahí. Se puede
+Cada paso escribe su JSON en `outputs/` y el siguiente lo lee de ahí. Se puede
 parar, retomar y comprobar cualquier cifra a mano.
 
 | | Paso | Módulo |
@@ -268,7 +268,7 @@ llega hasta donde llega el dato.
 
   Como se usa siempre la línea más alta, **lo publicado es la estimación
   conservadora**: más días ciegos de los que declararía el procesador antiguo.
-  Reproducible con `dedup.pares_de_lineas`.
+  Reproducible con `dedup.baseline_pairs`.
 - **El titular aguanta cualquier definición de «nube».** Contando como ciega
   solo la nube segura —ignorando nube probable, cirro y sombra, lo más generoso
   que se puede defender— quedan **82 % y 84 % de días ciegos**, frente al 89 % y
@@ -280,13 +280,13 @@ llega hasta donde llega el dato.
 ## Uso
 
 ```bash
-python -m cielociego medir                              # el area de ejemplo
-python -m cielociego medir --predio mi_finca.geojson    # tu predio
-python -m cielociego medir --desde 2022-01-01 --hilos 8
-python -m cielociego medir --sin-radar                  # salta la serie (lo mas lento)
-python -m cielociego medir --orbita 142                 # fuerza una orbita concreta
-python -m cielociego catalogo                           # solo el catalogo
-python -m cielociego pruebas                            # 190 pruebas
+python -m cielociego measure                              # el area de ejemplo
+python -m cielociego measure --field mi_finca.geojson    # tu predio
+python -m cielociego measure --start 2022-01-01 --workers 8
+python -m cielociego measure --no-radar                  # salta la serie (lo mas lento)
+python -m cielociego measure --orbit 142                 # fuerza una orbita concreta
+python -m cielociego catalog                           # solo el catalogo
+python -m cielociego tests                            # 190 pruebas
 ```
 
 La **órbita de la serie de radar se elige sola** según cuál cubra mejor tu predio,
@@ -307,7 +307,7 @@ en una sola medida es exactamente el error que este proyecto existe para evitar.
 
 ## Los datos que trae, y los que no
 
-`datos/area_demo.geojson` es un **área de demostración** de 256 ha: un rectángulo
+`data/area_demo.geojson` es un **área de demostración** de 256 ha: un rectángulo
 trazado **a propósito cruzando linderos**, que no corresponde a ningún predio ni
 a la propiedad de nadie. Está para que la herramienta se pueda ejecutar nada más
 clonar el repositorio.
@@ -319,7 +319,7 @@ son datos de un curso universitario y uno de ellos es el área de estudio de un
 docente. Publicar la ubicación exacta de tierra ajena junto a un análisis que
 dice «aquí pasó algo» no es cosa de este repositorio.
 
-Las **cifras agregadas sí están** en `salidas/`, y no permiten reconstruir los
+Las **cifras agregadas sí están** en `outputs/`, y no permiten reconstruir los
 polígonos: lo más fino que aparece es el código de tesela, que cubre 110 × 110 km.
 
 Para medir tu propio predio basta un GeoJSON con **un solo** *feature* de tipo
@@ -418,7 +418,7 @@ Dos licencias, porque el código y el texto no son lo mismo:
 - **Código fuente — MIT** (`LICENSE`). Úsalo, modifícalo y constrúyele encima,
   incluso comercialmente. Conserva el aviso de copyright. La gracia de esta
   herramienta es que la gente la corra sobre sus propios predios.
-- **Contenido escrito — CC BY-NC-ND 4.0** (`LICENSE-TEXTO.md`). El artículo, el
+- **Contenido escrito — CC BY-NC-ND 4.0** (`LICENSE-TEXT.md`). El artículo, el
   informe y sus gráficas se pueden leer, enlazar y citar libremente, pero no
   vender, alterar ni republicar en otro sitio como obra derivada.
 

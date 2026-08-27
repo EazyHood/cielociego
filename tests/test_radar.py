@@ -1,6 +1,6 @@
 """Pruebas del cruce optico-radar.
 
-El nucleo es `huecos_opticos`: cuenta dias en los que NO hubo observacion
+El nucleo es `optical_gaps`: cuenta days en los que NO hubo observacion
 util. Un error de un dia ahi (off-by-one) corre todas las cifras del
 informe, y no se nota mirando. Por eso se prueba con casos donde el
 resultado esta contado a mano.
@@ -10,25 +10,25 @@ from __future__ import annotations
 from datetime import date
 
 from cielociego.radar import (
-    Hueco,
-    Pasada,
-    a_pasadas,
-    cruza,
-    huecos_opticos,
-    identidad_s1,
+    Gap,
+    Pass,
+    cross,
+    optical_gaps,
+    s1_identity,
+    to_passes,
 )
 
 D = date
 ENE = lambda d: date(2023, 1, d)
 
 
-def item_s1(idr, fecha, orbita="ascending"):
+def item_s1(idr, date, orbit="ascending"):
     return {
         "id": idr,
         "properties": {
-            "datetime": fecha,
+            "datetime": date,
             "platform": "sentinel-1a",
-            "sat:orbit_state": orbita,
+            "sat:orbit_state": orbit,
             "sar:instrument_mode": "IW",
             "sar:polarizations": ["VV", "VH"],
         },
@@ -38,109 +38,109 @@ def item_s1(idr, fecha, orbita="ascending"):
 REAL = "S1A_IW_GRDH_1SDV_20231222T230735_20231222T230800_051774_0640E8"
 
 
-# --- identidad y deduplicacion ---------------------------------------------
-def test_identidad_de_un_id_real():
-    assert identidad_s1({"id": REAL}) == ("S1A", "20231222T230735")
+# --- identity y deduplicacion ---------------------------------------------
+def test_identity_of_a_real_id():
+    assert s1_identity({"id": REAL}) == ("S1A", "20231222T230735")
 
 
-def test_id_ilegible_no_revienta():
-    assert identidad_s1({"id": "cualquier_cosa"}) is None
+def test_an_unreadable_id_does_not_raise():
+    assert s1_identity({"id": "cualquier_cosa"}) is None
 
 
-def test_dedup_por_identidad_fisica():
+def test_deduplicates_by_physical_identity():
     a = item_s1(REAL, "2023-12-22T23:07:48Z")
     b = item_s1(REAL, "2023-12-22T23:07:48Z")  # mismo producto repetido
-    assert len(a_pasadas([a, b])) == 1
+    assert len(to_passes([a, b])) == 1
 
 
-def test_asc_y_desc_del_mismo_dia_son_dos_pasadas():
+def test_ascending_and_descending_on_one_day_are_two_passes():
     a = item_s1(REAL, "2023-12-22T23:07:48Z", "ascending")
     b = item_s1(
         "S1A_IW_GRDH_1SDV_20231222T104146_20231222T104215_051766_0640A7",
         "2023-12-22T10:42:01Z", "descending",
     )
-    ps = a_pasadas([a, b])
+    ps = to_passes([a, b])
     assert len(ps) == 2
-    assert {p.orbita for p in ps} == {"ascending", "descending"}
+    assert {p.orbit for p in ps} == {"ascending", "descending"}
     assert ps[0].polarizaciones == ("VV", "VH")
 
 
 # --- huecos: los casos contados a mano -------------------------------------
-def test_sin_ninguna_vista_util_el_hueco_es_todo_el_periodo():
-    h = huecos_opticos([], ENE(1), ENE(31))
+def test_with_no_usable_view_the_whole_period_is_a_gap():
+    h = optical_gaps([], ENE(1), ENE(31))
     assert h == [(ENE(1), ENE(31))]
-    assert Hueco(*h[0], 0).dias == 31
+    assert Gap(*h[0], 0).days == 31
 
 
-def test_vista_util_todos_los_dias_no_deja_hueco():
-    assert huecos_opticos([ENE(d) for d in range(1, 32)], ENE(1), ENE(31)) == []
+def test_vista_usable_all_the_days_not_deja_gap():
+    assert optical_gaps([ENE(d) for d in range(1, 32)], ENE(1), ENE(31)) == []
 
 
-def test_hueco_entre_dos_vistas_es_el_intervalo_abierto():
-    """Vista el 1 y el 10 -> hueco del 2 al 9 = 8 dias. Contado a mano."""
-    h = huecos_opticos([ENE(1), ENE(10)], ENE(1), ENE(10))
+def test_gap_between_two_vistas_is_the_intervalo_abierto():
+    """A view on day 1 and day 10 leaves days 2..9, eight days. Counted by hand."""
+    h = optical_gaps([ENE(1), ENE(10)], ENE(1), ENE(10))
     assert h == [(ENE(2), ENE(9))]
-    assert Hueco(*h[0], 0).dias == 8
+    assert Gap(*h[0], 0).days == 8
 
 
-def test_dias_consecutivos_no_dejan_hueco():
-    assert huecos_opticos([ENE(5), ENE(6)], ENE(5), ENE(6)) == []
+def test_days_consecutivos_not_dejan_gap():
+    assert optical_gaps([ENE(5), ENE(6)], ENE(5), ENE(6)) == []
 
 
-def test_extremos_ciegos_cuentan():
-    """Serie que empieza y acaba ciega: los dos bordes son huecos reales."""
-    h = huecos_opticos([ENE(10), ENE(20)], ENE(1), ENE(31))
+def test_ends_ciegos_cuentan():
+    """A series that starts and ends blind: both edges are real gaps."""
+    h = optical_gaps([ENE(10), ENE(20)], ENE(1), ENE(31))
     assert h == [(ENE(1), ENE(9)), (ENE(11), ENE(19)), (ENE(21), ENE(31))]
-    assert [Hueco(*t, 0).dias for t in h] == [9, 9, 11]
+    assert [Gap(*t, 0).days for t in h] == [9, 9, 11]
 
 
-def test_fechas_fuera_del_periodo_se_ignoran():
-    h = huecos_opticos([date(2022, 12, 20), ENE(15), date(2024, 1, 1)], ENE(1), ENE(31))
+def test_dates_outside_the_period_are_ignored():
+    h = optical_gaps([date(2022, 12, 20), ENE(15), date(2024, 1, 1)], ENE(1), ENE(31))
     assert h == [(ENE(1), ENE(14)), (ENE(16), ENE(31))]
 
 
-def test_fechas_repetidas_o_desordenadas_dan_lo_mismo():
-    ordenado = huecos_opticos([ENE(5), ENE(15)], ENE(1), ENE(20))
-    revuelto = huecos_opticos([ENE(15), ENE(5), ENE(15)], ENE(1), ENE(20))
+def test_repeated_or_unsorted_dates_give_the_same():
+    ordenado = optical_gaps([ENE(5), ENE(15)], ENE(1), ENE(20))
+    revuelto = optical_gaps([ENE(15), ENE(5), ENE(15)], ENE(1), ENE(20))
     assert ordenado == revuelto
 
 
-def test_suma_de_huecos_mas_dias_utiles_es_el_periodo():
+def test_gaps_plus_usable_days_add_up_to_the_period():
     """Invariante: nada se pierde ni se cuenta dos veces."""
     utiles = [ENE(3), ENE(4), ENE(11), ENE(28)]
-    h = huecos_opticos(utiles, ENE(1), ENE(31))
-    assert sum(Hueco(*t, 0).dias for t in h) + len(utiles) == 31
+    h = optical_gaps(utiles, ENE(1), ENE(31))
+    assert sum(Gap(*t, 0).days for t in h) + len(utiles) == 31
 
 
 # --- cruce con el radar ----------------------------------------------------
-def test_el_radar_cubre_el_hueco():
-    huecos = cruza([ENE(1), ENE(20)], [Pasada(ENE(10), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
+def test_radar_covers_the_gap():
+    huecos = cross([ENE(1), ENE(20)], [Pass(ENE(10), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
     assert len(huecos) == 1
-    assert huecos[0].pasadas_radar == 1 and huecos[0].cubierto
+    assert huecos[0].radar_passes == 1 and huecos[0].covered
 
 
-def test_radar_fuera_del_hueco_no_cuenta():
-    """La pasada cae en un dia con optico util -> no rellena nada."""
-    huecos = cruza([ENE(1), ENE(20)], [Pasada(ENE(1), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
-    assert huecos[0].pasadas_radar == 0 and not huecos[0].cubierto
+def test_a_radar_pass_outside_the_gap_does_not_count():
+    """The pass lands on a day with usable optical, so it fills nothing."""
+    huecos = cross([ENE(1), ENE(20)], [Pass(ENE(1), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
+    assert huecos[0].radar_passes == 0 and not huecos[0].covered
 
 
-def test_radar_en_los_bordes_del_hueco_si_cuenta():
+def test_a_radar_pass_on_the_gap_edges_does_count():
     """El hueco (2..19) incluye sus extremos: dia 2 y dia 19 cuentan."""
     for d in (2, 19):
-        h = cruza([ENE(1), ENE(20)], [Pasada(ENE(d), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
-        assert h[0].pasadas_radar == 1, f"dia {d} deberia caer dentro"
+        h = cross([ENE(1), ENE(20)], [Pass(ENE(d), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
+        assert h[0].radar_passes == 1, f"dia {d} deberia caer dentro"
     for d in (1, 20):
-        h = cruza([ENE(1), ENE(20)], [Pasada(ENE(d), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
-        assert h[0].pasadas_radar == 0, f"dia {d} NO deberia caer dentro"
+        h = cross([ENE(1), ENE(20)], [Pass(ENE(d), "s1a", "asc", "IW", ("VV",))], ENE(1), ENE(20))
+        assert h[0].radar_passes == 0, f"dia {d} NO deberia caer dentro"
 
 
-def test_varios_huecos_reparten_las_pasadas():
-    huecos = cruza(
+def test_several_gaps_share_out_the_passes():
+    huecos = cross(
         [ENE(5), ENE(15)],
-        [Pasada(ENE(2), "s1a", "asc", "IW", ()), Pasada(ENE(10), "s1a", "asc", "IW", ()),
-         Pasada(ENE(11), "s1a", "desc", "IW", ()), Pasada(ENE(25), "s1a", "asc", "IW", ())],
+        [Pass(ENE(2), "s1a", "asc", "IW", ()), Pass(ENE(10), "s1a", "asc", "IW", ()),
+         Pass(ENE(11), "s1a", "desc", "IW", ()), Pass(ENE(25), "s1a", "asc", "IW", ())],
         ENE(1), ENE(31),
     )
-    assert [h.pasadas_radar for h in huecos] == [1, 2, 1]
-    assert all(h.cubierto for h in huecos)
+    assert [h.radar_passes for h in huecos] == [1, 2, 1]
+    assert all(h.covered for h in huecos)

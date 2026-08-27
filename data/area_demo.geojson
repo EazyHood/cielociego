@@ -1,0 +1,40 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "area_ha": 256.0,
+    "name": "Demonstration area - banana corridor, Magdalena",
+    "note": "Rectangle drawn deliberately across property boundaries: it does NOT correspond to any real field or holding. It exists only so the tool can be run out of the box over an area where the phenomenon shows."
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -74.187315,
+       10.742814
+      ],
+      [
+       -74.172685,
+       10.742814
+      ],
+      [
+       -74.172685,
+       10.757186
+      ],
+      [
+       -74.187315,
+       10.757186
+      ],
+      [
+       -74.187315,
+       10.742814
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}
