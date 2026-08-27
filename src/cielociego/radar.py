@@ -11,9 +11,11 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import date, datetime, timedelta
 from typing import Any
+
+import numpy as np
 
 # S1A_IW_GRDH_1SDV_20231222T230735_20231222T230800_051774_0640E8
 _ID = re.compile(
@@ -119,3 +121,50 @@ def cross(
         n = sum(1 for d in radar_dates if a <= d <= b)
         out.append(Gap(a, b, n))
     return out
+
+
+@dataclass
+class Cadence:
+    """How often an observation actually arrives, optical alone and with radar."""
+
+    optical_days: int
+    combined_days: int
+    median_optical: float
+    median_combined: float
+    p95_optical: float
+    p95_combined: float
+    worst_optical: int
+    worst_combined: int
+
+    def dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def cadence(optical: Sequence[date], radar: Sequence[date]) -> Cadence:
+    """Interval between usable observations, before and after adding radar.
+
+    This replaces a metric that looked like a result and was not. "What share
+    of the long gaps contain a radar pass?" comes out at 100 %, but that is
+    Sentinel-1's revisit answering, not the fields: consecutive passes are less
+    than 15 days apart in 274 of 275 cases, so any 15-day window contains one
+    almost by construction. A published orbital specification is not a finding.
+
+    What is not forced is the cadence. On these fields the median is unchanged
+    at 5 days -- on clear days optical is already frequent -- while the 95th
+    percentile falls from 25 and 40 days to 12, and the worst stretch from 60
+    and 90 days to 24. Radar does not improve the typical case. It cuts the tail.
+
+    `radar` should carry one relative orbit only, or the dates are not
+    comparable to each other. See DECISIONS.md #7.
+    """
+    def spacing(days: Sequence[date]) -> tuple[float, float, int]:
+        ordered = sorted(set(days))
+        if len(ordered) < 2:
+            return float("nan"), float("nan"), 0
+        d = np.array([(b - a).days for a, b in zip(ordered[:-1], ordered[1:], strict=True)])
+        return float(np.median(d)), float(np.percentile(d, 95)), int(d.max())
+
+    both = sorted(set(optical) | set(radar))
+    mo, po, wo = spacing(optical)
+    mb, pb, wb = spacing(both)
+    return Cadence(len(set(optical)), len(both), mo, mb, po, pb, wo, wb)

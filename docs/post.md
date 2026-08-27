@@ -120,12 +120,24 @@ emits microwave pulses and measures what comes back. Microwaves pass through
 cloud. The instrument works at night, in overcast weather, and during storms, and
 the data is as free as the optical imagery.
 
-The obvious question is whether its passes happen to fall inside the gaps the
-optical record leaves, or whether they cluster on the same clear days for
-unrelated reasons. They do not cluster: across both plots there were sixty-six
-stretches of fifteen days or more with no usable optical view, and every single
-one of them contains at least one radar acquisition. During that eighty-nine-day
-blackout in 2024, Sentinel-1 passed over the field twenty-two times.
+The obvious question is whether its passes fall inside the gaps the optical
+record leaves. They do — all sixty-six of the long ones — and I want to be
+careful about how little that proves. Consecutive Sentinel-1 passes over these
+fields are less than fifteen days apart in 274 of 275 cases, so any fifteen-day
+window contains one almost by construction. That figure is the satellite's
+revisit answering, not anything about these fields.
+
+The question that is not settled in advance is what the observation cadence
+actually becomes. Taking the usable optical days and adding radar acquisitions
+from a single relative orbit, so the dates are comparable to each other, the
+median interval does not move at all: five days either way. On a clear run
+optical is already frequent and radar adds nothing you did not have.
+
+What collapses is the tail. The 95th percentile of the interval between
+observations falls from twenty-five and forty days to twelve, and the worst
+stretch with nothing at all falls from sixty and ninety days to twenty-four —
+which is simply Sentinel-1's own revisit. Radar does not make the typical case
+better. It puts a ceiling on how bad the worst case gets.
 
 Whether those passes are *useful* is a separate question, and worth separating
 carefully. A radar image is not a substitute for an optical one. Optical sensors

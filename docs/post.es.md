@@ -121,11 +121,25 @@ instrumento funciona de noche, con cielo cubierto y en plena tormenta, y sus
 datos son tan gratuitos como los ópticos.
 
 La pregunta evidente es si sus pasadas caen dentro de los huecos que deja el
-óptico, o si se agolpan en los mismos días despejados por alguna razón ajena. No
-se agolpan: entre los dos predios hubo sesenta y seis tramos de quince días o más
-sin vista óptica aprovechable, y **todos y cada uno** contienen al menos una
-adquisición de radar. Durante aquel apagón de ochenta y nueve días en 2024,
-Sentinel-1 pasó sobre el predio veintidós veces.
+óptico. Caen —los sesenta y seis tramos largos tienen alguna— y conviene ser
+cuidadoso con lo poco que eso demuestra. Las pasadas consecutivas de Sentinel-1
+sobre estos predios están separadas por menos de quince días en 274 de 275
+casos, así que cualquier ventana de quince días contiene una casi por
+construcción. Esa cifra la contesta la revisita del satélite, no nada relativo a
+estos predios.
+
+La pregunta que no está decidida de antemano es en qué queda la cadencia de
+observación. Tomando los días ópticos aprovechables y añadiendo las
+adquisiciones de radar de una sola órbita relativa, para que las fechas sean
+comparables entre sí, el intervalo mediano no se mueve en absoluto: cinco días
+en los dos casos. En una racha despejada el óptico ya es frecuente y el radar no
+aporta nada que no tuvieras.
+
+Lo que se desploma es la cola. El percentil 95 del intervalo entre
+observaciones baja de veinticinco y cuarenta días a doce, y el peor tramo sin
+nada de nada baja de sesenta y noventa días a veinticuatro, que es sencillamente
+la revisita del propio Sentinel-1. El radar no mejora el caso típico. Le pone
+techo a lo malo que puede llegar a ser el peor.
 
 Si esas pasadas *sirven* es otra pregunta, y conviene separarla con cuidado. Una
 imagen de radar no sustituye a una óptica. Los sensores ópticos miden

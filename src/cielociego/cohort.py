@@ -479,69 +479,81 @@ def optical_pass(
     workers: int = 10,
     cap_per_parcel: int | None = None,
     notify: Any = None,
-    on_parcel: Any = None,
+    on_row: Any = None,
     skip: set[str] | None = None,
 ) -> list[Observation]:
     """Read the classification band over every parcel. The expensive pass.
 
-    Parcels are processed one after another and their acquisitions in parallel:
-    the bottleneck is range reads against one bucket, so widening the outer loop
-    as well only earns throttling. A parcel whose catalogue query fails is
-    skipped with a row of its own rather than silently contributing nothing.
+    Two phases, and the shape matters more than it looks. The obvious way --
+    loop over parcels, open a thread pool inside each one -- was measured and
+    abandoned: one parcel a minute, then a stall of several minutes on a parcel
+    that read in half a second when asked on its own. Building and tearing down
+    a pool a few hundred times, each with its own serial retry round that sleeps
+    before every attempt, spends most of the wall clock waiting rather than
+    reading.
 
-    `on_parcel` is called with the rows of each parcel as soon as they exist, and
-    `skip` holds the parcel ids already on disk. Together they make a run of
-    several hundred parcels restartable, which stopped being optional the first
-    time a single slow file held the whole cohort for five minutes: with a
-    sixty-second timeout and five retries, one unlucky object can cost more than
-    the rest of the parcel put together, and losing the work already done to it
-    is the difference between an afternoon and a week.
+    So the parcel loop plans and a single pool reads. Phase one asks the
+    catalogue once per parcel, in parallel, and yields the list of
+    (parcel, acquisition) pairs. Phase two runs one pool over every pair, so a
+    slow object stalls one worker instead of a whole parcel, and the pool stays
+    full to the last row.
+
+    `on_row` receives each observation as it lands and `skip` holds the parcel
+    ids already on disk: together they make a run of several hundred parcels
+    restartable, which stopped being optional the first time a single slow file
+    held the whole cohort.
     """
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .scl import measure_view
+
     session = _session_with_retries()
+    todo = [p for p in parcels if not (skip and p.id in skip)]
     out: list[Observation] = []
-    for n, parcel in enumerate(parcels, 1):
-        if skip and parcel.id in skip:
-            if notify:
-                notify(n, len(parcels))
-            continue
+
+    def _failed_row(parcel: Parcel, reason: str) -> Observation:
+        return Observation(
+            parcel.id, parcel.source, parcel.country, parcel.area_ha,
+            "", "", 0, None, float("nan"), float("nan"), error=reason[:200],
+        )
+
+    def plan(parcel: Parcel) -> tuple[Parcel, list[dict[str, Any]], str | None]:
         try:
-            sweep_res = search(S2_L2A, parcel.geometry.bounds, start, end, session=session)
-            scenes = thin(_scene_list(sweep_res.items), cap_per_parcel)
+            res = search(S2_L2A, parcel.geometry.bounds, start, end, session=session)
+            return parcel, thin(_scene_list(res.items), cap_per_parcel), None
         except (NetworkDown, RuntimeError) as exc:
-            out.append(
-                Observation(
-                    parcel.id, parcel.source, parcel.country, parcel.area_ha,
-                    "", "", 0, None, float("nan"), float("nan"),
-                    error=f"{type(exc).__name__}: {exc}"[:200],
-                )
-            )
-            if notify:
-                notify(n, len(parcels))
-            continue
+            return parcel, [], f"{type(exc).__name__}: {exc}"
 
-        from .sweep import sweep as _sweep
+    tasks: list[tuple[Parcel, dict[str, Any]]] = []
+    with ThreadPoolExecutor(max_workers=min(8, workers)) as pool:
+        for parcel, scenes, err in pool.map(plan, todo):
+            if err:
+                row = _failed_row(parcel, err)
+                out.append(row)
+                if on_row:
+                    on_row(row)
+            tasks.extend((parcel, s) for s in scenes)
 
-        res = _sweep(parcel.as_field(), scenes, workers=workers)
-        for view in list(res.views) + list(res.failed):
-            out.append(
-                Observation(
-                    parcel_id=parcel.id,
-                    source=parcel.source,
-                    country=parcel.country,
-                    area_ha=parcel.area_ha,
-                    date=view.date,
-                    scene_id=view.scene_id,
-                    pixels=view.pixels,
-                    tile_cloud=view.tile_cloud,
-                    blind=view.blind_strict,
-                    blind_wide=view.blind_wide,
-                    error=view.error,
-                )
-            )
-        if on_parcel:
-            on_parcel(parcel, [o for o in out if o.parcel_id == parcel.id])
-        if notify:
-            notify(n, len(parcels))
+    def measure(task: tuple[Parcel, dict[str, Any]]) -> Observation:
+        parcel, scene = task
+        view = measure_view(
+            scene["scl"], parcel.geometry,
+            date=scene["date"][:10], scene_id=scene["id"], tile_cloud=scene["cc"],
+        )
+        return Observation(
+            parcel_id=parcel.id, source=parcel.source, country=parcel.country,
+            area_ha=parcel.area_ha, date=view.date, scene_id=view.scene_id,
+            pixels=view.pixels, tile_cloud=view.tile_cloud,
+            blind=view.blind_strict, blind_wide=view.blind_wide, error=view.error,
+        )
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for n, row in enumerate(pool.map(measure, tasks), 1):
+            out.append(row)
+            if on_row:
+                on_row(row)
+            if notify and (n % 20 == 0 or n == len(tasks)):
+                notify(n, len(tasks))
     return out
 
 

@@ -72,18 +72,40 @@ transient failure swallowed in silence becomes a data point.
 ## Headline results
 
 ```
-                          Field A        Field B
-days in period ........... 2,794          2,794
-days with a usable view ..   315            264
-BLIND DAYS ...............   89 %           91 %
-longest gap ..............   59 d           89 d
-gaps >=15 d with radar ... 34/34          32/32   = 100 %
+                            Field A       Field B
+days in period ...........   2,794         2,794
+days with a usable view ..     315           264
+BLIND DAYS ...............      89 %          91 %
+longest gap ..............      59 d          89 d
+
+observation cadence      median   95th pct   worst
+  optical only              5 d      25/40 d   60/90 d
+  plus same-orbit radar     5 d         12 d      24 d
 ```
 
 **The headline survives any definition of "cloud".** Counting only
 high-confidence cloud — ignoring probable cloud, thin cirrus and shadow, the most
 permissive reading you could defend — still leaves **82 % and 84 % blind days**.
 It does not live on where you draw the line.
+
+## Radar does not cover the gaps. It cuts the tail
+
+The obvious thing to report would be how many of those long gaps contain a
+Sentinel-1 acquisition. The answer is all of them, and it means nothing:
+consecutive radar passes are less than fifteen days apart in 274 of 275 cases,
+so any fifteen-day window contains one almost by construction. That number is
+Sentinel-1's revisit answering, not these fields, and a published orbital
+specification is not a finding.
+
+What is not settled in advance is the cadence. Take the usable optical days and
+add the radar acquisitions from a single relative orbit, so the dates are
+comparable to each other, and the median does not move: on a clear run optical
+is already frequent and radar adds nothing you did not have. What collapses is
+the tail. The worst stretch with no observation at all falls from two or three
+months to under four weeks, which is Sentinel-1's own revisit.
+
+Radar does not make the typical case better. It puts a ceiling on how bad the
+worst case gets. Reproducible via `radar.cadence`.
 
 ## Three instrument faults found by measuring
 

@@ -181,7 +181,7 @@ def fila(name, d):
 
 HTML = f"""<title>Nueve de cada diez días</title>
 <meta property="og:title" content="Nueve de cada diez días">
-<meta property="og:description" content="Medido sobre 2.794 días en dos fields del Magdalena: el 89 % y el 91 % de los días el satélite óptico no ve el field. El radar estuvo en los 66 huecos largos.">
+<meta property="og:description" content="Medido sobre 2.794 días en dos fields del Magdalena: el 89 % y el 91 % de los días el satélite óptico no ve el field. Sumando radar, el peor tramo sin observación baja de 90 a 24 días.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://eazyhood.github.io/cielociego/">
 <meta name="twitter:card" content="summary">
@@ -314,28 +314,44 @@ HTML = f"""<title>Nueve de cada diez días</title>
 <article class="paso">
   <div class="num">4</div>
   <div class="body">
-    <h2>El radar estuvo ahí en todos los huecos largos</h2>
+    <h2>El radar no cubre los huecos. Le corta la cola</h2>
     <div class="pila g2 medida">
-      <p>Sentinel-1 no mira: ilumina. Al ser radar, la nube le da igual — observa de día, de noche y
-      con tormenta, y es exactamente igual de gratis que el óptico. La pregunta era si sus pasadas
-      caen dentro de los huecos o los esquivan.</p>
+      <p>Sentinel-1 no mira: ilumina. Al ser radar, la nube le da igual — observa de día, de noche
+      y con tormenta, y es exactamente igual de gratis que el óptico.</p>
+      <p>Lo obvio sería contar cuántos de los {TOT_LARGOS} tramos largos contienen una pasada.
+      Salen todos, y <b>no significa nada</b>: las pasadas consecutivas están separadas por menos
+      de quince días en <b>274 de 275 casos</b>, así que cualquier ventana de quince días contiene
+      una casi por construcción. Esa cifra la contesta la revisita del satélite, no estos predios,
+      y una especificación orbital publicada no es un hallazgo.</p>
+    </div>
+    <div class="aviso pila g2">
+      <h3>La pregunta que no está decidida de antemano</h3>
+      <p class="suave">En qué queda la <b>cadencia de observación</b>: cada cuánto llega algo
+      utilizable, sumando los días ópticos aprovechables y las adquisiciones de radar de una sola
+      órbita relativa, para que las fechas sean comparables entre sí.</p>
+    </div>
+    <pre>                        mediana   percentil 95    peor
+FUNDACION  solo optico     5 d         25 d         60 d
+           mas radar       5 d         12 d         24 d
+CORREDOR   solo optico     5 d         40 d         90 d
+           mas radar       5 d         12 d         24 d</pre>
+    <div class="balance">
+      <div class="ok"><span class="cifra">5 → 5 d</span>
+        <span class="rotulo">la <b>mediana no se mueve</b>: en una racha despejada el óptico ya es
+        frecuente y el radar no aporta nada que no tuvieras</span></div>
+      <div class="err"><span class="cifra">90 → 24 d</span>
+        <span class="rotulo">pero el <b>peor tramo sin ninguna observación</b> baja de tres meses
+        a menos de cuatro semanas</span></div>
     </div>
     <figure>
       <div class="lienzo">{G["dur"]}</div>
-      <figcaption>Los {n(TOT_HUECOS)} huecos de ambos fields, agrupados por duración. En azul, los
-      que tienen al menos una pasada de radar dentro.</figcaption>
+      <figcaption>Los {n(TOT_HUECOS)} huecos de ambos predios, agrupados por duración. En azul,
+      los que tienen al menos una pasada de radar dentro — que, como se explica arriba, son casi
+      todos por la propia órbita.</figcaption>
     </figure>
-    <div class="balance">
-      <div class="ok"><span class="cifra">{TOT_CUB}/{TOT_LARGOS}</span>
-        <span class="rotulo">huecos de 15 días o más <b>con pasada de radar dentro</b>. El 100 %,
-        en los dos fields</span></div>
-      <div class="ok"><span class="cifra">{C["worst"]["radar_passes"]}</span>
-        <span class="rotulo">pasadas de radar durante los {C["worst"]["days"]} días en que el óptico
-        <b>no vio absolutamente nada</b></span></div>
-    </div>
-    <p class="nota medida">Los huecos cortos, de cuatro días, a veces no llevan radar dentro y da
-    igual: la siguiente imagen óptica llega enseguida. <b>Donde el problema duele, el radar siempre
-    estaba.</b> El hueco no era de datos. Era de método.</p>
+    <p class="nota medida"><b>El radar no mejora el caso típico. Le pone techo a lo malo que puede
+    llegar a ser el peor.</b> Los 24 días del combinado no son mérito del método: son la revisita
+    del propio Sentinel-1.</p>
   </div>
 </article>
 

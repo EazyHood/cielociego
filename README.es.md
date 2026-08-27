@@ -112,21 +112,35 @@ hueco mas largo ...........   59 d           89 d
 Casi tres meses seguidos sin una sola imagen utilizable del corredor bananero.
 Un ciclo de cultivo no espera a que escampe.
 
-### 4. El radar estuvo ahí en todos los huecos largos
+### 4. El radar no cubre los huecos. Le corta la cola
 
-Sentinel-1 no mira: ilumina. Al ser radar, la nube le da igual, y es igual de
-gratis que el óptico.
+Lo obvio sería contar cuántos de esos tramos largos contienen una adquisición de
+Sentinel-1. La respuesta es todos, y no significa nada: las pasadas de radar
+están separadas por menos de quince días en 274 de 275 casos, así que cualquier
+ventana de quince días contiene una casi por construcción. Esa cifra la contesta
+la revisita de Sentinel-1, no estos predios. Una especificación orbital
+publicada no es un hallazgo.
+
+La pregunta que no está decidida de antemano es en qué queda la cadencia de
+observación. Tomando los días ópticos aprovechables y añadiendo las
+adquisiciones de radar de una sola órbita relativa —para que las fechas sean
+comparables entre sí—:
 
 ```
-huecos de >= 15 dias con pasada de radar dentro:
-   Fundacion  34 / 34        Corredor  32 / 32        = 100 %
-
-durante los 89 dias en que el optico no vio NADA: 22 pasadas de radar
+                            mediana   percentil 95   peor
+Predio A   solo optico        5 d        25 d        60 d
+           mas radar          5 d        12 d        24 d
+Predio B   solo optico        5 d        40 d        90 d
+           mas radar          5 d        12 d        24 d
 ```
 
-Los huecos cortos, de cuatro días, a veces no llevan radar dentro y da igual: la
-siguiente imagen óptica llega enseguida. **Donde el problema duele, el radar
-siempre estaba.** El hueco no era de datos. Era de método.
+La mediana no se mueve. En una racha despejada el óptico ya es frecuente y el
+radar no añade nada que no tuvieras. Lo que se desploma es la cola: el peor
+tramo sin ninguna observación baja de dos o tres meses a menos de cuatro
+semanas, que es la revisita del propio Sentinel-1.
+
+Esa es la afirmación honesta. El radar no mejora el caso típico. Le pone techo a
+lo malo que puede llegar a ser el peor.
 
 ### 5. Y el radar no solo estaba: traía señal
 

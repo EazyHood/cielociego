@@ -364,15 +364,14 @@ def cmd_cohort(args) -> int:
 
         handle = partial.open("a", encoding="utf-8")
 
-        def _write(_parcel, rows) -> None:
-            for row in rows:
-                handle.write(json.dumps(row.dict(), ensure_ascii=False) + "\n")
+        def _write(row) -> None:
+            handle.write(json.dumps(row.dict(), ensure_ascii=False) + "\n")
             handle.flush()
 
         fresh = optical_pass(
             parcels, args.start, args.end,
             workers=args.workers, cap_per_parcel=args.cap, notify=_progress,
-            on_parcel=_write, skip=done,
+            on_row=_write, skip=done,
         )
         handle.close()
         result.observations = earlier + fresh

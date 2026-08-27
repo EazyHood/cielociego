@@ -144,3 +144,49 @@ def test_several_gaps_share_out_the_passes():
     )
     assert [h.radar_passes for h in huecos] == [1, 2, 1]
     assert all(h.covered for h in huecos)
+
+
+# --- cadence: the metric that replaced one that only looked like a result --
+def test_cadence_counts_both_sets():
+    from cielociego.radar import cadence
+
+    c = cadence([ENE(1), ENE(10)], [ENE(5)])
+    assert c.optical_days == 2 and c.combined_days == 3
+
+
+def test_radar_cuts_the_tail_without_moving_the_median():
+    """The real finding, and the reason the old one was dropped.
+
+    Optical every 5 days with one long outage; radar every 12. The median
+    barely moves -- on clear days optical is already frequent -- but the worst
+    stretch collapses. Claiming radar improves the typical cadence would be
+    overselling it.
+    """
+    from datetime import timedelta
+
+    from cielociego.radar import cadence
+
+    base = date(2023, 1, 1)
+    optical = [base + timedelta(days=d) for d in list(range(0, 40, 5)) + [130, 135]]
+    radar = [base + timedelta(days=d) for d in range(0, 140, 12)]
+    c = cadence(optical, radar)
+    assert c.worst_optical > 80, "the outage must be there to start with"
+    assert c.worst_combined <= 12, "radar must cut it down to its own revisit"
+    assert c.median_combined <= c.median_optical
+
+
+def test_cadence_with_no_radar_changes_nothing():
+    from cielociego.radar import cadence
+
+    c = cadence([ENE(1), ENE(10), ENE(20)], [])
+    assert c.worst_optical == c.worst_combined
+    assert c.median_optical == c.median_combined
+
+
+def test_cadence_needs_two_dates_to_say_anything():
+    import math
+
+    from cielociego.radar import cadence
+
+    c = cadence([ENE(1)], [])
+    assert math.isnan(c.median_optical) and c.worst_optical == 0
