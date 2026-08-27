@@ -37,7 +37,7 @@ IDIOMAS = {
                 ("post.es.html", "En español")],
         "desc": ("Sentinel-2 passes every five days. On two fields in the Colombian "
                  "Caribbean, 89% and 91% of days had no usable view at all."),
-        "pie": ("© 2026 Jhonatan del Río. All rights reserved. This text and its charts "
+        "pie": ("© 2026 Jhonatan del Rio Mejia. All rights reserved. This text and its charts "
                 'are licensed <a href="' + CC_EN + '">CC BY-NC-ND 4.0</a>; the source '
                 "code is MIT. The measurements belong to nobody — reproduce them."),
     },
@@ -49,7 +49,7 @@ IDIOMAS = {
                 ("post.html", "In English")],
         "desc": ("Sentinel-2 pasa cada cinco días. Sobre dos predios del Caribe colombiano, "
                  "el 89 % y el 91 % de los días no hubo una sola vista aprovechable."),
-        "pie": ("© 2026 Jhonatan del Río. Todos los derechos reservados. Este texto y sus "
+        "pie": ("© 2026 Jhonatan del Rio Mejia. Todos los derechos reservados. Este texto y sus "
                 'gráficas están bajo <a href="' + CC_ES + '">CC BY-NC-ND 4.0</a>; el '
                 "código, bajo MIT. Las mediciones no son de nadie: reprodúcelas."),
     },
@@ -200,7 +200,7 @@ def escribe(cfg: dict) -> None:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{t} — cielociego</title>
 <meta name="description" content="{d}">
-<meta name="author" content="Jhonatan del Río">
+<meta name="author" content="Jhonatan del Rio Mejia">
 <meta property="og:title" content="{t}">
 <meta property="og:description" content="{d}">
 <meta property="og:type" content="article">

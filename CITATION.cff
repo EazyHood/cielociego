@@ -3,7 +3,7 @@ title: "cielociego: cuántos días el satélite óptico no puede ver un predio"
 message: "Si usas este software o sus resultados, cítalo así."
 type: software
 authors:
-  - family-names: "del Río"
+  - family-names: "del Rio Mejia"
     given-names: "Jhonatan"
     alias: EazyHood
 doi: "10.5281/zenodo.22132250"
@@ -27,6 +27,6 @@ keywords:
   - tropical-agriculture
   - colombia
 license: MIT
-copyright: "Copyright (c) 2026 Jhonatan del Rio. All rights reserved."
+copyright: "Copyright (c) 2026 Jhonatan del Rio Mejia. All rights reserved."
 version: 0.1.1
 date-released: "2026-08-27"

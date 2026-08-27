@@ -411,7 +411,7 @@ GitHub también genera la cita desde `CITATION.cff` con el botón
 
 ## Licencia
 
-**Copyright © 2026 Jhonatan del Río. Todos los derechos reservados.**
+**Copyright © 2026 Jhonatan del Rio Mejia. Todos los derechos reservados.**
 
 Dos licencias, porque el código y el texto no son lo mismo:
 

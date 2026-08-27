@@ -248,7 +248,7 @@ GitHub also renders the citation from `CITATION.cff` via *Cite this repository*.
 
 ## Licence
 
-**Copyright © 2026 Jhonatan del Río. All rights reserved.**
+**Copyright © 2026 Jhonatan del Rio Mejia. All rights reserved.**
 
 Two licences, because code and writing are different things:
 

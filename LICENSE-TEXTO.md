@@ -1,6 +1,6 @@
 # Licencia del contenido escrito
 
-**Copyright © 2026 Jhonatan del Río. Todos los derechos reservados sobre el texto.**
+**Copyright © 2026 Jhonatan del Rio Mejia. Todos los derechos reservados sobre el texto.**
 
 El **código fuente** de este repositorio está bajo licencia MIT (ver `LICENSE`).
 

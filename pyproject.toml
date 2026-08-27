@@ -9,7 +9,7 @@ description = "Cuanto tiempo el satelite optico no puede ver un predio, y si el 
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Jhonatan del Rio" }]
+authors = [{ name = "Jhonatan del Rio Mejia" }]
 keywords = ["teledeteccion", "sentinel-2", "sentinel-1", "nubosidad", "agricultura", "tropico"]
 classifiers = [
   "Programming Language :: Python :: 3",
