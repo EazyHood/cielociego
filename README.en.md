@@ -9,7 +9,7 @@
 **How many days the optical satellite cannot see your field — and whether radar
 covers the gap.**
 
-*[Léelo en español](README.md) · [Full report](https://eazyhood.github.io/cielociego/)*
+*[Léelo en español](README.md) · [Full report](https://eazyhood.github.io/cielociego/) · [The write-up](https://eazyhood.github.io/cielociego/post.html)*
 
 Measured over two real fields in Magdalena, Colombia, 2019–2026:
 **on 89 % and 91 % of days there was not a single usable optical observation.**
