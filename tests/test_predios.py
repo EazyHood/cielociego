@@ -87,14 +87,30 @@ def test_propiedades_opcionales_no_son_obligatorias(tmp_path):
     assert p.area_ha is None and p.tesela is None
 
 
-def test_los_predios_reales_del_repo_cargan():
-    """Control de integracion: los dos GeoJSON incluidos deben abrirse."""
+def test_los_geojson_del_repo_cargan():
+    """Control de integracion: los GeoJSON incluidos deben abrirse de verdad.
+
+    El `assert` del final es para que la prueba no pase EN VACIO si algun dia
+    se vacia `datos/`: una prueba que no comprueba nada es peor que ninguna.
+    """
     from pathlib import Path
 
     datos = Path(__file__).resolve().parents[1] / "datos"
-    for ruta in sorted(datos.glob("predio_*.geojson")):
+    encontrados = sorted(datos.glob("*.geojson"))
+    for ruta in encontrados:
         p = carga_predio(ruta)
         assert p.geometria.is_valid and p.area_ha and p.area_ha > 0
+    assert encontrados, "datos/ no trae ningun GeoJSON: la prueba estaria pasando en vacio"
+
+
+def test_el_area_de_demostracion_avisa_de_que_no_es_un_predio():
+    """Si alguien la toma por la finca de alguien, el repo ha hecho algo mal."""
+    from pathlib import Path
+
+    demo = Path(__file__).resolve().parents[1] / "datos" / "area_demo.geojson"
+    doc = json.loads(demo.read_text(encoding="utf-8"))
+    nota = doc["features"][0]["properties"].get("nota", "").lower()
+    assert "no corresponde a ningun predio" in nota
 
 
 def test_el_predio_es_inmutable():

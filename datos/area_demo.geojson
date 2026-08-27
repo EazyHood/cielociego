@@ -1,0 +1,40 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "nombre": "Area de demostracion - corredor bananero del Magdalena",
+    "area_ha": 256.0,
+    "nota": "Rectangulo trazado a proposito cruzando linderos: NO corresponde a ningun predio ni propiedad. Existe solo para poder ejecutar la herramienta de ejemplo sobre una zona donde el fenomeno se ve."
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -74.187315,
+       10.742814
+      ],
+      [
+       -74.172685,
+       10.742814
+      ],
+      [
+       -74.172685,
+       10.757186
+      ],
+      [
+       -74.187315,
+       10.757186
+      ],
+      [
+       -74.187315,
+       10.742814
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

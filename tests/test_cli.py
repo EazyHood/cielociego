@@ -94,7 +94,7 @@ def test_sin_predios_avisa_en_vez_de_medir_la_nada(monkeypatch, tmp_path):
     monkeypatch.setattr(cli, "DATOS", tmp_path)
     with pytest.raises(SystemExit) as e:
         cli._predios(None)
-    assert "no hay predios" in str(e.value)
+    assert "GeoJSON" in str(e.value)
 
 
 def test_predios_explicitos_no_miran_la_carpeta(monkeypatch, tmp_path):
@@ -103,7 +103,7 @@ def test_predios_explicitos_no_miran_la_carpeta(monkeypatch, tmp_path):
     import cielociego.cli as cli
 
     datos = Path(__file__).resolve().parents[1] / "datos"
-    ruta = str(sorted(datos.glob("predio_*.geojson"))[0])
+    ruta = str(sorted(datos.glob("*.geojson"))[0])
     monkeypatch.setattr(cli, "DATOS", tmp_path)  # vacia, pero da igual
     encontrados = cli._predios([ruta])
     assert len(encontrados) == 1 and encontrados[0][1].area_ha

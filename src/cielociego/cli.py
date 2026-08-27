@@ -45,9 +45,9 @@ def _log(msg: str = "") -> None:
 def _predios(rutas: list[str] | None) -> list[tuple[str, Predio]]:
     if rutas:
         return [(Path(r).stem, carga_predio(r)) for r in rutas]
-    encontrados = sorted(DATOS.glob("predio_*.geojson"))
+    encontrados = sorted(DATOS.glob("*.geojson"))
     if not encontrados:
-        sys.exit(f"no hay predios en {DATOS}. Pasa uno con --predio ruta.geojson")
+        sys.exit(f"no hay ningun GeoJSON en {DATOS}. Pasa uno con --predio ruta.geojson")
     return [(p.stem, carga_predio(p)) for p in encontrados]
 
 

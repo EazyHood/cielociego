@@ -10,11 +10,18 @@ cambio de **3,5 dB** que sobrevive al control de instrumento, y que **no fue
 gradual**: meseta, transición de unos dos años, y meseta nueva.
 
 Datos abiertos, sin cuenta, sin clave y sin coste. La medición completa se
-reproduce en unos 90 segundos.
+reproduce con un comando: **unos 90 s** sin la serie de radar (`--sin-radar`),
+**unos 4 min** con ella.
 
 ```bash
-python -m cielociego medir
+pip install -e ".[dev]"
+python -m cielociego medir          # mide el area de ejemplo incluida
 ```
+
+El repositorio trae un **área de demostración** de 256 ha sobre el corredor
+bananero, así que se puede ejecutar nada más clonarlo. Sobre ella, solo en 2024:
+**90 % de días sin observación óptica aprovechable**, y las 5 rachas de 15 días o
+más tienen pasada de radar dentro.
 
 ---
 
@@ -265,13 +272,13 @@ llega hasta donde llega el dato.
 ## Uso
 
 ```bash
-python -m cielociego medir                              # todo
-python -m cielociego medir --predio datos/mi_finca.geojson
+python -m cielociego medir                              # el area de ejemplo
+python -m cielociego medir --predio mi_finca.geojson    # tu predio
 python -m cielociego medir --desde 2022-01-01 --hilos 8
 python -m cielociego medir --sin-radar                  # salta la serie (lo mas lento)
 python -m cielociego medir --orbita 142                 # fuerza una orbita concreta
 python -m cielociego catalogo                           # solo el catalogo
-python -m cielociego pruebas                            # 189 pruebas
+python -m cielociego pruebas                            # 190 pruebas
 ```
 
 La **órbita de la serie de radar se elige sola** según cuál cubra mejor tu predio,
@@ -281,15 +288,34 @@ y el reparto se imprime para que puedas comprobarlo:
 orbitas    {77: 341, 142: 265, 69: 248}  ->  se usa la 77 (341 escenas)
 ```
 
-Un predio es un GeoJSON con **un solo** *feature* de tipo `Polygon` en EPSG:4326.
-Si trae más de uno, falla a propósito: mezclar dos predios en una medida es
-exactamente el error que este proyecto existe para evitar.
+Si el fichero trae más de un polígono, **falla a propósito**: mezclar dos predios
+en una sola medida es exactamente el error que este proyecto existe para evitar.
 
 ```json
 {"type":"FeatureCollection","features":[{"type":"Feature",
  "properties":{"nombre":"Mi finca","area_ha":73.5},
  "geometry":{"type":"Polygon","coordinates":[[[-73.82,10.40], ...]]}}]}
 ```
+
+## Los datos que trae, y los que no
+
+`datos/area_demo.geojson` es un **área de demostración** de 256 ha: un rectángulo
+trazado **a propósito cruzando linderos**, que no corresponde a ningún predio ni
+a la propiedad de nadie. Está para que la herramienta se pueda ejecutar nada más
+clonar el repositorio.
+
+**Los polígonos de los dos predios que se midieron no están incluidos.** Los
+resultados del README y del informe salen de dos predios reales del Magdalena
+(73,5 ha en Fundación y 284,1 ha en el corredor bananero), pero sus coordenadas
+son datos de un curso universitario y uno de ellos es el área de estudio de un
+docente. Publicar la ubicación exacta de tierra ajena junto a un análisis que
+dice «aquí pasó algo» no es cosa de este repositorio.
+
+Las **cifras agregadas sí están** en `salidas/`, y no permiten reconstruir los
+polígonos: lo más fino que aparece es el código de tesela, que cubre 110 × 110 km.
+
+Para medir tu propio predio basta un GeoJSON con **un solo** *feature* de tipo
+`Polygon` en EPSG:4326.
 
 ## Instalación
 
@@ -304,11 +330,11 @@ una rotura silenciosa en un fallo de instalación, que se ve.
 
 ## Pruebas
 
-189 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
+190 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
 rásters con valores conocidos.
 
 ```bash
-python -m pytest tests/ -q --cov=cielociego     # 189 pruebas, 91 % de cobertura
+python -m pytest tests/ -q --cov=cielociego     # 190 pruebas, 91 % de cobertura
 mypy src/cielociego                              # limpio en 12 modulos
 ruff check src/ tests/                           # limpio
 ```
@@ -350,7 +376,7 @@ Lo que vigilan, más allá de que el código no reviente:
   queda registrada como **fallo**, nunca como despejada, y se reintenta lo que es
   reintentable (429 y 5xx, con espera creciente y respetando `Retry-After`).
 
-## Datos
+## De dónde salen los datos
 
 - **Óptico y catálogo de radar**: Sentinel-2 L2A y Sentinel-1 GRD vía el catálogo
   STAC público de [Element84](https://earth-search.aws.element84.com/v1) sobre AWS.

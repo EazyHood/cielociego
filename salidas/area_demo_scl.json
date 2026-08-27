@@ -1,0 +1,1116 @@
+{
+ "predio": "Area de demostracion - corredor bananero del Magdalena",
+ "procedencia": {
+  "version": "0.1.0",
+  "commit": "418087f",
+  "medido_en": "2026-08-27T04:15:28+00:00",
+  "python": "3.12.10",
+  "sistema": "Windows",
+  "parametros": {
+   "umbral_util": 0.1,
+   "hilos": 12
+  }
+ },
+ "area_ha": 256.0,
+ "medidas": 74,
+ "fallidas": 0,
+ "recuperadas_en_segunda_pasada": 0,
+ "vistas": [
+  {
+   "fecha": "2024-01-03",
+   "id_toma": "S2B_18PWS_20240103_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 56.563878,
+   "histograma": {
+    "vegetacion": 6294,
+    "sin_vegetacion": 11
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-01-08",
+   "id_toma": "S2A_18PWS_20240108_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.052053,
+   "histograma": {
+    "vegetacion": 6295,
+    "sin_vegetacion": 10
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-01-13",
+   "id_toma": "S2B_18PWS_20240113_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 2.822201,
+   "histograma": {
+    "vegetacion": 6293,
+    "sin_vegetacion": 12
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-01-18",
+   "id_toma": "S2A_18PWS_20240118_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.034745,
+   "histograma": {
+    "vegetacion": 6290,
+    "sin_vegetacion": 15
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-01-23",
+   "id_toma": "S2B_18PWS_20240123_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.000874,
+   "histograma": {
+    "vegetacion": 6265,
+    "sin_vegetacion": 39,
+    "sin_clasificar": 1
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-01-28",
+   "id_toma": "S2A_18PWS_20240128_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.122233,
+   "histograma": {
+    "vegetacion": 6231,
+    "sin_vegetacion": 73,
+    "sin_clasificar": 1
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-02",
+   "id_toma": "S2B_18PWS_20240202_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0031720856463124504,
+   "ciego_amplio": 0.0031720856463124504,
+   "cc_tesela": 61.213094,
+   "histograma": {
+    "vegetacion": 5663,
+    "sin_vegetacion": 565,
+    "sin_clasificar": 57,
+    "nube_probable": 20
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-07",
+   "id_toma": "S2A_18PWS_20240207_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.728703,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-12",
+   "id_toma": "S2B_18PWS_20240212_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.409973,
+   "histograma": {
+    "vegetacion": 6198,
+    "sin_vegetacion": 107
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-17",
+   "id_toma": "S2A_18PWS_20240217_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.081487,
+   "histograma": {
+    "vegetacion": 6175,
+    "sin_vegetacion": 130
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-22",
+   "id_toma": "S2B_18PWS_20240222_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.572244250594766,
+   "ciego_amplio": 0.572244250594766,
+   "cc_tesela": 46.016517,
+   "histograma": {
+    "sombra_nube": 1399,
+    "vegetacion": 2601,
+    "sin_vegetacion": 88,
+    "sin_clasificar": 8,
+    "nube_probable": 1094,
+    "nube_segura": 1115
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-02-27",
+   "id_toma": "S2A_18PWS_20240227_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.139008,
+   "histograma": {
+    "vegetacion": 6071,
+    "sin_vegetacion": 234
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-03",
+   "id_toma": "S2B_18PWS_20240303_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.197513,
+   "histograma": {
+    "vegetacion": 5984,
+    "sin_vegetacion": 321
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-08",
+   "id_toma": "S2A_18PWS_20240308_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 2.534995,
+   "histograma": {
+    "vegetacion": 5732,
+    "sin_vegetacion": 573
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-13",
+   "id_toma": "S2B_18PWS_20240313_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.470917,
+   "histograma": {
+    "vegetacion": 5731,
+    "sin_vegetacion": 574
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-18",
+   "id_toma": "S2A_18PWS_20240318_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.746641,
+   "histograma": {
+    "vegetacion": 5710,
+    "sin_vegetacion": 595
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-23",
+   "id_toma": "S2B_18PWS_20240323_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.948156,
+   "histograma": {
+    "nube_probable": 3,
+    "nube_segura": 2,
+    "cirro": 6300
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-03-28",
+   "id_toma": "S2A_18PWS_20240328_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 65.851122,
+   "histograma": {
+    "nube_probable": 6221,
+    "nube_segura": 3,
+    "cirro": 81
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-02",
+   "id_toma": "S2B_18PWS_20240402_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 45.99821,
+   "histograma": {
+    "vegetacion": 5623,
+    "sin_vegetacion": 682
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-07",
+   "id_toma": "S2A_18PWS_20240407_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 15.203415,
+   "histograma": {
+    "vegetacion": 5692,
+    "sin_vegetacion": 613
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-12",
+   "id_toma": "S2B_18PWS_20240412_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 10.032474,
+   "histograma": {
+    "vegetacion": 5768,
+    "sin_vegetacion": 537
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-17",
+   "id_toma": "S2A_18PWS_20240417_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 83.90246,
+   "histograma": {
+    "nube_probable": 1472,
+    "nube_segura": 801,
+    "cirro": 4032
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-22",
+   "id_toma": "S2B_18PWS_20240422_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.6342585249801744,
+   "ciego_amplio": 0.6342585249801744,
+   "cc_tesela": 96.709996,
+   "histograma": {
+    "sombra_nube": 884,
+    "vegetacion": 555,
+    "sin_vegetacion": 1558,
+    "sin_clasificar": 193,
+    "nube_probable": 693,
+    "nube_segura": 304,
+    "cirro": 2118
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-04-27",
+   "id_toma": "S2A_18PWS_20240427_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 65.600228,
+   "histograma": {
+    "nube_probable": 2962,
+    "nube_segura": 1,
+    "cirro": 3342
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-02",
+   "id_toma": "S2B_18PWS_20240502_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 95.797688,
+   "histograma": {
+    "nube_probable": 6181,
+    "nube_segura": 124
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-07",
+   "id_toma": "S2A_18PWS_20240507_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 98.996443,
+   "histograma": {
+    "nube_probable": 6302,
+    "nube_segura": 3
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-12",
+   "id_toma": "S2B_18PWS_20240512_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.9998413957176844,
+   "ciego_amplio": 0.9998413957176844,
+   "cc_tesela": 79.696357,
+   "histograma": {
+    "sin_vegetacion": 1,
+    "nube_probable": 484,
+    "nube_segura": 93,
+    "cirro": 5727
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-17",
+   "id_toma": "S2A_18PWS_20240517_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 51.687849,
+   "histograma": {
+    "nube_probable": 2865,
+    "nube_segura": 1,
+    "cirro": 3439
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-22",
+   "id_toma": "S2B_18PWS_20240522_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 85.501081,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-05-27",
+   "id_toma": "S2A_18PWS_20240527_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.144596,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-01",
+   "id_toma": "S2B_18PWS_20240601_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.047581284694686754,
+   "ciego_amplio": 0.047581284694686754,
+   "cc_tesela": 20.915239,
+   "histograma": {
+    "vegetacion": 5985,
+    "sin_vegetacion": 20,
+    "cirro": 300
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-06",
+   "id_toma": "S2A_18PWS_20240606_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.343944,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-11",
+   "id_toma": "S2B_18PWS_20240611_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.32720063441712927,
+   "ciego_amplio": 0.32720063441712927,
+   "cc_tesela": 80.851638,
+   "histograma": {
+    "sombra_nube": 965,
+    "vegetacion": 4010,
+    "sin_vegetacion": 192,
+    "sin_clasificar": 40,
+    "nube_probable": 830,
+    "nube_segura": 268
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-16",
+   "id_toma": "S2A_18PWS_20240616_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.99997,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-21",
+   "id_toma": "S2B_18PWS_20240621_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 97.216952,
+   "histograma": {
+    "nube_probable": 644,
+    "nube_segura": 5661
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-06-26",
+   "id_toma": "S2A_18PWS_20240626_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.376386,
+   "histograma": {
+    "nube_probable": 686,
+    "nube_segura": 5619
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-01",
+   "id_toma": "S2B_18PWS_20240701_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.9779540047581284,
+   "ciego_amplio": 0.9779540047581284,
+   "cc_tesela": 59.708518,
+   "histograma": {
+    "sombra_nube": 14,
+    "vegetacion": 108,
+    "sin_vegetacion": 16,
+    "sin_clasificar": 15,
+    "nube_probable": 1876,
+    "nube_segura": 1813,
+    "cirro": 2463
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-06",
+   "id_toma": "S2A_18PWS_20240706_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.006026962727993656,
+   "ciego_amplio": 0.006026962727993656,
+   "cc_tesela": 37.854671,
+   "histograma": {
+    "sombra_nube": 2,
+    "vegetacion": 6218,
+    "sin_vegetacion": 49,
+    "cirro": 36
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-11",
+   "id_toma": "S2B_18PWS_20240711_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 41.014004,
+   "histograma": {
+    "vegetacion": 6295,
+    "sin_vegetacion": 10
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-16",
+   "id_toma": "S2A_18PWS_20240716_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 17.599598,
+   "histograma": {
+    "vegetacion": 6291,
+    "sin_vegetacion": 14
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-21",
+   "id_toma": "S2B_18PWS_20240721_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 14.09522,
+   "histograma": {
+    "vegetacion": 6293,
+    "sin_vegetacion": 12
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-26",
+   "id_toma": "S2A_18PWS_20240726_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.5841395717684378,
+   "ciego_amplio": 0.5841395717684378,
+   "cc_tesela": 48.826119,
+   "histograma": {
+    "vegetacion": 2610,
+    "sin_vegetacion": 12,
+    "cirro": 3683
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-07-31",
+   "id_toma": "S2B_18PWS_20240731_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 13.705358,
+   "histograma": {
+    "vegetacion": 6290,
+    "sin_vegetacion": 15
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-05",
+   "id_toma": "S2A_18PWS_20240805_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.9998413957176844,
+   "ciego_amplio": 0.9998413957176844,
+   "cc_tesela": 95.947099,
+   "histograma": {
+    "sin_vegetacion": 1,
+    "nube_probable": 3,
+    "nube_segura": 3,
+    "cirro": 6298
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-10",
+   "id_toma": "S2B_18PWS_20240810_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.787563,
+   "histograma": {
+    "nube_probable": 1786,
+    "nube_segura": 4519
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-15",
+   "id_toma": "S2A_18PWS_20240815_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.9998413957176844,
+   "ciego_amplio": 0.9998413957176844,
+   "cc_tesela": 37.755001,
+   "histograma": {
+    "sin_vegetacion": 1,
+    "nube_probable": 2,
+    "nube_segura": 2,
+    "cirro": 6300
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-20",
+   "id_toma": "S2B_18PWS_20240820_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 15.732451,
+   "histograma": {
+    "vegetacion": 6291,
+    "sin_vegetacion": 14
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-25",
+   "id_toma": "S2A_18PWS_20240825_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.991816,
+   "histograma": {
+    "nube_probable": 3576,
+    "nube_segura": 2399,
+    "cirro": 330
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-08-30",
+   "id_toma": "S2B_18PWS_20240830_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 97.237521,
+   "histograma": {
+    "nube_probable": 6303,
+    "nube_segura": 2
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-04",
+   "id_toma": "S2A_18PWS_20240904_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 75.648123,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-09",
+   "id_toma": "S2B_18PWS_20240909_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.9998413957176844,
+   "ciego_amplio": 0.9998413957176844,
+   "cc_tesela": 63.743103,
+   "histograma": {
+    "sin_vegetacion": 1,
+    "nube_probable": 4,
+    "nube_segura": 2,
+    "cirro": 6298
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-14",
+   "id_toma": "S2A_18PWS_20240914_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 19.05314,
+   "histograma": {
+    "vegetacion": 6292,
+    "sin_vegetacion": 13
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-19",
+   "id_toma": "S2B_18PWS_20240919_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 21.811262,
+   "histograma": {
+    "vegetacion": 6290,
+    "sin_vegetacion": 15
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-24",
+   "id_toma": "S2A_18PWS_20240924_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 34.119269,
+   "histograma": {
+    "vegetacion": 6293,
+    "sin_vegetacion": 12
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-09-29",
+   "id_toma": "S2B_18PWS_20240929_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 100,
+   "histograma": {
+    "nube_segura": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-04",
+   "id_toma": "S2A_18PWS_20241004_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 26.880381,
+   "histograma": {
+    "vegetacion": 6293,
+    "sin_vegetacion": 12
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-09",
+   "id_toma": "S2B_18PWS_20241009_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.019984139571768436,
+   "ciego_amplio": 0.019984139571768436,
+   "cc_tesela": 49.069729,
+   "histograma": {
+    "sombra_nube": 126,
+    "vegetacion": 6001,
+    "sin_vegetacion": 172,
+    "sin_clasificar": 6
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-14",
+   "id_toma": "S2A_18PWS_20241014_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.999982,
+   "histograma": {
+    "nube_probable": 6304,
+    "nube_segura": 1
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-19",
+   "id_toma": "S2B_18PWS_20241019_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 72.312891,
+   "histograma": {
+    "vegetacion": 6293,
+    "sin_vegetacion": 12
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-24",
+   "id_toma": "S2A_18PWS_20241024_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 45.038211,
+   "histograma": {
+    "vegetacion": 6295,
+    "sin_vegetacion": 10
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-10-29",
+   "id_toma": "S2B_18PWS_20241029_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.6791435368754957,
+   "ciego_amplio": 0.6791435368754957,
+   "cc_tesela": 49.768713,
+   "histograma": {
+    "sombra_nube": 81,
+    "vegetacion": 2013,
+    "sin_vegetacion": 10,
+    "nube_probable": 536,
+    "nube_segura": 616,
+    "cirro": 3049
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-03",
+   "id_toma": "S2A_18PWS_20241103_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 99.941307,
+   "histograma": {
+    "nube_probable": 6305
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-08",
+   "id_toma": "S2B_18PWS_20241108_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 93.49215,
+   "histograma": {
+    "nube_probable": 122,
+    "nube_segura": 29,
+    "cirro": 6154
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-13",
+   "id_toma": "S2A_18PWS_20241113_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.7673275178429818,
+   "ciego_amplio": 0.7673275178429818,
+   "cc_tesela": 36.839694,
+   "histograma": {
+    "sombra_nube": 124,
+    "vegetacion": 1459,
+    "sin_vegetacion": 8,
+    "nube_probable": 185,
+    "nube_segura": 42,
+    "cirro": 4487
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-18",
+   "id_toma": "S2B_18PWS_20241118_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.4014274385408406,
+   "ciego_amplio": 0.4014274385408406,
+   "cc_tesela": 27.346468,
+   "histograma": {
+    "sombra_nube": 899,
+    "vegetacion": 3580,
+    "sin_vegetacion": 169,
+    "sin_clasificar": 25,
+    "nube_probable": 1148,
+    "nube_segura": 484
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-23",
+   "id_toma": "S2A_18PWS_20241123_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 80.706906,
+   "histograma": {
+    "nube_probable": 6013,
+    "nube_segura": 86,
+    "cirro": 206
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-11-28",
+   "id_toma": "S2B_18PWS_20241128_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.056938937351308484,
+   "ciego_amplio": 0.056938937351308484,
+   "cc_tesela": 32.747027,
+   "histograma": {
+    "sombra_nube": 348,
+    "vegetacion": 5691,
+    "sin_vegetacion": 252,
+    "sin_clasificar": 3,
+    "nube_probable": 10,
+    "nube_segura": 1
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-03",
+   "id_toma": "S2A_18PWS_20241203_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.5830293417922284,
+   "ciego_amplio": 0.5830293417922284,
+   "cc_tesela": 57.26071,
+   "histograma": {
+    "sombra_nube": 1301,
+    "vegetacion": 2625,
+    "sin_vegetacion": 2,
+    "sin_clasificar": 2,
+    "nube_probable": 1415,
+    "nube_segura": 960
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-08",
+   "id_toma": "S2B_18PWS_20241208_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.008564631245043617,
+   "ciego_amplio": 0.008564631245043617,
+   "cc_tesela": 22.929747,
+   "histograma": {
+    "vegetacion": 6239,
+    "sin_vegetacion": 12,
+    "cirro": 54
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-13",
+   "id_toma": "S2C_18PWS_20241213_1_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.920698,
+   "histograma": {
+    "vegetacion": 6296,
+    "sin_vegetacion": 9
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-13",
+   "id_toma": "S2A_18PWS_20241213_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 0.897161,
+   "histograma": {
+    "vegetacion": 6297,
+    "sin_vegetacion": 8
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-18",
+   "id_toma": "S2B_18PWS_20241218_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 0.0,
+   "ciego_amplio": 0.0,
+   "cc_tesela": 7.570304,
+   "histograma": {
+    "vegetacion": 6296,
+    "sin_vegetacion": 9
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-23",
+   "id_toma": "S2A_18PWS_20241223_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 97.826988,
+   "histograma": {
+    "nube_probable": 3958,
+    "nube_segura": 1,
+    "cirro": 2346
+   },
+   "error": null,
+   "aviso": null
+  },
+  {
+   "fecha": "2024-12-28",
+   "id_toma": "S2B_18PWS_20241228_0_L2A",
+   "pixeles": 6305,
+   "ciego_estricto": 1.0,
+   "ciego_amplio": 1.0,
+   "cc_tesela": 64.320499,
+   "histograma": {
+    "nube_probable": 904,
+    "nube_segura": 4,
+    "cirro": 5397
+   },
+   "error": null,
+   "aviso": null
+  }
+ ],
+ "errores": []
+}
