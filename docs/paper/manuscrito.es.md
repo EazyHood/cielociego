@@ -8,10 +8,47 @@
 > están medidos y su procedencia está en `outputs/`. Esta convención es deliberada: un borrador
 > que no distingue lo medido de lo esperado acaba publicando lo esperado.
 
-**Revista destino:** Revista de Teledetección (AET / Universitat Politècnica de València).
-Indexada en Scopus y ESCI, publica en español, sin cargos de publicación.
-Alternativas por la ruta gratuita: *Remote Sensing Letters* (ruta suscripción), *IEEE GRSL*,
-*Int. J. Applied Earth Observation and Geoinformation*. Preprint previo en EarthArXiv.
+## Ficha de envío (verificada el 27-ago-2026)
+
+**Destino:** Revista de Teledetección (RAET), Asociación Española de Teledetección / Universitat
+Politècnica de València. Scopus, Web of Science ESCI, DOAJ. JIF 2025 = 0,8 · CiteScore = 1,3.
+Diamante: **sin cargos de envío ni de publicación**, literal en sus normas. Licencia CC BY-NC-SA
+4.0, el autor conserva el copyright.
+
+| Requisito | Qué obliga a hacer |
+|---|---|
+| Categoría | **Artículo científico** (revisión por pares, ≥2 especialistas). No «Caso práctico»: ese lo evalúa el Consejo Editorial y se pierden los informes de revisores, que valen tanto como la publicación |
+| Extensión | **25 páginas DIN-A4 con todo dentro**, resumen, figuras, tablas y referencias incluidas. Los artículos de los números 67 y 68 andan entre 12 y 22: no aspirar al techo |
+| Idioma | Español o inglés en el cuerpo, pero **título, resumen y ≥5 palabras clave son obligatorios en los dos idiomas** |
+| Revisión | **Doble anónima.** Ver el aviso de abajo, que afecta al texto |
+| Formato | Secciones numeradas · **numeración de líneas continua** · referencias, tablas y pies de figura **al final** · referencias alfabéticas y cita autor-año · figuras aparte en TIF/JPG a ≥300 ppi · envío en Word |
+| Autor único | **Aceptado, y probado en el número 68 de 2026**: dos de siete trabajos van firmados por una sola persona. No pide carta de aval ni grupo de investigación |
+| Tiempos | Decisión comprometida en **3 meses**; ~10 semanas hasta publicación. Sale en enero y julio → la ventana realista es **enero de 2027** |
+
+> ⚠️ **El aviso que decide cómo se redacta.** La revisión es doble anónima y la lista de
+> comprobación exige ficheros sin nombres ni referencias identificativas. Este trabajo se apoya en
+> una herramienta publicada en una cuenta pública con DOI: **citarla en primera persona
+> desanonimiza el manuscrito en la primera página**. Se cita como software de terceros, en tercera
+> persona, y el enlace al repositorio va en el fichero suplementario no anónimo y en los
+> comentarios al editor, nunca en el cuerpo.
+
+**Para la carta al editor:** en el buscador de la propia revista, `cloud mask Sentinel` devuelve
+**cero resultados** y `nubes series temporales` solo tres, el más reciente de 2020 y sobre radar.
+RAET no ha publicado nunca nada sobre disponibilidad óptica real ni sobre enmascarado de nubes.
+Este artículo no compite con su catálogo: lo completa.
+
+**Anclas que hay que citar sí o sí**, porque son de la propia revista y sostienen el encuadre:
+Anaya et al. (2023), `10.4995/raet.2023.17655`, y Anaya et al. (2018), `10.4995/raet.2018.8618`
+—bosque del Caribe colombiano y series temporales en el trópico, en esta misma revista—;
+Julien y Sobrino (2018), `10.4995/raet.2018.9749`, sobre reconstrucción de series contaminadas por
+nube; y sobre todo **Reyes-Díez et al. (2015)**, `10.4995/raet.2015.3316`, que escribe que
+*«homogeneous filtering criteria throughout a heterogeneous region may cause the systematic loss of
+information»*. Este trabajo demuestra que el criterio homogéneo del metadato de tesela hace
+exactamente eso a escala de predio.
+
+**Plan B:** *Earth Science Informatics* (Springer), ruta suscripción, **0 USD** literal, SCIE y
+Scopus, acepta autor único. **Plan C:** *Remote Sensing Letters* por la ruta de suscripción.
+Preprint previo en EarthArXiv.
 
 ---
 

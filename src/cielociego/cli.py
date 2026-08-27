@@ -298,6 +298,7 @@ def cmd_cohort(args) -> int:
     """
     from .cohort import (
         CohortResult,
+        Observation,
         catalog_pass,
         confusion,
         confusion_by_area,
@@ -343,10 +344,38 @@ def cmd_cohort(args) -> int:
     if args.cap:
         _log(f"\n  optical pass, up to {args.cap} acquisitions per parcel")
         t0 = time.time()
-        result.observations = optical_pass(
+
+        # Rows land on disk as each parcel finishes. A run of several hundred
+        # parcels against a public bucket will meet a slow object sooner or
+        # later, and everything already measured has to survive it.
+        partial = OUTPUTS / f"cohort_{name}_observations.jsonl"
+        partial.parent.mkdir(parents=True, exist_ok=True)
+        done: set[str] = set()
+        earlier: list = []
+        if partial.exists() and args.restart:
+            partial.unlink()
+        elif partial.exists():
+            for line in partial.read_text(encoding="utf-8").splitlines():
+                if line.strip():
+                    row = json.loads(line)
+                    done.add(row["parcel_id"])
+                    earlier.append(Observation(**row))
+            _log(f"  resuming: {len(done)} parcels already on disk")
+
+        handle = partial.open("a", encoding="utf-8")
+
+        def _write(_parcel, rows) -> None:
+            for row in rows:
+                handle.write(json.dumps(row.dict(), ensure_ascii=False) + "\n")
+            handle.flush()
+
+        fresh = optical_pass(
             parcels, args.start, args.end,
             workers=args.workers, cap_per_parcel=args.cap, notify=_progress,
+            on_parcel=_write, skip=done,
         )
+        handle.close()
+        result.observations = earlier + fresh
         read = [o for o in result.observations if not o.error]
         _log(f"  measured   {len(read)} acquisition-parcel pairs, "
              f"{len(result.observations) - len(read)} failed, {time.time() - t0:.0f}s")
