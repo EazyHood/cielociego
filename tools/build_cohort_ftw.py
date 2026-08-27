@@ -62,32 +62,60 @@ def _get(url: str) -> str:
         return r.read().decode("utf-8", "replace")
 
 
-def list_masks(verbose: bool = True) -> dict[str, list[str]]:
-    """Every instance-mask key in the bucket, grouped by country."""
+# The 25 country directories of the release, each verified by a HEAD request on
+# its `chips_<country>.parquet`. They are written out rather than discovered
+# because the flat listing of this bucket is dominated by one country: Austria
+# alone fills more than 400 pages of a thousand keys, so a sequential listing
+# never reaches the tropics. Listing per country with `?prefix=` costs one or
+# two requests each instead.
+COUNTRIES = [
+    "austria", "belgium", "brazil", "cambodia", "corsica", "croatia", "denmark",
+    "estonia", "finland", "france", "germany", "india", "kenya", "latvia",
+    "lithuania", "luxembourg", "netherlands", "portugal", "rwanda", "slovakia",
+    "slovenia", "south_africa", "spain", "sweden", "vietnam",
+]
+
+
+def list_masks(
+    countries: list[str] | None = None,
+    verbose: bool = True,
+    pages_per_country: int = 1,
+) -> dict[str, list[str]]:
+    """Instance-mask keys per country, one prefixed listing at a time.
+
+    Only the first page of a thousand keys is read per country. Austria alone
+    holds hundreds of thousands of chips, so a full listing spends four hundred
+    requests on one country and never reaches the tropics. Picking four chips
+    out of the first thousand instead of out of all of them is a bias worth
+    naming: the selection is over the lexicographic head of each country's
+    chips, not over the country. The paper says so.
+    """
     by_country: dict[str, list[str]] = {}
-    marker = ""
-    pages = 0
-    while True:
-        url = BUCKET + (f"?marker={urllib.parse.quote(marker, safe='')}" if marker else "")
-        body = _get(url)
-        keys = re.findall(r"<Key>(.*?)</Key>", body)
-        if not keys:
-            break
-        pages += 1
-        for k in keys:
-            if "/label_masks/instance/" in k and k.endswith(".tif"):
-                by_country.setdefault(k.split("/")[1], []).append(k)
-        if "<IsTruncated>true</IsTruncated>" not in body:
-            break
-        nxt = re.findall(r"<NextMarker>(.*?)</NextMarker>", body)
-        marker = (nxt[0].split("/", 1)[1] if nxt else keys[-1])
-        if pages > 400:  # pragma: no cover - runaway guard
-            print("  ! listing cut at 400 pages", file=sys.stderr)
-            break
-    if verbose:
-        total = sum(len(v) for v in by_country.values())
-        print(f"  listed {total} masks over {len(by_country)} countries in {pages} pages")
-    return {c: sorted(v) for c, v in sorted(by_country.items())}
+    for country in countries or COUNTRIES:
+        keys: list[str] = []
+        marker = ""
+        page_no = 0
+        while True:
+            q = f"?prefix={country}/label_masks/instance/"
+            if marker:
+                q += "&marker=" + urllib.parse.quote(marker, safe="")
+            body = _get(BUCKET + q)
+            page = [k for k in re.findall(r"<Key>(.*?)</Key>", body) if k.endswith(".tif")]
+            if not page:
+                break
+            keys.extend(page)
+            page_no += 1
+            if page_no >= pages_per_country:
+                break
+            if "<IsTruncated>true</IsTruncated>" not in body:
+                break
+            nxt = re.findall(r"<NextMarker>(.*?)</NextMarker>", body)
+            marker = nxt[0] if nxt else "kerner-lab/" + page[-1]
+        if keys:
+            by_country[country] = sorted(keys)
+        if verbose:
+            print(f"  {country:<14} {len(keys):>6} masks")
+    return by_country
 
 
 def spread(items: list, n: int) -> list:
@@ -176,7 +204,8 @@ def build(chips_per_country: int, per_country: int, out: Path) -> dict:
             "min_ha": MIN_HA,
             "max_ha": MAX_HA,
             "edge_touching_parcels": "dropped",
-            "selection": "stride, no random seed",
+            "selection": "stride over the lexicographic head of each country, no random seed",
+            "listing": "first page of 1000 keys per country",
         },
     }
     out.parent.mkdir(parents=True, exist_ok=True)
