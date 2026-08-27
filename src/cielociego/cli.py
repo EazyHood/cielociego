@@ -288,6 +288,101 @@ def cmd_catalog(args) -> int:
     return 0
 
 
+def cmd_cohort(args) -> int:
+    """Run the same protocol over many public parcels instead of one field.
+
+    The catalogue pass always runs: it is cheap and it is what answers the
+    duplicate question over a whole archive. The optical pass is opt-in through
+    `--cap`, because reading the classification band for every acquisition of
+    every parcel is three orders of magnitude more expensive.
+    """
+    from .cohort import (
+        CohortResult,
+        catalog_pass,
+        confusion,
+        confusion_by_area,
+        load_cohort,
+        optical_pass,
+        sensitivity,
+    )
+
+    parcels = load_cohort(args.cohort, source=args.source)
+    if args.limit:
+        parcels = parcels[: args.limit]
+    if not parcels:
+        sys.exit(f"{args.cohort}: no usable parcel in the file")
+
+    name = args.name or Path(args.cohort).stem
+    areas = sorted(p.area_ha for p in parcels)
+    _log(f"\n=== cohort {name}: {len(parcels)} parcels, "
+         f"{args.start} to {args.end}")
+    _log(f"  area       median {areas[len(areas) // 2]:.1f} ha "
+         f"(min {areas[0]:.2f}, max {areas[-1]:.1f})")
+    countries = sorted({p.country for p in parcels})
+    _log(f"  countries  {', '.join(countries)}")
+
+    t0 = time.time()
+    rows = catalog_pass(parcels, args.start, args.end, workers=args.workers, notify=_progress)
+    ok = [r for r in rows if not r.error]
+    items = sum(r.items for r in ok)
+    dups = sum(r.duplicates for r in ok)
+    _log(f"  catalogue  {items} items over {len(ok)} parcels, "
+         f"{dups} reprocessing copies ({100 * dups / items if items else 0:.1f} %), "
+         f"{len(rows) - len(ok)} parcels unreachable, {time.time() - t0:.0f}s")
+    gaps = [r.cloud_gap_max for r in ok if r.cloud_gap_max is not None]
+    if gaps:
+        ratios = [r.cloud_gap_ratio_max for r in ok if r.cloud_gap_ratio_max]
+        _log(f"  disagreement between baselines: max {max(gaps):.2f} points"
+             + (f", up to {max(ratios):.1f}x" if ratios else ""))
+
+    result = CohortResult(
+        args.start, args.end, catalog=rows,
+        provenance=record(start=args.start, end=args.end, collection=S2_L2A),
+    )
+
+    if args.cap:
+        _log(f"\n  optical pass, up to {args.cap} acquisitions per parcel")
+        t0 = time.time()
+        result.observations = optical_pass(
+            parcels, args.start, args.end,
+            workers=args.workers, cap_per_parcel=args.cap, notify=_progress,
+        )
+        read = [o for o in result.observations if not o.error]
+        _log(f"  measured   {len(read)} acquisition-parcel pairs, "
+             f"{len(result.observations) - len(read)} failed, {time.time() - t0:.0f}s")
+
+        m = confusion(result.observations)
+        _log(f"\n  filter tile cloud <= {m.tile_threshold:.0%}, "
+             f"parcel usable at blind <= {m.blind_limit:.0%}")
+        _log(f"    kept and useful   {m.kept_useful}")
+        _log(f"    kept but blind    {m.kept_useless}   (false positive)")
+        _log(f"    dropped yet clear {m.dropped_useful}   (false negative)")
+        _log(f"    dropped and blind {m.dropped_useless}")
+        _log(f"    asymmetry         {m.asymmetry:.1f} false negatives per false positive")
+        _log(f"    recall            {m.recall:.3f}")
+
+        _log("\n  by parcel size:")
+        for label, c in confusion_by_area(result.observations):
+            if c.total:
+                _log(f"    {label:>12}  n={c.total:>6}  recall {c.recall:.3f}  "
+                     f"FN {c.dropped_useful:>5}  FP {c.kept_useless:>4}  "
+                     f"asymmetry {c.asymmetry:>6.1f}")
+
+        _log("\n  sensitivity to the thresholds:")
+        for c in sensitivity(result.observations):
+            _log(f"    tile<={c.tile_threshold:.0%} blind<={c.blind_limit:.0%}  "
+                 f"FN {c.dropped_useful:>5}  FP {c.kept_useless:>4}  "
+                 f"recall {c.recall:.3f}")
+
+    stem = OUTPUTS / f"cohort_{name}"
+    result.save_json(f"{stem}.json")
+    result.save_catalog_csv(f"{stem}_catalog.csv")
+    if result.observations:
+        result.save_csv(f"{stem}_observations.csv")
+    _log(f"\n  written to {stem}*.csv / .json")
+    return 0
+
+
 def cmd_tests(_args) -> int:
     import subprocess
 
@@ -325,6 +420,24 @@ def build_parser() -> argparse.ArgumentParser:
     shared(sub.add_parser("catalog", help="optical catalogue only, deduplicated")).set_defaults(
         func=cmd_catalog
     )
+    c = sub.add_parser(
+        "cohort",
+        help="the same protocol over many public parcels, to turn a case into a rule",
+    )
+    c.add_argument("--cohort", required=True, metavar="FILE.geojson",
+                   help="many-feature GeoJSON of parcel boundaries")
+    c.add_argument("--start", default="2023-01-01", metavar="YYYY-MM-DD")
+    c.add_argument("--end", default=date.today().isoformat(), metavar="YYYY-MM-DD")
+    c.add_argument("--cap", type=int, default=None, metavar="N",
+                   help="also read the classification band, up to N acquisitions per parcel; "
+                        "without it only the catalogue is queried")
+    c.add_argument("--limit", type=int, default=None, metavar="N",
+                   help="first N parcels only, for a dry run")
+    c.add_argument("--workers", type=int, default=10)
+    c.add_argument("--source", default=None, help="label for the boundary dataset")
+    c.add_argument("--name", default=None, help="output name; defaults to the file stem")
+    c.set_defaults(func=cmd_cohort)
+
     sub.add_parser("tests", help="run the project test suite").set_defaults(func=cmd_tests)
     return p
 
