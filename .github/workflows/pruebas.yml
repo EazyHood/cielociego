@@ -36,7 +36,7 @@ jobs:
         run: mypy src/cielociego --ignore-missing-imports
 
       - name: Estilo
-        run: ruff check src/ tests/
+        run: ruff check src/ tests/ herramientas/
 
       - name: La CLI arranca
         run: python -m cielociego --help

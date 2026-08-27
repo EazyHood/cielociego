@@ -8,9 +8,9 @@ sys.path.insert(0, "src")
 import os
 
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import numpy as np
+import numpy as np  # noqa: E402
 
-from cielociego import graficas
+from cielociego import graficas  # noqa: E402
 
 DESDE, HASTA = date(2019, 1, 1), date(2026, 8, 25)
 P = {}

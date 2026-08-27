@@ -66,6 +66,11 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]
+# Los constructores llevan CSS y HTML como texto. Partir una regla de CSS
+# para que quepa en 100 columnas la hace mas dificil de leer, no menos, y
+# una etiqueta <meta> partida en dos deja de poder buscarse. El limite se
+# levanta SOLO ahi, y el resto de reglas siguen aplicando.
+"herramientas/*" = ["E501"]
 
 [tool.mypy]
 # Sin python_version fijo: los stubs de numpy usan sintaxis de 3.12 y
