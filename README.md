@@ -175,8 +175,22 @@ el error estandar clasico se quedaba 1,7 veces corto
 robustez dejando fuera un ano entero:  +0,600 a +0,718 dB/ano
 ```
 
-Algo cambió en esas 284 hectáreas y se estabilizó en un nivel nuevo. **Qué fue,
-este trabajo no lo sabe.** Lo que queda medido es que el radar lo registró de
+#### Una corroboración independiente
+
+Sobre este mismo predio se había hecho antes un análisis **óptico**, sin radar y
+sin relación con este trabajo: el NDVI cae en 2021, y el descenso son **tres
+bloques compactos —el mayor de 27,6 ha— con los bordes rectos siguiendo los
+linderos**, que recuperan NDVI > 0,70 en 2025. Bordes rectos en los linderos
+significa **manejo humano**, no clima.
+
+El radar, por su cuenta y con otro método, fecha la transición entre
+**jun-2021 y ago-2023**. Dos instrumentos distintos, el mismo evento y las
+mismas fechas. Eso es lo más cerca que llega este trabajo de saber qué pasó:
+**fue una intervención de manejo** — la hipótesis del análisis óptico era
+renovación de lotes.
+
+Algo cambió en esas 284 hectáreas y se estabilizó en un nivel nuevo. **Confirmar
+qué exactamente sigue exigiendo campo o registros de siembra.** Lo que queda medido es que el radar lo registró de
 principio a fin, y que en el tramo del cambio el óptico llegó a estar **55 días
 seguidos** sin una imagen aprovechable.
 
