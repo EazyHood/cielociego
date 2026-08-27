@@ -79,3 +79,40 @@ def test_salida_ordenada_por_fecha():
         "2020-01-04T15:30:09Z",
         "2020-01-09T15:30:08Z",
     ]
+
+
+# --- pares de lineas: para poder medir cuanto depende del procesador -------
+def test_encuentra_las_tomas_servidas_bajo_dos_lineas():
+    from cielociego.dedup import pares_de_lineas
+
+    pares = pares_de_lineas([item(NUEVA), item(VIEJA),
+                             item("S2A_MSIL2A_20200109T152631_N0500_R025_T18PXS")])
+    assert len(pares) == 1, "solo una toma tiene dos versiones"
+    vieja, nueva = pares[0]
+    assert vieja["properties"]["s2:product_uri"] == VIEJA
+    assert nueva["properties"]["s2:product_uri"] == NUEVA
+
+
+def test_devuelve_siempre_vieja_primero_nueva_despues():
+    """El orden importa: quien compare las dos necesita saber cual es cual."""
+    from cielociego.dedup import pares_de_lineas
+
+    for orden in ([NUEVA, VIEJA], [VIEJA, NUEVA]):
+        vieja, nueva = pares_de_lineas([item(u) for u in orden])[0]
+        assert "N0213" in vieja["properties"]["s2:product_uri"]
+        assert "N0500" in nueva["properties"]["s2:product_uri"]
+
+
+def test_una_toma_con_una_sola_linea_no_da_par():
+    from cielociego.dedup import pares_de_lineas
+
+    assert pares_de_lineas([item(NUEVA)]) == []
+
+
+def test_con_tres_lineas_compara_los_extremos():
+    from cielociego.dedup import pares_de_lineas
+
+    tres = [f"S2A_MSIL2A_20210930T152631_N0{v}_R025_T18PXS" for v in ("213", "301", "500")]
+    vieja, nueva = pares_de_lineas([item(u) for u in tres])[0]
+    assert "N0213" in vieja["properties"]["s2:product_uri"]
+    assert "N0500" in nueva["properties"]["s2:product_uri"]

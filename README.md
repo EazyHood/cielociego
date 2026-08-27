@@ -221,6 +221,29 @@ llega hasta donde llega el dato.
   un aviso: con 8 píxeles el porcentaje solo se mueve de 12 en 12 puntos y el
   borde del polígono pesa más que su interior. No se falla —hay predios
   pequeños legítimos— pero no se deja pasar como si fuera preciso.
+- **La máscara de nubes es un modelo, y los modelos se actualizan.** El archivo
+  sirve muchas tomas bajo dos versiones del procesador, y no siempre coinciden.
+  Comparadas 61 sobre el polígono:
+
+  ```
+  identicas al bit ................................. 80 %
+  difieren ......................................... 20 %   (|dif| media 6,7 %)
+  CRUZAN el umbral de utilidad ..................... 6,6 %
+     y siempre en el mismo sentido: la version nueva marca MAS nube
+     (36 tomas utiles con la vieja, 32 con la nueva)
+
+  el peor caso medido, 2021-11-29, la MISMA toma:
+     linea N0301 -> predio  0,0 % tapado
+     linea N0500 -> predio 71,8 % tapado
+  ```
+
+  Como se usa siempre la línea más alta, **lo publicado es la estimación
+  conservadora**: más días ciegos de los que declararía el procesador antiguo.
+  Reproducible con `dedup.pares_de_lineas`.
+- **El titular aguanta cualquier definición de «nube».** Contando como ciega
+  solo la nube segura —ignorando nube probable, cirro y sombra, lo más generoso
+  que se puede defender— quedan **82 % y 84 % de días ciegos**, frente al 89 % y
+  91 % de la definición estricta. La conclusión no vive de dónde se ponga la raya.
 - **Una toma se perdió.** La del 23-ene-2024 en Fundación apunta a una ruta
   antigua que ya no existe en el bucket. Queda declarada como fallo, no contada
   como despejada.
@@ -234,7 +257,7 @@ python -m cielociego medir --desde 2022-01-01 --hilos 8
 python -m cielociego medir --sin-radar                  # salta la serie (lo mas lento)
 python -m cielociego medir --orbita 142                 # fuerza una orbita concreta
 python -m cielociego catalogo                           # solo el catalogo
-python -m cielociego pruebas                            # 144 pruebas
+python -m cielociego pruebas                            # 189 pruebas
 ```
 
 La **órbita de la serie de radar se elige sola** según cuál cubra mejor tu predio,
@@ -267,11 +290,11 @@ una rotura silenciosa en un fallo de instalación, que se ve.
 
 ## Pruebas
 
-144 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
+189 pruebas, sin red: las de catálogo simulan el HTTP y las de SCL fabrican
 rásters con valores conocidos.
 
 ```bash
-python -m pytest tests/ -q --cov=cielociego     # 144 pruebas, 91 % de cobertura
+python -m pytest tests/ -q --cov=cielociego     # 189 pruebas, 91 % de cobertura
 mypy src/cielociego                              # limpio en 12 modulos
 ruff check src/ tests/                           # limpio
 ```
