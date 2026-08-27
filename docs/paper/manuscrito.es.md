@@ -149,8 +149,8 @@ credenciales ni cuota. Los productos son COG en el bucket público `sentinel-cog
 ventana**, nunca la escena entera. Datos Copernicus, acceso libre, pleno y abierto.
 
 Se registra la fecha de consulta del catálogo y la versión de la colección, porque el archivo
-cambia: la ESA anunció el borrado de productos de líneas base antiguas. [[PENDIENTE: fecha y
-alcance exacto del borrado, y si los duplicados siguen presentes hoy.]]
+cambia: la ESA anunció el borrado de productos de líneas base antiguas. Medido el 27 de agosto de
+2026, **las copias siguen presentes**: el porcentaje que se reporta es un dato de esa fecha.
 
 ### 2.2 Fracción inservible sobre el polígono
 
@@ -172,8 +172,10 @@ A la cohorte se añaden los dos polígonos del Magdalena (73,5 y 284,1 ha) ya pu
 repositorio con DOI, que son el caso que originó la pregunta y el único anclaje en trópico húmedo
 del Caribe colombiano.
 
-La cohorte quedó en **232 parcelas de 23 países**, de **0,20 a 255,41 ha**, con mediana de
-**0,79 ha**. Incluye trópico: Ruanda, Kenia, India, Vietnam, Camboya y Brasil. El extremo grande lo
+La cohorte quedó en **323 parcelas de 23 países**, de **0,20 a 255,41 ha**, con mediana de
+**1,60 ha**. Las parcelas no se eligen por paso fijo sobre la lista ordenada sino **llenando los
+tramos de tamaño que el análisis reporta**: un paso fijo sigue la distribución del país, que es
+abrumadoramente pequeña, y dejaba los estratos grandes casi vacíos. Incluye trópico: Ruanda, Kenia, India, Vietnam, Camboya y Brasil. El extremo grande lo
 aporta el predio propio del Magdalena, porque un recorte de la fuente mide un kilómetro de lado y
 casi cualquier parcela mayor de unas 20 ha toca el borde y se descarta por el criterio anterior.
 
@@ -200,7 +202,8 @@ nubosidad y sus marcas de tiempo distan 23,9 s.
 
 ### 3.2 El filtro, la verdad y la matriz
 
-- **Filtro:** se conserva la adquisición si `eo:cloud_cover ≤ T`. Valor de referencia T = 20 %.
+- **Filtro:** se conserva la adquisición si `eo:cloud_cover ≤ T`. Valor de referencia T = 10 %,
+  que es el que usa el trabajo previo sobre los dos predios y mantiene comparables caso y cohorte.
 - **Verdad para el predio:** la adquisición es útil si la fracción inservible sobre el polígono es
   `≤ U`. Valor de referencia U = 10 %.
 - **Falso negativo:** útil para el predio y descartada por el filtro. Es el error caro: se pierde
@@ -215,7 +218,7 @@ convenían».
 
 ### 3.3 Estratificación
 
-La matriz se reporta también por tramos de superficie (< 1, 1–5, 5–20, 20–100, 100–500, ≥ 500 ha),
+La matriz se reporta también por tramos de superficie (< 1, 1–5, 5–20, 20–100, 100–500 ha),
 por país y por nubosidad declarada de la tesela. La estratificación por superficie es la que
 convierte el hallazgo en regla: si la tasa de falsos negativos crece cuando la parcela encoge, el
 sesgo es del desajuste de soporte y no del clima de una región.
@@ -234,9 +237,9 @@ mismo producto a dos escalas, no sobre cuál acierta más frente al cielo real.
 
 ### 4.1 Cuánto del archivo son copias, y de qué depende
 
-Sobre la cohorte completa (232 parcelas, 2023-2024): **60.688 ítems**, de los cuales **547 son
+Sobre la cohorte completa (323 parcelas, 2023-2024): **93.072 ítems**, de los cuales **834 son
 copias de reprocesado (0,9 %)**. La mayor discrepancia de nubosidad declarada entre dos copias de
-la misma adquisición es de **43,23 puntos porcentuales**, y la mayor razón entre las dos cifras
+la misma adquisición es de **52,10 puntos porcentuales**, y la mayor razón entre las dos cifras
 declaradas es de **285,7 veces**.
 
 Sobre el predio del Magdalena y el archivo completo 2019-2026, medido el 27 de agosto de 2026:

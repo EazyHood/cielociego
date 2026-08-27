@@ -11,3 +11,6 @@ salidas/barrido.log
 parche_*.py
 seccion*.py
 medicion.log
+
+# El PDF es un derivado del .docx; se regenera abriendo el Word y exportando.
+docs/paper/*.pdf
